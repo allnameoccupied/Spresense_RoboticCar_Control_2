@@ -63,7 +63,7 @@ void Serial_Init(BufferedSerial*& Serial_M){
 
 
 void Nucleo64_Init_Finished_Successfully(DigitalOut* LED){
-    int dur = 10*1000;
+    int dur = 60*1000;
 
     LED->write(1);
     wait_us(dur*3);
