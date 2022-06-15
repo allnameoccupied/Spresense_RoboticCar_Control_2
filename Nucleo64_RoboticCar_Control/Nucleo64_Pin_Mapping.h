@@ -55,7 +55,7 @@
 #define M4_DIR_1_PIN    PC_10
 #define M4_DIR_2_PIN    PC_12
 #define M4_HALL_1_PIN   PA_13
-#define M4_HALL_2_PIN   PA_14
+#define M4_HALL_2_PIN   PC_11
 
 //--------------------------------------------------------//
 

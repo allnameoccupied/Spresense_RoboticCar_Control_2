@@ -4,6 +4,8 @@
 
 #include "Nucleo64_Tool.h"
 
+#include "Nucleo64_Global_Var_Def.h"
+
 #include "mbed.h"
 #include <cstring>
 #include <string>
@@ -40,9 +42,13 @@ void wait_s(uint16_t s){
 }
 
 //Easy Angle <=> Radian
-float angle_to_radian(uint16_t angle){
-    return angle*3.14159265358979323846/180;
+float angle_to_radian(float angle){
+    return angle*PI_M/180.0;
 }
-uint16_t radian_to_angle(float radian){
-    return (((uint16_t)(radian*180/3.14159265358979323846+360))%360);
+float radian_to_angle(float radian){
+    float temp_angle = radian*180.0/PI_M;
+    if (temp_angle < 0.0) {
+        temp_angle += 360.0;
+    }
+    return temp_angle;
 }

@@ -19,7 +19,8 @@ extern I2C*            I2C_M;
 //  Motor variables
 extern PwmOut*         motor_PWM[4];
 extern DigitalOut*     motor_DIR[2*4];
-extern DigitalIn*      motor_HALL[2*4];
+extern InterruptIn*    motor_HALL[2*4];
+extern uint16_t*       motor_HALL_count[2*4];
 //  Serial communication
 extern BufferedSerial* Serial_M;
 
@@ -38,7 +39,7 @@ void wait_ms(uint16_t ms);
 void wait_s(uint16_t s);
 
 //Easy Angle <=> Radian
-float angle_to_radian(uint16_t angle);
-uint16_t radian_to_angle(float radian);
+float angle_to_radian(float angle);
+float radian_to_angle(float radian);
 
 #endif
