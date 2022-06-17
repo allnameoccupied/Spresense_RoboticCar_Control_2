@@ -27,10 +27,11 @@ extern BufferedSerial* Serial_M;
 //--------------------------------------------------------//
 
 //Easy Serial Write
+void serial_println();
 void serial_print(const char* msg);
 void serial_println(const char* msg);
-void serial_print(string& msg);
-void serial_println(string& msg);
+void serial_print(string msg);
+void serial_println(string msg);
 void serial_print(int msg);
 void serial_println(int msg);
 

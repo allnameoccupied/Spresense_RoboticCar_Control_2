@@ -14,6 +14,7 @@
 #include "Nucleo64_Global_Var_Def.h"
 
 #include "mbed.h"
+#include <cstdint>
 
 //EXTERN of PIN Variables
 //  onboard LED & Button
@@ -40,8 +41,12 @@ extern void motor_HALL_feedback();
 //--------------------------------------------------------//
 
 void test_init(){
-    // motor_DIR[0]->write(1);
-    // motor_DIR[1]->write(0);
+
+    uint16_t test = 100;
+    serial_println((int)test);
+
+    motor_DIR[0]->write(1);
+    motor_DIR[1]->write(0);
 
     // motor_DIR[2]->write(0);
     // motor_DIR[3]->write(1);
@@ -52,34 +57,44 @@ void test_init(){
     // motor_DIR[6]->write(1);
     // motor_DIR[7]->write(0);
 
-    // motor_PWM[0]->write(0.25f);
+    motor_PWM[0]->write(0.1f);
     // motor_PWM[1]->write(0.0f);
     // motor_PWM[2]->write(0.0f);
     // motor_PWM[3]->write(0.25f);
 }
 void test_loop(){
+    wait_s(10);
     // for (float f=0.0f; f<1.1f; f+=0.1f) {
     //     motor_PWM[2]->write(f);
     //     motor_PWM[3]->write(f);
     //     wait_us(500*1000);
     // }
 
-    motor_PWM_DIR_input(0.0);
-    wait_ms(500);
+    serial_println((int)*motor_HALL_count[0]);
+    serial_println((int)*motor_HALL_count[1]);
+    serial_println();
+}
+
+void circle_demo(){
+
+    uint16_t dur = 500;
+
+    motor_PWM_DIR_input(PI_M*0.0/4.0);
+    wait_ms(dur);
     motor_PWM_DIR_input(PI_M*1.0/4.0);
-    wait_ms(500);
+    wait_ms(dur);
     motor_PWM_DIR_input(PI_M*2.0/4.0);
-    wait_ms(500);
+    wait_ms(dur);
     motor_PWM_DIR_input(PI_M*3.0/4.0);
-    wait_ms(500);
+    wait_ms(dur);
     motor_PWM_DIR_input(PI_M*4.0/4.0);
-    wait_ms(500);
+    wait_ms(dur);
     motor_PWM_DIR_input(PI_M*5.0/4.0);
-    wait_ms(500);
+    wait_ms(dur);
     motor_PWM_DIR_input(PI_M*6.0/4.0);
-    wait_ms(500);
+    wait_ms(dur);
     motor_PWM_DIR_input(PI_M*7.0/4.0);
-    wait_ms(500);
+    wait_ms(dur);
 }
 
 #endif

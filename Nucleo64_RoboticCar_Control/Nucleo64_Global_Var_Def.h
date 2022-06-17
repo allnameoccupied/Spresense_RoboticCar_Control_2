@@ -11,10 +11,6 @@
 //MAX Motor Speed Ratio
 #define MAX_MOTOR_SPD   0.8f
 
-//Phase when calculating Motor Input
-#define M14_PHASE       PI_M*1.0/4.0
-#define M23_PHASE       PI_M*7.0/4.0
-
 //MIN Distance to trigger Motor Movement
 #define MIN_MOVE_DIST   0   
 

@@ -6,6 +6,7 @@
 
 #include "mbed.h"
 #include "Nucleo64_Pin_Mapping.h"
+#include "Nucleo64_Tool.h"
 #include <cstdint>
 
 //init the 2 onboard components, simply that
@@ -78,8 +79,14 @@ void Serial_Init(BufferedSerial*& Serial_M){
 //--------------------------------------------------------//
 
 //HALL Pin Interrupt Handler
-void M1_HALL_1_handler(){*(motor_HALL_count[0])+=1;}
-void M1_HALL_2_handler(){*(motor_HALL_count[1])+=1;}
+void M1_HALL_1_handler(){
+    *(motor_HALL_count[0])+=1;
+    // serial_println("1");
+    }
+void M1_HALL_2_handler(){
+    *(motor_HALL_count[1])+=1;
+    // serial_println("2");
+    }
 void M2_HALL_1_handler(){*(motor_HALL_count[2])+=1;}
 void M2_HALL_2_handler(){*(motor_HALL_count[3])+=1;}
 void M3_HALL_1_handler(){*(motor_HALL_count[4])+=1;}
