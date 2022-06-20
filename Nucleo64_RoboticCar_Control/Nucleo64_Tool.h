@@ -20,7 +20,7 @@ extern I2C*            I2C_M;
 extern PwmOut*         motor_PWM[4];
 extern DigitalOut*     motor_DIR[2*4];
 extern InterruptIn*    motor_HALL[2*4];
-extern uint16_t*       motor_HALL_count[2*4];
+extern uint16_t        motor_HALL_count[2*4];
 //  Serial communication
 extern BufferedSerial* Serial_M;
 
@@ -34,6 +34,10 @@ void serial_print(string msg);
 void serial_println(string msg);
 void serial_print(int msg);
 void serial_println(int msg);
+void serial_print(uint16_t msg);
+void serial_println(uint16_t msg);
+void serial_print(uint32_t msg);
+void serial_println(uint32_t msg);
 
 //Easy Wait
 void wait_ms(uint16_t ms);

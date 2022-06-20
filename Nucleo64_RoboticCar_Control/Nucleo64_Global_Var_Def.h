@@ -23,4 +23,7 @@
 #define MOTOR_GEAR_RATIO    75 //1:75
 #define MOTOR_SPEC_SPEED    11500 //rpm
 
+//MIN Time for next SAME Interrupt to be handled
+#define HALL_UPDATE_PERIOD  250  //ms
+
 #endif

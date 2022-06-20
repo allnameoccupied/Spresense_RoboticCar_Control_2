@@ -10,11 +10,12 @@
 #define NUCLEO_TEST_H
 
 #include "Nucleo64_Tool.h"
-
 #include "Nucleo64_Global_Var_Def.h"
+#include "Nucleo64_Pin_Mapping.h"
 
 #include "mbed.h"
 #include <cstdint>
+#include <ctime>
 
 //EXTERN of PIN Variables
 //  onboard LED & Button
@@ -26,7 +27,7 @@ extern I2C*            I2C_M;
 extern PwmOut*         motor_PWM[4];
 extern DigitalOut*     motor_DIR[2*4];
 extern InterruptIn*    motor_HALL[2*4];
-extern uint16_t*       motor_HALL_count[2*4];
+extern uint16_t        motor_HALL_count[2*4];
 //  Serial communication
 extern BufferedSerial* Serial_M;
 
@@ -42,37 +43,32 @@ extern void motor_HALL_feedback();
 
 void test_init(){
 
-    uint16_t test = 100;
-    serial_println((int)test);
+    // uint16_t test = 100;
+    // serial_println((int)test);
 
-    motor_DIR[0]->write(1);
-    motor_DIR[1]->write(0);
+    // motor_DIR[0]->write(1);
+    // motor_DIR[1]->write(0);
+    // motor_PWM[0]->write(1.0f);
 
-    // motor_DIR[2]->write(0);
-    // motor_DIR[3]->write(1);
-    
-    // motor_DIR[4]->write(0);
-    // motor_DIR[5]->write(1);
-    
-    // motor_DIR[6]->write(1);
-    // motor_DIR[7]->write(0);
+    // HAL_Init();
 
-    motor_PWM[0]->write(0.1f);
-    // motor_PWM[1]->write(0.0f);
-    // motor_PWM[2]->write(0.0f);
-    // motor_PWM[3]->write(0.25f);
 }
 void test_loop(){
-    wait_s(10);
+    wait_s(5);
+
+    // serial_println(motor_HALL_count[0]);
+    // serial_println(motor_HALL_count[1]);
+    // serial_println();
+
+    // serial_println((int)(HAL_GetTick()));
+
     // for (float f=0.0f; f<1.1f; f+=0.1f) {
     //     motor_PWM[2]->write(f);
     //     motor_PWM[3]->write(f);
     //     wait_us(500*1000);
     // }
 
-    serial_println((int)*motor_HALL_count[0]);
-    serial_println((int)*motor_HALL_count[1]);
-    serial_println();
+    // *LED = Button->read();
 }
 
 void circle_demo(){

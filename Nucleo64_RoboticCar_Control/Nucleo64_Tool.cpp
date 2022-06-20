@@ -11,7 +11,9 @@
 #include <string>
 
 //Easy Serial Write
-void serial_println(){}
+void serial_println(){
+    serial_print("\n");
+}
 void serial_print(const char* msg){
     Serial_M->write(msg,strlen(msg));
 }
@@ -32,6 +34,18 @@ void serial_print(int msg){
 }
 void serial_println(int msg){
     serial_println(to_string(msg).c_str());
+}
+void serial_print(uint16_t msg){
+    serial_print(to_string((long)msg).c_str());
+}
+void serial_println(uint16_t msg){
+    serial_println(to_string((long)msg).c_str());
+}
+void serial_print(uint32_t msg){
+    serial_print(to_string((long)msg).c_str());
+}
+void serial_println(uint32_t msg){
+    serial_println(to_string((long)msg).c_str());
 }
 
 //Easy Wait

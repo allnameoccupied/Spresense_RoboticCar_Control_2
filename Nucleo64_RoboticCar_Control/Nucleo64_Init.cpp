@@ -2,10 +2,11 @@
 
 //Funtions : Nucleo-64 Initialization
 
-#include "Nucleo64_init.h"
+#include "Nucleo64_Init.h"
 
 #include "mbed.h"
 #include "Nucleo64_Pin_Mapping.h"
+#include "Nucleo64_Global_Var_Def.h"
 #include "Nucleo64_Tool.h"
 #include <cstdint>
 
@@ -40,8 +41,7 @@ void Motor_DIR_Pin_Init(DigitalOut* motor_DIR[]){   //2x4 pins
     motor_DIR[6] = new DigitalOut(M4_DIR_1_PIN);
     motor_DIR[7] = new DigitalOut(M4_DIR_2_PIN);
 }
-void Motor_HALL_Pin_Init(InterruptIn* motor_HALL[],
-                            uint16_t* motor_HALL_count[]){  //2x4 pins
+void Motor_HALL_Pin_Init(InterruptIn* motor_HALL[]){//2x4 pins
     motor_HALL[0] = new InterruptIn(M1_HALL_1_PIN, PullDown);
     motor_HALL[0]->rise(&M1_HALL_1_handler);
     motor_HALL[1] = new InterruptIn(M1_HALL_2_PIN, PullDown);
@@ -58,11 +58,6 @@ void Motor_HALL_Pin_Init(InterruptIn* motor_HALL[],
     motor_HALL[6]->rise(&M4_HALL_1_handler);
     motor_HALL[7] = new InterruptIn(M4_HALL_2_PIN, PullDown);
     motor_HALL[7]->rise(&M4_HALL_2_handler);
-
-    motor_HALL_count[0] = new uint16_t(0);
-    motor_HALL_count[1] = new uint16_t(0);
-    motor_HALL_count[2] = new uint16_t(0);
-    motor_HALL_count[3] = new uint16_t(0);
 }
 
 //init Serial Communication
@@ -79,25 +74,26 @@ void Serial_Init(BufferedSerial*& Serial_M){
 //--------------------------------------------------------//
 
 //HALL Pin Interrupt Handler
-void M1_HALL_1_handler(){
-    *(motor_HALL_count[0])+=1;
-    // serial_println("1");
-    }
-void M1_HALL_2_handler(){
-    *(motor_HALL_count[1])+=1;
-    // serial_println("2");
-    }
-void M2_HALL_1_handler(){*(motor_HALL_count[2])+=1;}
-void M2_HALL_2_handler(){*(motor_HALL_count[3])+=1;}
-void M3_HALL_1_handler(){*(motor_HALL_count[4])+=1;}
-void M3_HALL_2_handler(){*(motor_HALL_count[5])+=1;}
-void M4_HALL_1_handler(){*(motor_HALL_count[6])+=1;}
-void M4_HALL_2_handler(){*(motor_HALL_count[7])+=1;}
+long HALL_past_tick [2*4] = {0,0,0,0,0,0,0,0};
+void HALL_Interrupt_Time_Check(uint8_t index, long curr_tick);
+void M1_HALL_1_handler(){HALL_Interrupt_Time_Check(0,HAL_GetTick());}
+void M1_HALL_2_handler(){HALL_Interrupt_Time_Check(1,HAL_GetTick());}
+void M2_HALL_1_handler(){HALL_Interrupt_Time_Check(2,HAL_GetTick());}
+void M2_HALL_2_handler(){HALL_Interrupt_Time_Check(3,HAL_GetTick());}
+void M3_HALL_1_handler(){HALL_Interrupt_Time_Check(4,HAL_GetTick());}
+void M3_HALL_2_handler(){HALL_Interrupt_Time_Check(5,HAL_GetTick());}
+void M4_HALL_1_handler(){HALL_Interrupt_Time_Check(6,HAL_GetTick());}
+void M4_HALL_2_handler(){HALL_Interrupt_Time_Check(7,HAL_GetTick());}
+void HALL_Interrupt_Time_Check(uint8_t index, long curr_tick){
+    if (curr_tick - HALL_past_tick[index] < HALL_UPDATE_PERIOD) {return;}
+    HALL_past_tick[index] = curr_tick;
+    motor_HALL_count[index]+=1;
+}
 
 //--------------------------------------------------------//
 
 void Nucleo64_Init_Finished_Successfully(DigitalOut* LED){
-    int dur = 60*1000;
+    int dur = 30*1000;
 
     LED->write(1);
     wait_us(dur*3);
