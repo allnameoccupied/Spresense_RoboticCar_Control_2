@@ -31,3 +31,9 @@ board_init_max | Functions used when initializing Spresense
 - Nucleo-64 (STM32F446 RET6)
 - L298N DC motor driver x2
 - motors from OSOYOO robotic car frame x4
+
+---
+
+## **Car Manual**
+
+https://osoyoo.com/manual/V1.3metal-mecanum.pdf
