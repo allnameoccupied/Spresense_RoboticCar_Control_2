@@ -66,7 +66,7 @@ int main()
     y = 0;
     target_x = 0;
     target_y = 0;
-    Nucleo64_Init_Finished_Successfully(LED);
+    // Nucleo64_Init_Finished_Successfully(LED);
     serial_println("Init finished successfully");
     LED->write(1);
     

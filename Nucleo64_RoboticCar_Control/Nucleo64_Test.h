@@ -15,6 +15,7 @@
 
 #include "mbed.h"
 #include <cstdint>
+#include <cstring>
 #include <ctime>
 
 //EXTERN of PIN Variables
@@ -52,9 +53,35 @@ void test_init(){
 
     // HAL_Init();
 
+    I2CSlave slave(I2C_M_SDA_PIN,I2C_M_SCL_PIN);
+    slave.frequency(400000);
+    slave.address(NUCLEO_I2C_ADDR);
+    serial_println("now monitor I2C la");
+
+    while(1){
+
+        int addressed = slave.receive();
+
+        // serial_println(addressed);
+
+        if (addressed == I2CSlave::WriteAddressed) {
+            *LED = 0;
+            char buf[32];
+            int data = slave.read(buf, 32);
+            serial_println(buf);
+        }
+
+        // char buf[10];
+        // buf[0] = 0;
+        // slave.read(buf,10);
+        // if(strlen(buf) != 0){
+        //     serial_println(buf);
+        // } 
+    }
+
 }
 void test_loop(){
-    wait_s(5);
+    // wait_s(5);
 
     // serial_println(motor_HALL_count[0]);
     // serial_println(motor_HALL_count[1]);
@@ -69,6 +96,7 @@ void test_loop(){
     // }
 
     // *LED = Button->read();
+
 }
 
 void circle_demo(){

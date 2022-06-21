@@ -21,7 +21,7 @@ void Onboard_Button_Init(DigitalIn*& Button){
 
 //init I2C pins & I2C
 void I2C_Init(I2C*& I2C_M){
-    I2C_M = new I2C(I2C_M_SDA_PIN,I2C_M_SCL_PIN);
+    // I2C_M = new I2C(I2C_M_SDA_PIN,I2C_M_SCL_PIN);
 }
 
 //init the pins for Motor Control

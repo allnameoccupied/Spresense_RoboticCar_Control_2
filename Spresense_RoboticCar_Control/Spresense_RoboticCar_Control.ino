@@ -20,7 +20,8 @@
 
 //--------------------------------------------------------//
 
-//PIN Variables
+//DIST Sensors Variables
+VL53L1X Dist_sensor [8];
 
 //--------------------------------------------------------//
 
@@ -35,6 +36,7 @@ void setup() {
     //Spresense Init
     Onboard_LED_Init();
     I2C_Init();
+    Dist_Sensor_Init();
     PIKAPIKA_Init();
     Serial_Init();
     Finish_Init_LED_Flash();

@@ -5,6 +5,11 @@
 #ifndef NUCLEO_GLOBAL_VAR_DEF_H
 #define NUCLEO_GLOBAL_VAR_DEF_H
 
+//I2C Address of Nucleo-64
+#define NUCLEO_I2C_ADDR 0x45
+//  I2C Message Length
+#define I2C_MSG_LENGTH  32
+
 //PI
 #define PI_M            3.14159265358979323846f
 
