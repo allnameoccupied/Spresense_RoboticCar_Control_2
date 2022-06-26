@@ -5,6 +5,7 @@
         "istream": "cpp",
         "ios": "cpp",
         "random": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "cerrno": "cpp"
     }
 }

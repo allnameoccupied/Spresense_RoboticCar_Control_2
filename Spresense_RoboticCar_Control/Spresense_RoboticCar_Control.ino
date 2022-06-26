@@ -13,8 +13,8 @@
 //files from libraries
 #include <Arduino.h>
 #include <Wire.h>
-#include <VL53L1X.h>
 #include <Camera.h>
+#include <VL53L1X.h>
 
 #define from_MAX 12345
 

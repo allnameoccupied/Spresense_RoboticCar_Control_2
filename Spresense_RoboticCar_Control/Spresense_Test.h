@@ -13,9 +13,9 @@
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Pin_Mapping.h"
 
-#include <VL53L1X.h>
 #include <Wire.h>
 #include <string>
+#include <VL53L1X.h>
 
 //--------------------------------------------------------//
 
@@ -45,24 +45,24 @@ void test_init(){
     //     delay(1000);
     // }
 
-    i2c_detect();
+    // i2c_detect();
 
-    // pinMode(DIST_XSHUT_1, OUTPUT);
-    // digitalWrite(DIST_XSHUT_1, LOW);
+    pinMode(DIST_XSHUT_1, OUTPUT);
+    digitalWrite(DIST_XSHUT_1, LOW);
 
-    // pinMode(DIST_XSHUT_1, INPUT);
-    // delay(10);
+    pinMode(DIST_XSHUT_1, INPUT);
+    delay(10);
 
-    // Dist_sensor[0].setTimeout(500);
-    // if (!Dist_sensor[0].init())
-    // {
-    //   Serial.print("Failed to detect and initialize sensor ");
-    //   while (1);
-    // }
+    Dist_sensor[0].setTimeout(500);
+    if (!Dist_sensor[0].init())
+    {
+      Serial.print("Failed to detect and initialize sensor ");
+      while (1);
+    }
 
-    // Dist_sensor[0].setAddress(DIST_SENSOR_1_I2C_ADDR);
+    Dist_sensor[0].setAddress(DIST_SENSOR_1_I2C_ADDR);
 
-    // Dist_sensor[0].startContinuous(50);
+    Dist_sensor[0].startContinuous(50);
 
 }
 void test_loop(){
