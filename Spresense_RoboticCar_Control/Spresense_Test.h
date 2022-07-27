@@ -60,6 +60,8 @@ void test_init(){
     Serial.println("inited 0th sensor");
     i2c_detect();
 
+    // test
+
     //-------//
 
     pinMode(PIN_D03, INPUT);
