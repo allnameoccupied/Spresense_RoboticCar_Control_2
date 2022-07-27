@@ -12,9 +12,9 @@
 #include "Spresense_Global_Var_Def.h"
 //files from libraries
 #include <Arduino.h>
-#include <Wire.h>
 #include <Camera.h>
 #include <VL53L1X.h>
+#include <Wire.h>
 
 #define from_MAX 12345
 
@@ -22,6 +22,8 @@
 
 //DIST Sensors Variables
 VL53L1X Dist_sensor [8];
+VL53L1X Dist_sensor_0;
+VL53L1X Dist_sensor_1;
 
 //--------------------------------------------------------//
 
@@ -49,5 +51,4 @@ void loop() {
     
     //TEST FUNCTION
     test_loop();
-    
 }

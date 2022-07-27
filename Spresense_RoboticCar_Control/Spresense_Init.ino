@@ -8,6 +8,7 @@
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Tool.h"
 #include "Spresense_PikaPika_Interrupt.h"
+#include <Wire.h>
 
 //init the 4 onboard LED
 void Onboard_LED_Init(){
@@ -19,7 +20,6 @@ void Onboard_LED_Init(){
 
 //init I2C pins & I2C
 void I2C_Init(){
-    delay(50);
     Wire.begin();
     Wire.setClock(400000);
 }
