@@ -22,8 +22,6 @@
 
 //DIST Sensors Variables
 VL53L1X Dist_sensor [8];
-VL53L1X Dist_sensor_0;
-VL53L1X Dist_sensor_1;
 
 //--------------------------------------------------------//
 

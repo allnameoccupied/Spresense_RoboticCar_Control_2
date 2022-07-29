@@ -42,48 +42,48 @@ extern void motor_HALL_feedback();
 
 //--------------------------------------------------------//
 
-void test_init(){
+// void test_init(){
     
+// }
+
+void test_init(){
+
+    // uint16_t test = 100;
+    // serial_println((int)test);
+
+    // motor_DIR[0]->write(1);
+    // motor_DIR[1]->write(0);
+    // motor_PWM[0]->write(1.0f);
+
+    // HAL_Init();
+
+    I2CSlave slave(I2C_M_SDA_PIN,I2C_M_SCL_PIN);
+    slave.frequency(400000);
+    slave.address(NUCLEO_I2C_ADDR);
+    serial_println("now monitor I2C la");
+
+    while(1){
+
+        int addressed = slave.receive();
+
+        // serial_println(addressed);
+
+        if (addressed == I2CSlave::WriteAddressed) {
+            *LED = 0;
+            char buf[32];
+            int data = slave.read(buf, 32);
+            serial_println(buf);
+        }
+
+        // char buf[10];
+        // buf[0] = 0;
+        // slave.read(buf,10);
+        // if(strlen(buf) != 0){
+        //     serial_println(buf);
+        // }
+    }
 }
 
-// void test_init(){
-
-//     // uint16_t test = 100;
-//     // serial_println((int)test);
-
-//     // motor_DIR[0]->write(1);
-//     // motor_DIR[1]->write(0);
-//     // motor_PWM[0]->write(1.0f);
-
-//     // HAL_Init();
-
-//     I2CSlave slave(I2C_M_SDA_PIN,I2C_M_SCL_PIN);
-//     slave.frequency(400000);
-//     slave.address(NUCLEO_I2C_ADDR);
-//     serial_println("now monitor I2C la");
-
-//     while(1){
-
-//         int addressed = slave.receive();
-
-//         // serial_println(addressed);
-
-//         if (addressed == I2CSlave::WriteAddressed) {
-//             *LED = 0;
-//             char buf[32];
-//             int data = slave.read(buf, 32);
-//             serial_println(buf);
-//         }
-
-//         // char buf[10];
-//         // buf[0] = 0;
-//         // slave.read(buf,10);
-//         // if(strlen(buf) != 0){
-//         //     serial_println(buf);
-//         // } 
-//     }
-
-// }
 void test_loop(){
     // wait_s(5);
 
