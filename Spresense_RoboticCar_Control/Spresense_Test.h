@@ -32,9 +32,9 @@ void i2c_detect();
 //--------------------------------------------------------//
 
 // VL53L1X test;
-bool use_dist_0 = false;
-bool use_dist_1 = false;
-bool use_dist_2 = false;
+bool use_dist_0 = true;
+bool use_dist_1 = true;
+bool use_dist_2 = true;
 void test_init(){
   
     // for (int i = 0; i < 2; i++)
@@ -69,6 +69,7 @@ void test_init(){
     if(use_dist_0){
       pinMode(PIN_D02, INPUT);
       delay(100);
+      i2c_detect();
       Dist_sensor[0].setTimeout(500);
       if (!Dist_sensor[0].init())
       {
@@ -76,7 +77,7 @@ void test_init(){
         while (1);
       }
       Dist_sensor[0].setAddress(DIST_SENSOR_1_I2C_ADDR);
-      Serial.println("inited 0th sensor");
+      Serial.println("inited 0th sensor\n");
       i2c_detect();
     }
 
@@ -85,6 +86,7 @@ void test_init(){
     if(use_dist_1){
       pinMode(PIN_D03, INPUT);
       delay(100);
+      i2c_detect();
       Dist_sensor[1].setTimeout(500);
       if (!Dist_sensor[1].init())
       {
@@ -92,7 +94,7 @@ void test_init(){
         while (1);
       }
       Dist_sensor[1].setAddress(DIST_SENSOR_2_I2C_ADDR);
-      Serial.println("inited 1th sensor");
+      Serial.println("inited 1th sensor\n");
       i2c_detect();
     }
 
@@ -101,6 +103,7 @@ void test_init(){
     if(use_dist_2){
       pinMode(PIN_D04, INPUT);
       delay(100);
+      i2c_detect();
       Dist_sensor[2].setTimeout(500);
       if (!Dist_sensor[2].init())
       {
@@ -108,7 +111,7 @@ void test_init(){
         while (1);
       }
       Dist_sensor[2].setAddress(DIST_SENSOR_3_I2C_ADDR);
-      Serial.println("inited 2th sensor");
+      Serial.println("inited 2th sensor\n");
       i2c_detect();
     }
 
