@@ -35,20 +35,25 @@ void i2c_detect();
 bool use_dist_0 = true;
 bool use_dist_1 = true;
 bool use_dist_2 = true;
+bool use_dist_3 = true;
+bool use_dist_4 = true;
+bool use_dist_5 = true;
+bool use_dist_6 = true;
+bool use_dist_7 = true;
 void test_init(){
   
-    // for (int i = 0; i < 2; i++)
-    // {
-    //     char buf[32];
-    //     // int ret = snprintf(buf, sizeof buf, "%f", 69000.420);
-    //     int ret = snprintf(buf, sizeof buf, "%f", 123.456);
+    for (int i = 0; i < 2; i++)
+    {
+        char buf[32];
+        // int ret = snprintf(buf, sizeof buf, "%f", 69000.420);
+        int ret = snprintf(buf, sizeof buf, "%f", 123.456);
 
-    //     Serial.println("now send la");
-    //     Wire.beginTransmission(NUCLEO_I2C_ADDR);
-    //     Wire.write(buf);
-    //     Wire.endTransmission();
-    //     delay(1000);
-    // }
+        Serial.println("now send la");
+        Wire.beginTransmission(NUCLEO_I2C_ADDR);
+        Wire.write(buf);
+        Wire.endTransmission();
+        delay(1000);
+    }
 
     //-------//
 
@@ -60,6 +65,16 @@ void test_init(){
     digitalWrite(PIN_D03, LOW);
     pinMode(PIN_D04, OUTPUT);
     digitalWrite(PIN_D04, LOW);
+    pinMode(PIN_D05, OUTPUT);
+    digitalWrite(PIN_D05, LOW);
+    pinMode(PIN_D06, OUTPUT);
+    digitalWrite(PIN_D06, LOW);
+    pinMode(PIN_D07, OUTPUT);
+    digitalWrite(PIN_D07, LOW);
+    pinMode(PIN_D08, OUTPUT);
+    digitalWrite(PIN_D08, LOW);
+    pinMode(PIN_D09, OUTPUT);
+    digitalWrite(PIN_D09, LOW);
     delay(100);
 
     i2c_detect();
@@ -117,6 +132,91 @@ void test_init(){
 
     //-------//
 
+    if(use_dist_3){
+      pinMode(PIN_D05, INPUT);
+      delay(100);
+      i2c_detect();
+      Dist_sensor[3].setTimeout(500);
+      if (!Dist_sensor[3].init())
+      {
+        Serial.print("Failed to detect and initialize 3 sensor ");
+        while (1);
+      }
+      Dist_sensor[3].setAddress(DIST_SENSOR_4_I2C_ADDR);
+      Serial.println("inited 3th sensor\n");
+      i2c_detect();
+    }
+
+    //-------//
+
+    if(use_dist_4){
+      pinMode(PIN_D06, INPUT);
+      delay(100);
+      i2c_detect();
+      Dist_sensor[4].setTimeout(500);
+      if (!Dist_sensor[4].init())
+      {
+        Serial.print("Failed to detect and initialize 4 sensor ");
+        while (1);
+      }
+      Dist_sensor[3].setAddress(DIST_SENSOR_5_I2C_ADDR);
+      Serial.println("inited 4th sensor\n");
+      i2c_detect();
+    }
+
+    //-------//
+
+    if(use_dist_5){
+      pinMode(PIN_D07, INPUT);
+      delay(100);
+      i2c_detect();
+      Dist_sensor[5].setTimeout(500);
+      if (!Dist_sensor[5].init())
+      {
+        Serial.print("Failed to detect and initialize 5 sensor ");
+        while (1);
+      }
+      Dist_sensor[5].setAddress(DIST_SENSOR_6_I2C_ADDR);
+      Serial.println("inited 5th sensor\n");
+      i2c_detect();
+    }
+
+    //-------//
+
+    if(use_dist_6){
+      pinMode(PIN_D08, INPUT);
+      delay(100);
+      i2c_detect();
+      Dist_sensor[6].setTimeout(500);
+      if (!Dist_sensor[6].init())
+      {
+        Serial.print("Failed to detect and initialize 6 sensor ");
+        while (1);
+      }
+      Dist_sensor[6].setAddress(DIST_SENSOR_7_I2C_ADDR);
+      Serial.println("inited 6th sensor\n");
+      i2c_detect();
+    }
+
+    //-------//
+
+    if(use_dist_7){
+      pinMode(PIN_D09, INPUT);
+      delay(100);
+      i2c_detect();
+      Dist_sensor[7].setTimeout(500);
+      if (!Dist_sensor[7].init())
+      {
+        Serial.print("Failed to detect and initialize 7 sensor ");
+        while (1);
+      }
+      Dist_sensor[7].setAddress(DIST_SENSOR_8_I2C_ADDR);
+      Serial.println("inited 7th sensor\n");
+      i2c_detect();
+    }
+
+    //-------//
+
     if(use_dist_0){
       Dist_sensor[0].startContinuous(50);
     }
@@ -125,6 +225,21 @@ void test_init(){
     }
     if(use_dist_2){
       Dist_sensor[2].startContinuous(50);
+    }
+    if(use_dist_3){
+      Dist_sensor[3].startContinuous(50);
+    }
+    if(use_dist_4){
+      Dist_sensor[4].startContinuous(50);
+    }
+    if(use_dist_5){
+      Dist_sensor[5].startContinuous(50);
+    }
+    if(use_dist_6){
+      Dist_sensor[6].startContinuous(50);
+    }
+    if(use_dist_7){
+      Dist_sensor[7].startContinuous(50);
     }
     Serial.println("now try to read distance data");
 
@@ -151,6 +266,41 @@ void test_loop(){
     if(use_dist_2){
       Serial.print(Dist_sensor[2].read());
       if (Dist_sensor[2].timeoutOccurred()) { Serial.print("2th TIMEOUT"); }
+      Serial.println('\t');
+      delay(100);
+    }
+
+    if(use_dist_3){
+      Serial.print(Dist_sensor[3].read());
+      if (Dist_sensor[3].timeoutOccurred()) { Serial.print("3th TIMEOUT"); }
+      Serial.println('\t');
+      delay(100);
+    }
+
+    if(use_dist_4){
+      Serial.print(Dist_sensor[4].read());
+      if (Dist_sensor[4].timeoutOccurred()) { Serial.print("4th TIMEOUT"); }
+      Serial.println('\t');
+      delay(100);
+    }
+
+    if(use_dist_5){
+      Serial.print(Dist_sensor[5].read());
+      if (Dist_sensor[5].timeoutOccurred()) { Serial.print("5th TIMEOUT"); }
+      Serial.println('\t');
+      delay(100);
+    }
+
+    if(use_dist_6){
+      Serial.print(Dist_sensor[6].read());
+      if (Dist_sensor[6].timeoutOccurred()) { Serial.print("6th TIMEOUT"); }
+      Serial.println('\t');
+      delay(100);
+    }
+
+    if(use_dist_7){
+      Serial.print(Dist_sensor[7].read());
+      if (Dist_sensor[7].timeoutOccurred()) { Serial.print("7th TIMEOUT"); }
       Serial.println('\t');
       delay(100);
     }
