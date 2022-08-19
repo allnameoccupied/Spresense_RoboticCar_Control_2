@@ -31,6 +31,22 @@ void i2c_detect();
 
 //--------------------------------------------------------//
 
+void test_init(){
+  Serial.println("test");
+  while (1){
+    digitalWrite(LED_PIKA, true);
+    delay(1000);
+    digitalWrite(LED_PIKA, false);
+    delay(1000);
+  }
+  
+}
+void test_loop(){
+  // while(1);
+}
+
+/* distance sensor test
+
 // VL53L1X test;
 bool use_dist_0 = true;
 bool use_dist_1 = true;
@@ -46,13 +62,13 @@ void test_init(){
     {
         char buf[32];
         // int ret = snprintf(buf, sizeof buf, "%f", 69000.420);
-        int ret = snprintf(buf, sizeof buf, "%f", 123.456);
+        int ret = snprintf(buf, sizeof buf, "%f %d", 123.456, i);
 
         Serial.println("now send la");
         Wire.beginTransmission(NUCLEO_I2C_ADDR);
         Wire.write(buf);
         Wire.endTransmission();
-        delay(1000);
+        delay(250);
     }
 
     //-------//
@@ -311,6 +327,8 @@ void test_loop(){
     count++;
   }
 }
+
+*/
 
 void i2c_detect(){
   byte error, address; //variable for error and I2C address

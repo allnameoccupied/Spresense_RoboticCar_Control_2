@@ -25,30 +25,30 @@
 //--------------------------------------------------------//
 
 //Dist sensor XSHUT
-#define DIST_XSHUT_1    PIN_D16
-#define DIST_XSHUT_2    PIN_D17
-#define DIST_XSHUT_3    PIN_D18
-#define DIST_XSHUT_4    PIN_D19
-#define DIST_XSHUT_5    PIN_D20
-#define DIST_XSHUT_6    PIN_D21
-#define DIST_XSHUT_7    PIN_D23
-#define DIST_XSHUT_8    PIN_D24
+#define DIST_XSHUT_0    PIN_D06
+#define DIST_XSHUT_1    PIN_D07
+#define DIST_XSHUT_2    PIN_D11
+#define DIST_XSHUT_3    PIN_D12
+#define DIST_XSHUT_4    PIN_D13
+#define DIST_XSHUT_5    PIN_D16
+#define DIST_XSHUT_6    PIN_D17
+#define DIST_XSHUT_7    PIN_D18
 
 //--------------------------------------------------------//
 
-#define LED_PIKA        PIN_D13
+#define LED_PIKA        PIN_D08
 
-#define LIGHT_PIKA_1    PIN_D02
-#define LIGHT_PIKA_2    PIN_D03
-#define LIGHT_PIKA_3    PIN_D04
-#define LIGHT_PIKA_4    PIN_D05
-#define LIGHT_PIKA_5    PIN_D06
-#define LIGHT_PIKA_6    PIN_D07
-#define LIGHT_PIKA_7    PIN_D10
-#define LIGHT_PIKA_8    PIN_D11
+#define LIGHT_PIKA_0    PIN_D00
+#define LIGHT_PIKA_1    PIN_D01
+#define LIGHT_PIKA_2    PIN_D02
+#define LIGHT_PIKA_3    PIN_D03
+#define LIGHT_PIKA_4    PIN_D04
+#define LIGHT_PIKA_5    PIN_D05
+#define LIGHT_PIKA_6    PIN_D10
+#define LIGHT_PIKA_7    PIN_D11
 
 //--------------------------------------------------------//
 
-#define PIN_DUMP        PIN_D08
+// #define PIN_DUMP        PIN_D13
 
 #endif

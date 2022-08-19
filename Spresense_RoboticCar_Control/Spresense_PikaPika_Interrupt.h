@@ -7,13 +7,13 @@
 
 #include <Arduino.h>
 
-int PikaPika_Int_Handler_1(int irq, FAR void *context, FAR void *arg);
-int PikaPika_Int_Handler_2(int irq, FAR void *context, FAR void *arg);
-int PikaPika_Int_Handler_3(int irq, FAR void *context, FAR void *arg);
-int PikaPika_Int_Handler_4(int irq, FAR void *context, FAR void *arg);
-int PikaPika_Int_Handler_5(int irq, FAR void *context, FAR void *arg);
-int PikaPika_Int_Handler_6(int irq, FAR void *context, FAR void *arg);
-int PikaPika_Int_Handler_7(int irq, FAR void *context, FAR void *arg);
-int PikaPika_Int_Handler_8(int irq, FAR void *context, FAR void *arg);
+void PikaPika_Int_Handler_0();
+void PikaPika_Int_Handler_1();
+void PikaPika_Int_Handler_2();
+void PikaPika_Int_Handler_3();
+void PikaPika_Int_Handler_4();
+void PikaPika_Int_Handler_5();
+void PikaPika_Int_Handler_6();
+void PikaPika_Int_Handler_7();
 
 #endif
