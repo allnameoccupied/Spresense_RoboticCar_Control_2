@@ -8,7 +8,10 @@
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Tool.h"
 
-void PikaPika_Int_Handler_0(){}
+void PikaPika_Int_Handler_0(){
+    // Serial.println("qwer");
+    test = true;
+}
 void PikaPika_Int_Handler_1(){}
 void PikaPika_Int_Handler_2(){}
 void PikaPika_Int_Handler_3(){}

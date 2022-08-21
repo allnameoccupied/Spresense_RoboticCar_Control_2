@@ -33,23 +33,23 @@ void Dist_Sensor_Init(){
 void PIKAPIKA_Init(){
     pinMode(LED_PIKA, OUTPUT);
     
-    pinMode(LIGHT_PIKA_0, INPUT_PULLDOWN);
-    pinMode(LIGHT_PIKA_1, INPUT_PULLDOWN);
-    pinMode(LIGHT_PIKA_2, INPUT_PULLDOWN);
-    pinMode(LIGHT_PIKA_3, INPUT_PULLDOWN);
-    pinMode(LIGHT_PIKA_4, INPUT_PULLDOWN);
-    pinMode(LIGHT_PIKA_5, INPUT_PULLDOWN);
-    pinMode(LIGHT_PIKA_6, INPUT_PULLDOWN);
-    pinMode(LIGHT_PIKA_7, INPUT_PULLDOWN);
+    pinMode(LIGHT_PIKA_0, INPUT);
+    pinMode(LIGHT_PIKA_1, INPUT);
+    pinMode(LIGHT_PIKA_2, INPUT);
+    pinMode(LIGHT_PIKA_3, INPUT);
+    pinMode(LIGHT_PIKA_4, INPUT);
+    pinMode(LIGHT_PIKA_5, INPUT);
+    pinMode(LIGHT_PIKA_6, INPUT);
+    pinMode(LIGHT_PIKA_7, INPUT);
 
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_0), PikaPika_Int_Handler_0, RISING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_1), PikaPika_Int_Handler_1, RISING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_2), PikaPika_Int_Handler_2, RISING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_3), PikaPika_Int_Handler_3, RISING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_4), PikaPika_Int_Handler_4, RISING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_5), PikaPika_Int_Handler_5, RISING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_6), PikaPika_Int_Handler_6, RISING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_7), PikaPika_Int_Handler_7, RISING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_0), PikaPika_Int_Handler_0, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_1), PikaPika_Int_Handler_1, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_2), PikaPika_Int_Handler_2, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_3), PikaPika_Int_Handler_3, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_4), PikaPika_Int_Handler_4, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_5), PikaPika_Int_Handler_5, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_6), PikaPika_Int_Handler_6, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_7), PikaPika_Int_Handler_7, FALLING);
 }
 
 //init Serial Communication

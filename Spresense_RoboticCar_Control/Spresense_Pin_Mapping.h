@@ -25,14 +25,14 @@
 //--------------------------------------------------------//
 
 //Dist sensor XSHUT
-#define DIST_XSHUT_0    PIN_D06
-#define DIST_XSHUT_1    PIN_D07
-#define DIST_XSHUT_2    PIN_D11
-#define DIST_XSHUT_3    PIN_D12
-#define DIST_XSHUT_4    PIN_D13
-#define DIST_XSHUT_5    PIN_D16
-#define DIST_XSHUT_6    PIN_D17
-#define DIST_XSHUT_7    PIN_D18
+#define DIST_XSHUT_0    PIN_D08
+#define DIST_XSHUT_1    PIN_D09
+#define DIST_XSHUT_2    PIN_D10
+#define DIST_XSHUT_3    PIN_D11
+#define DIST_XSHUT_4    PIN_D12
+#define DIST_XSHUT_5    PIN_D13
+#define DIST_XSHUT_6    PIN_D16
+#define DIST_XSHUT_7    PIN_D17
 
 //--------------------------------------------------------//
 
@@ -44,8 +44,8 @@
 #define LIGHT_PIKA_3    PIN_D03
 #define LIGHT_PIKA_4    PIN_D04
 #define LIGHT_PIKA_5    PIN_D05
-#define LIGHT_PIKA_6    PIN_D10
-#define LIGHT_PIKA_7    PIN_D11
+#define LIGHT_PIKA_6    PIN_D06
+#define LIGHT_PIKA_7    PIN_D07
 
 //--------------------------------------------------------//
 

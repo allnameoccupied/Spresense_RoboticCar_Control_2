@@ -7,6 +7,8 @@
 
 #include <Arduino.h>
 
+extern bool test;
+
 void PikaPika_Int_Handler_0();
 void PikaPika_Int_Handler_1();
 void PikaPika_Int_Handler_2();
