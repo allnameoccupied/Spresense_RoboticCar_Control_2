@@ -21,6 +21,7 @@
 
 //EXTERN of Variables
 extern VL53L1X Dist_sensor [8];
+extern bool test;
 
 //--------------------------------------------------------//
 
@@ -33,16 +34,23 @@ void i2c_detect();
 
 void test_init(){
   Serial.println("test");
-  while (1){
+  // while (1){
     digitalWrite(LED_PIKA, true);
     delay(1000);
     digitalWrite(LED_PIKA, false);
     delay(1000);
-  }
+  // }
   
 }
 void test_loop(){
   // while(1);
+  // Serial.print(test);
+  if (test)
+  {
+    Serial.println(" detected ");
+    test = false;
+  }
+  // delay(500);
 }
 
 /* distance sensor test
