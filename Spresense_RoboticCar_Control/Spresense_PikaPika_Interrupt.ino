@@ -9,13 +9,26 @@
 #include "Spresense_Tool.h"
 
 void PikaPika_Int_Handler_0(){
-    // Serial.println("qwer");
-    test = true;
+    PikaPika_light_sensor[0] = true;
 }
-void PikaPika_Int_Handler_1(){}
-void PikaPika_Int_Handler_2(){}
-void PikaPika_Int_Handler_3(){}
-void PikaPika_Int_Handler_4(){}
-void PikaPika_Int_Handler_5(){}
-void PikaPika_Int_Handler_6(){}
-void PikaPika_Int_Handler_7(){}
+void PikaPika_Int_Handler_1(){
+    PikaPika_light_sensor[1] = true;
+}
+void PikaPika_Int_Handler_2(){
+    PikaPika_light_sensor[2] = true;
+}
+void PikaPika_Int_Handler_3(){
+    PikaPika_light_sensor[3] = true;
+}
+void PikaPika_Int_Handler_4(){
+    PikaPika_light_sensor[4] = true;
+}
+void PikaPika_Int_Handler_5(){
+    PikaPika_light_sensor[5] = true;
+}
+void PikaPika_Int_Handler_6(){
+    PikaPika_light_sensor[6] = true;
+}
+void PikaPika_Int_Handler_7(){
+    PikaPika_light_sensor[7] = true;
+}

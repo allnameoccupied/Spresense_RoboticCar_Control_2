@@ -21,7 +21,7 @@
 
 //EXTERN of Variables
 extern VL53L1X Dist_sensor [8];
-extern bool test;
+extern bool PikaPika_light_sensor [8];
 
 //--------------------------------------------------------//
 
@@ -39,18 +39,27 @@ void test_init(){
     delay(1000);
     digitalWrite(LED_PIKA, false);
     delay(1000);
+    digitalWrite(LED_PIKA, true);
+    delay(1000);
+    digitalWrite(LED_PIKA, false);
+    delay(1000);
   // }
   
 }
 void test_loop(){
-  // while(1);
-  // Serial.print(test);
-  if (test)
+  for (int i = 0; i < 8; i++)
   {
-    Serial.println(" detected ");
-    test = false;
+    if (PikaPika_light_sensor[i])
+    {
+      Serial.println(i);
+      digitalWrite(LED_PIKA, true);
+      delay(1000);
+      digitalWrite(LED_PIKA, false);
+      delay(1000);
+      PikaPika_light_sensor[i] = false;
+    }
   }
-  // delay(500);
+  
 }
 
 /* distance sensor test

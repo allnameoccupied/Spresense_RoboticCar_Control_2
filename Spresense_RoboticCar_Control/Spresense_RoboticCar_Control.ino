@@ -19,19 +19,19 @@
 #define from_MAX 12345
 
 //--------------------------------------------------------//
-
 //DIST Sensors Variables
 VL53L1X Dist_sensor [8];
 
 //--------------------------------------------------------//
+//PikaPika Variables
+bool PikaPika_light_sensor [8] = {false, false, false, false, false, false, false, false};
 
+//--------------------------------------------------------//
 //FUNCTION Declaration
 
 
 //--------------------------------------------------------//
-
 //For TESTING
-bool test = false;
 
 //--------------------------------------------------------//
 
