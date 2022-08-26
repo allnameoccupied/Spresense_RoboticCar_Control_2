@@ -36,6 +36,8 @@
 
 //--------------------------------------------------------//
 
+//PikaPika pins
+
 #define LED_PIKA        PIN_D08
 
 #define LIGHT_PIKA_0    PIN_D00

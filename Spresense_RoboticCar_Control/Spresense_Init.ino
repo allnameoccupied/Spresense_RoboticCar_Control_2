@@ -25,11 +25,13 @@ void I2C_Init(){
 }
 
 //init Dist sensors pins
+extern VL53L1X Dist_sensor [8];
 void Dist_Sensor_Init(){
 
 }
 
 //init PikaPika pins
+extern ulong*** PikaPika_detected_timestamp;
 void PIKAPIKA_Init(){
     pinMode(LED_PIKA, OUTPUT);
     
@@ -50,6 +52,17 @@ void PIKAPIKA_Init(){
     attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_5), PikaPika_Int_Handler_5, FALLING);
     attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_6), PikaPika_Int_Handler_6, FALLING);
     attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_7), PikaPika_Int_Handler_7, FALLING);
+
+    for (int i = 0; i < 8; i++)
+    {
+        PikaPika_detected_timestamp[i] = new ulong* [5];
+        for (int j = 0; j < 5; j++)
+        {
+            PikaPika_detected_timestamp[i][j] = new ulong (0);
+        }
+        
+    }
+    
 }
 
 //init Serial Communication

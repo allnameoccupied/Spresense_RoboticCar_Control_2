@@ -16,7 +16,6 @@ void Onboard_LED_Init();
 void I2C_Init();
 
 //init Dist sensors pins
-extern VL53L1X Dist_sensor [8];
 void Dist_Sensor_Init();
 
 //init PikaPika pins

@@ -7,8 +7,6 @@
 
 #include <Arduino.h>
 
-extern bool PikaPika_light_sensor [8];
-
 void PikaPika_Int_Handler_0();
 void PikaPika_Int_Handler_1();
 void PikaPika_Int_Handler_2();
