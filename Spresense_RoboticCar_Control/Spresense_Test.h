@@ -34,47 +34,44 @@ void i2c_detect();
 //--------------------------------------------------------//
 
 void test_init(){
-  	Serial.println("test");
-  	for (int i = 0; i < 6; i++)
-  	{
-    	digitalWrite(LED_PIKA, true);
-    	delay(25);
-    	digitalWrite(LED_PIKA, false);
-    	delay(750);
-  	}  
+  // Serial.println("test");
+  for (int i = 0; i < 6; i++)
+  {
+    digitalWrite(LED_PIKA, true);
+    delay(25);
+    digitalWrite(LED_PIKA, false);
+    delay(750);
+  }
+  Serial.println("now start detect flash");
 }
 void test_loop(){
-  	for (int i = 0; i < 8; i++)
-  	{
-    	if (PikaPika_light_sensor[i])
-    	{
-			Serial.print(i);
-			Serial.print("\t");
-            Serial.println(PikaPika_light_sensor[i][4]-PikaPika_light_sensor[i][3]);
+  for (int i = 0; i < 8; i++)
+  {
+    if (PikaPika_light_sensor[i])
+    {
+    Serial.print(i);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][0]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][1]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][2]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][3]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][4]);
+    Serial.println();
 
-            ulong temp = 0;
-            int count = 0;
-            for (int j = 0; j < 4; j++)
-            {
-                if (PikaPika_light_sensor[i][j]!=0)
-                {
-                    temp += PikaPika_light_sensor[i][j];
-                    count++;
-                }
-            }
-            Serial.print("Average duration:\t");
-            Serial.println(temp/count);
+    digitalWrite(LED_PIKA, true);
+    delay(25);
+    digitalWrite(LED_PIKA, false);
+    // delay(500);
 
-			digitalWrite(LED_PIKA, true);
-			delay(500);
-			digitalWrite(LED_PIKA, false);
-			delay(500);
+    PikaPika_light_sensor[i] = false;
 
-			PikaPika_light_sensor[i] = false;
-
-            Serial.println();
-    	}
-  	}
+    Serial.println();
+    }
+  }
 }
 
 /* distance sensor test
