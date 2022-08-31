@@ -10,8 +10,14 @@
 #include "Spresense_Tool.h"
 #include "Spresense_Test.h"
 #include "Spresense_Global_Var_Def.h"
+#include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
 //files from libraries
 #include <Arduino.h>
+#include <MP.h>
+#include <StaticThreadController.h>
+#include <Thread.h>
+#include <ThreadController.h>
+
 #include <Camera.h>
 #include <VL53L1X.h>
 #include <Wire.h>
@@ -48,6 +54,7 @@ void setup() {
     Dist_Sensor_Init();
     PIKAPIKA_Init();
     Serial_Init();
+    InOut_LED_Init();
     Finish_Init_LED_Flash();
     Serial.println("Init finished successfully");
     

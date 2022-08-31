@@ -24,6 +24,9 @@ void PIKAPIKA_Init();
 //init Serial Communication
 void Serial_Init();
 
+//init Inside/Outside LED pins
+void InOut_LED_Init();
+
 //--------------------------------------------------------//
 
 void Finish_Init_LED_Flash();

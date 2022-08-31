@@ -20,4 +20,10 @@
 //  I2C Message Length
 #define I2C_MSG_LENGTH          32
 
+//PikaPika MIN Duration Between Interrupts
+#define MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT  75
+
+//SubCore ID
+#define SUBCORE_1_GENERAL_ID    1
+
 #endif

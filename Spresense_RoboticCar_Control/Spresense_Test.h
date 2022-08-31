@@ -12,8 +12,10 @@
 #include "Spresense_Tool.h"
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Pin_Mapping.h"
+#include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
 
 #include <string>
+#include <MP.h>
 #include <VL53L1X.h>
 // #include <Wire.h>
 
@@ -30,18 +32,44 @@ extern ulong*** PikaPika_detected_timestamp;
 
 //Function Declaration
 void i2c_detect();
+void wave_test_init();
+void wave_test_loop();
 
 //--------------------------------------------------------//
 
 void test_init(){
+  int ret = MP.begin(SUBCORE_1_GENERAL_ID);
+  Serial.println(ret);
+  digitalWrite(LED_PIKA, LOW);
+  delay(2000);
+  // MP.Send(C1_T1_PIKAPIKA_LED,2000,SUBCORE_1_GENERAL_ID);
+  delay(500);
+  // MP.Send(C1_T2_INSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
+  delay(500);
+  // MP.Send(C1_T3_OUTSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
+}
+void test_loop(){
+
+}
+
+/* PikaPika test
+void test_init(){
   // Serial.println("test");
-  for (int i = 0; i < 6; i++)
+
+  for (int i = 0; i < 4; i++)
   {
-    digitalWrite(LED_PIKA, true);
+    digitalWrite(LED_PIKA, HIGH);
     delay(25);
-    digitalWrite(LED_PIKA, false);
+    digitalWrite(LED_PIKA, LOW);
     delay(750);
   }
+
+  digitalWrite(INSIDE_LED, HIGH);
+  digitalWrite(OUTSIDE_LED, HIGH);
+  delay(500);
+  digitalWrite(INSIDE_LED, LOW);
+  digitalWrite(OUTSIDE_LED, LOW);
+  
   Serial.println("now start detect flash");
 }
 void test_loop(){
@@ -62,9 +90,9 @@ void test_loop(){
     Serial.print(*PikaPika_detected_timestamp[i][4]);
     Serial.println();
 
-    digitalWrite(LED_PIKA, true);
+    digitalWrite(LED_PIKA, HIGH);
     delay(25);
-    digitalWrite(LED_PIKA, false);
+    digitalWrite(LED_PIKA, LOW);
     // delay(500);
 
     PikaPika_light_sensor[i] = false;
@@ -72,7 +100,20 @@ void test_loop(){
     Serial.println();
     }
   }
+
+  // Serial.println(analogRead(PIN_A0));
+  // delay(100);
 }
+
+float phase;
+const float con_intensity = 0.1;
+void wave_test_init(){
+
+}
+void wave_test_loop(){
+
+}
+*/
 
 /* distance sensor test
 

@@ -70,6 +70,12 @@ void Serial_Init(){
     Serial.begin(DEFAULT_BAUD_RATE);
 }
 
+//init Inside/Outside LED pins
+void InOut_LED_Init(){
+    pinMode(INSIDE_LED, OUTPUT);
+    pinMode(OUTSIDE_LED, OUTPUT);
+}
+
 //--------------------------------------------------------//
 
 void Finish_Init_LED_Flash(){

@@ -51,6 +51,9 @@
 
 //--------------------------------------------------------//
 
-// #define PIN_DUMP        PIN_D13
+//Inside / Outside LED pins
+
+#define INSIDE_LED      PIN_D18     //GREEN
+#define OUTSIDE_LED     PIN_D19     //RED
 
 #endif

@@ -8,8 +8,6 @@
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Tool.h"
 
-#define MIN_DURATION_BETWEEN_INTERRUPT  75
-
 extern bool PikaPika_light_sensor [8];
 extern ulong*** PikaPika_detected_timestamp;
 
@@ -17,7 +15,7 @@ void PikaPika_Int_Handler_0(){
 
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[0][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[0][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[0] = true;
         delete PikaPika_detected_timestamp[0][0];
@@ -32,7 +30,7 @@ void PikaPika_Int_Handler_1(){
 
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[1][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[1][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[1] = true;
         delete PikaPika_detected_timestamp[1][0];
@@ -47,7 +45,7 @@ void PikaPika_Int_Handler_2(){
 
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[2][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[2][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[2] = true;
         delete PikaPika_detected_timestamp[2][0];
@@ -62,7 +60,7 @@ void PikaPika_Int_Handler_3(){
 
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[3][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[3][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[3] = true;
         delete PikaPika_detected_timestamp[3][0];
@@ -77,7 +75,7 @@ void PikaPika_Int_Handler_4(){
     
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[4][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[4][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[4] = true;
         delete PikaPika_detected_timestamp[4][0];
@@ -91,7 +89,7 @@ void PikaPika_Int_Handler_4(){
 void PikaPika_Int_Handler_5(){
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[5][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[5][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[5] = true;
         delete PikaPika_detected_timestamp[5][0];
@@ -105,7 +103,7 @@ void PikaPika_Int_Handler_5(){
 void PikaPika_Int_Handler_6(){
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[6][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[6][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[6] = true;
         delete PikaPika_detected_timestamp[6][0];
@@ -119,7 +117,7 @@ void PikaPika_Int_Handler_6(){
 void PikaPika_Int_Handler_7(){
     ulong temp = millis();
 
-    if (temp - *PikaPika_detected_timestamp[7][4] > MIN_DURATION_BETWEEN_INTERRUPT)
+    if (temp - *PikaPika_detected_timestamp[7][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
     {
         PikaPika_light_sensor[7] = true;
         delete PikaPika_detected_timestamp[7][0];
