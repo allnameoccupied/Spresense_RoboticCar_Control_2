@@ -31,7 +31,7 @@ void Dist_Sensor_Init(){
 }
 
 //init PikaPika pins
-extern ulong*** PikaPika_detected_timestamp;
+extern uint64_t*** PikaPika_detected_timestamp;
 void PIKAPIKA_Init(){
     pinMode(LED_PIKA, OUTPUT);
     
@@ -55,10 +55,10 @@ void PIKAPIKA_Init(){
 
     for (int i = 0; i < 8; i++)
     {
-        PikaPika_detected_timestamp[i] = new ulong* [5];
+        PikaPika_detected_timestamp[i] = new uint64_t* [5];
         for (int j = 0; j < 5; j++)
         {
-            PikaPika_detected_timestamp[i][j] = new ulong (0);
+            PikaPika_detected_timestamp[i][j] = new uint64_t (0);
         }
         
     }

@@ -24,7 +24,7 @@
 //EXTERN of Variables
 extern VL53L1X Dist_sensor [8];
 extern bool PikaPika_light_sensor [8];
-extern ulong*** PikaPika_detected_timestamp;
+extern uint64_t*** PikaPika_detected_timestamp;
 
 //EXTERN of FUNCTION Declaration
 
@@ -37,22 +37,24 @@ void wave_test_loop();
 
 //--------------------------------------------------------//
 
-void test_init(){
-  int ret = MP.begin(SUBCORE_1_GENERAL_ID);
-  Serial.println(ret);
-  digitalWrite(LED_PIKA, LOW);
-  delay(2000);
-  // MP.Send(C1_T1_PIKAPIKA_LED,2000,SUBCORE_1_GENERAL_ID);
-  delay(500);
-  // MP.Send(C1_T2_INSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
-  delay(500);
-  // MP.Send(C1_T3_OUTSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
-}
-void test_loop(){
+// void test_init(){
+//   int ret = MP.begin(SUBCORE_1_GENERAL_ID);
+//   if (ret != 0){Serial.println(ret);}
+  
+//   digitalWrite(LED_PIKA, LOW);
+//   delay(2000);
+//   MP.Send(C1_T1_PIKAPIKA_LED,2000,SUBCORE_1_GENERAL_ID);
+//   delay(500);
+//   MP.Send(C1_T2_INSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
+//   delay(500);
+//   MP.Send(C1_T3_OUTSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
+//   delay(10000);
+// }
+// void test_loop(){
 
-}
+// }
 
-/* PikaPika test
+///* PikaPika test
 void test_init(){
   // Serial.println("test");
 
@@ -113,7 +115,7 @@ void wave_test_init(){
 void wave_test_loop(){
 
 }
-*/
+//*/
 
 /* distance sensor test
 

@@ -15,21 +15,10 @@
 
 #include <Arduino.h>
 #include <MP.h>
-#include <StaticThreadController.h>
-#include <Thread.h>
-#include <ThreadController.h>
 
 //--------------------------------------------------------//
 
 //FUNCTION Declaration
-void Core_Communication_Test(int8_t msgid, uint32_t msgdata);
-void TurnON_PikaPika_LED();
-void TurnON_Inside_LED();
-void TurnON_Outside_LED();
-
-//--------------------------------------------------------//
-
-uint32_t msgdata_Array[4];
 
 //--------------------------------------------------------//
 
@@ -38,7 +27,6 @@ void setup(void){
 }
 
 void loop(void){
-    int ret;
     int8_t msgid;
     uint32_t msgdata;
 
@@ -47,58 +35,32 @@ void loop(void){
     switch (msgid)
     {
     case C1_T0_COMMU_TEST:
-        Core_Communication_Test(msgid, msgdata);
+        MP.Send(msgid, msgdata+100);
         break;
-    
     case C1_T1_PIKAPIKA_LED:{
-        msgdata_Array[C1_T1_PIKAPIKA_LED] = msgdata;
-        Thread thread = Thread();
-        thread.onRun(TurnON_PikaPika_LED);
-        thread.run();
+        uint64_t endtime = millis()+(uint64_t)msgdata;
+        digitalWrite(LED_PIKA, HIGH);
+        while (millis() < endtime){};
+        digitalWrite(LED_PIKA, LOW);
         break;
     }
-
     case C1_T2_INSIDE_LED:{
-        msgdata_Array[C1_T2_INSIDE_LED] = msgdata;
-        Thread thread = Thread();
-        thread.onRun(TurnON_Inside_LED);
-        thread.run();
+        digitalWrite(INSIDE_LED, HIGH);
+        uint64_t endtime = millis()+(uint64_t)msgdata;
+        while (millis() < endtime){};
+        digitalWrite(INSIDE_LED, LOW);
         break;
     }
-
     case C1_T3_OUTSIDE_LED:{
-        msgdata_Array[C1_T3_OUTSIDE_LED] = msgdata;
-        Thread thread = Thread();
-        thread.onRun(TurnON_Outside_LED);
-        thread.run();
+        digitalWrite(OUTSIDE_LED, HIGH);
+        uint64_t endtime = millis()+(uint64_t)msgdata;
+        while (millis() < endtime){};
+        digitalWrite(OUTSIDE_LED, LOW);
         break;
     }
-
     default:
         break;
     }
-}
-
-void Core_Communication_Test(int8_t msgid, uint32_t msgdata){
-    MP.Send(msgid, msgdata+100);
-}
-
-void TurnON_PikaPika_LED(){
-    digitalWrite(LED_PIKA, HIGH);
-    delay(msgdata_Array[C1_T1_PIKAPIKA_LED]);
-    digitalWrite(LED_PIKA, LOW);
-}
-
-void TurnON_Inside_LED(){
-    digitalWrite(INSIDE_LED, HIGH);
-    delay(msgdata_Array[C1_T2_INSIDE_LED]);
-    digitalWrite(INSIDE_LED, LOW);
-}
-
-void TurnON_Outside_LED(){
-    digitalWrite(OUTSIDE_LED, HIGH);
-    delay(msgdata_Array[C1_T3_OUTSIDE_LED]);
-    digitalWrite(INSIDE_LED, LOW);
 }
 
 #endif

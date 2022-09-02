@@ -14,9 +14,6 @@
 //files from libraries
 #include <Arduino.h>
 #include <MP.h>
-#include <StaticThreadController.h>
-#include <Thread.h>
-#include <ThreadController.h>
 
 #include <Camera.h>
 #include <VL53L1X.h>
@@ -33,7 +30,7 @@ VL53L1X Dist_sensor [8];
 
 //PikaPika Variables
 bool PikaPika_light_sensor [8] = {false, false, false, false, false, false, false, false};
-ulong*** PikaPika_detected_timestamp = new ulong** [8];
+uint64_t*** PikaPika_detected_timestamp = new uint64_t** [8];
 
 //--------------------------------------------------------//
 
