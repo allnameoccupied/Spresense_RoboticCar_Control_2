@@ -42,6 +42,10 @@ extern void motor_HALL_feedback();
 
 //--------------------------------------------------------//
 
+// void test_init(){
+    
+// }
+
 void test_init(){
 
     // uint16_t test = 100;
@@ -76,10 +80,10 @@ void test_init(){
         // slave.read(buf,10);
         // if(strlen(buf) != 0){
         //     serial_println(buf);
-        // } 
+        // }
     }
-
 }
+
 void test_loop(){
     // wait_s(5);
 

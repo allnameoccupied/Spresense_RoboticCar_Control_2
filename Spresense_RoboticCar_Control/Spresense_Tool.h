@@ -11,4 +11,7 @@
 void LED_ON(uint8_t LED_index);
 void LED_OFF(uint8_t LED_index);
 
+//MultiCore Communication Test
+//TODO, send 100 and receive 200 sth like that
+
 #endif

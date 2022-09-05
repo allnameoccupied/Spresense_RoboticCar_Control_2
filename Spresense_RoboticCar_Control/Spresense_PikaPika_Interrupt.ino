@@ -8,27 +8,126 @@
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Tool.h"
 
-int PikaPika_Int_Handler_1(int irq, FAR void *context, FAR void *arg){
+extern bool PikaPika_light_sensor [8];
+extern uint64_t*** PikaPika_detected_timestamp;
 
-}
-int PikaPika_Int_Handler_2(int irq, FAR void *context, FAR void *arg){
+void PikaPika_Int_Handler_0(){
 
-}
-int PikaPika_Int_Handler_3(int irq, FAR void *context, FAR void *arg){
+    uint64_t temp = millis();
 
+    if (temp - *PikaPika_detected_timestamp[0][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[0] = true;
+        delete PikaPika_detected_timestamp[0][0];
+        PikaPika_detected_timestamp[0][0] = PikaPika_detected_timestamp[0][1];
+        PikaPika_detected_timestamp[0][1] = PikaPika_detected_timestamp[0][2];
+        PikaPika_detected_timestamp[0][2] = PikaPika_detected_timestamp[0][3];
+        PikaPika_detected_timestamp[0][3] = PikaPika_detected_timestamp[0][4];
+        PikaPika_detected_timestamp[0][4] = new uint64_t (temp);
+    }
 }
-int PikaPika_Int_Handler_4(int irq, FAR void *context, FAR void *arg){
+void PikaPika_Int_Handler_1(){
 
-}
-int PikaPika_Int_Handler_5(int irq, FAR void *context, FAR void *arg){
+    uint64_t temp = millis();
 
+    if (temp - *PikaPika_detected_timestamp[1][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[1] = true;
+        delete PikaPika_detected_timestamp[1][0];
+        PikaPika_detected_timestamp[1][0] = PikaPika_detected_timestamp[1][1];
+        PikaPika_detected_timestamp[1][1] = PikaPika_detected_timestamp[1][2];
+        PikaPika_detected_timestamp[1][2] = PikaPika_detected_timestamp[1][3];
+        PikaPika_detected_timestamp[1][3] = PikaPika_detected_timestamp[1][4];
+        PikaPika_detected_timestamp[1][4] = new uint64_t (temp);
+    }
 }
-int PikaPika_Int_Handler_6(int irq, FAR void *context, FAR void *arg){
+void PikaPika_Int_Handler_2(){
 
-}
-int PikaPika_Int_Handler_7(int irq, FAR void *context, FAR void *arg){
+    uint64_t temp = millis();
 
+    if (temp - *PikaPika_detected_timestamp[2][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[2] = true;
+        delete PikaPika_detected_timestamp[2][0];
+        PikaPika_detected_timestamp[2][0] = PikaPika_detected_timestamp[2][1];
+        PikaPika_detected_timestamp[2][1] = PikaPika_detected_timestamp[2][2];
+        PikaPika_detected_timestamp[2][2] = PikaPika_detected_timestamp[2][3];
+        PikaPika_detected_timestamp[2][3] = PikaPika_detected_timestamp[2][4];
+        PikaPika_detected_timestamp[2][4] = new uint64_t (temp);
+    }
 }
-int PikaPika_Int_Handler_8(int irq, FAR void *context, FAR void *arg){
+void PikaPika_Int_Handler_3(){
+
+    uint64_t temp = millis();
+
+    if (temp - *PikaPika_detected_timestamp[3][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[3] = true;
+        delete PikaPika_detected_timestamp[3][0];
+        PikaPika_detected_timestamp[3][0] = PikaPika_detected_timestamp[3][1];
+        PikaPika_detected_timestamp[3][1] = PikaPika_detected_timestamp[3][2];
+        PikaPika_detected_timestamp[3][2] = PikaPika_detected_timestamp[3][3];
+        PikaPika_detected_timestamp[3][3] = PikaPika_detected_timestamp[3][4];
+        PikaPika_detected_timestamp[3][4] = new uint64_t (temp);
+    }
+}
+void PikaPika_Int_Handler_4(){
     
+    uint64_t temp = millis();
+
+    if (temp - *PikaPika_detected_timestamp[4][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[4] = true;
+        delete PikaPika_detected_timestamp[4][0];
+        PikaPika_detected_timestamp[4][0] = PikaPika_detected_timestamp[4][1];
+        PikaPika_detected_timestamp[4][1] = PikaPika_detected_timestamp[4][2];
+        PikaPika_detected_timestamp[4][2] = PikaPika_detected_timestamp[4][3];
+        PikaPika_detected_timestamp[4][3] = PikaPika_detected_timestamp[4][4];
+        PikaPika_detected_timestamp[4][4] = new uint64_t (temp);
+    }
+}
+void PikaPika_Int_Handler_5(){
+
+    uint64_t temp = millis();
+
+    if (temp - *PikaPika_detected_timestamp[5][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[5] = true;
+        delete PikaPika_detected_timestamp[5][0];
+        PikaPika_detected_timestamp[5][0] = PikaPika_detected_timestamp[5][1];
+        PikaPika_detected_timestamp[5][1] = PikaPika_detected_timestamp[5][2];
+        PikaPika_detected_timestamp[5][2] = PikaPika_detected_timestamp[5][3];
+        PikaPika_detected_timestamp[5][3] = PikaPika_detected_timestamp[5][4];
+        PikaPika_detected_timestamp[5][4] = new uint64_t (temp);
+    }
+}
+void PikaPika_Int_Handler_6(){
+
+    uint64_t temp = millis();
+
+    if (temp - *PikaPika_detected_timestamp[6][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[6] = true;
+        delete PikaPika_detected_timestamp[6][0];
+        PikaPika_detected_timestamp[6][0] = PikaPika_detected_timestamp[6][1];
+        PikaPika_detected_timestamp[6][1] = PikaPika_detected_timestamp[6][2];
+        PikaPika_detected_timestamp[6][2] = PikaPika_detected_timestamp[6][3];
+        PikaPika_detected_timestamp[6][3] = PikaPika_detected_timestamp[6][4];
+        PikaPika_detected_timestamp[6][4] = new uint64_t (temp);
+    }
+}
+void PikaPika_Int_Handler_7(){
+    
+    uint64_t temp = millis();
+
+    if (temp - *PikaPika_detected_timestamp[7][4] > MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT)
+    {
+        PikaPika_light_sensor[7] = true;
+        delete PikaPika_detected_timestamp[7][0];
+        PikaPika_detected_timestamp[7][0] = PikaPika_detected_timestamp[7][1];
+        PikaPika_detected_timestamp[7][1] = PikaPika_detected_timestamp[7][2];
+        PikaPika_detected_timestamp[7][2] = PikaPika_detected_timestamp[7][3];
+        PikaPika_detected_timestamp[7][3] = PikaPika_detected_timestamp[7][4];
+        PikaPika_detected_timestamp[7][4] = new uint64_t (temp);
+    }
 }

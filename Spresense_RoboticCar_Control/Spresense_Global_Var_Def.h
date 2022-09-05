@@ -9,15 +9,21 @@
 
 //I2C Address of all components
 #define NUCLEO_I2C_ADDR         0x45>>1
-#define DIST_SENSOR_1_I2C_ADDR  0x2a
-#define DIST_SENSOR_2_I2C_ADDR  0x2b
-#define DIST_SENSOR_3_I2C_ADDR  0x2c
-#define DIST_SENSOR_4_I2C_ADDR  0x2d
-#define DIST_SENSOR_5_I2C_ADDR  0x2e
-#define DIST_SENSOR_6_I2C_ADDR  0x2f
-#define DIST_SENSOR_7_I2C_ADDR  0x30
-#define DIST_SENSOR_8_I2C_ADDR  0x31
+#define DIST_SENSOR_1_I2C_ADDR  0x50
+#define DIST_SENSOR_2_I2C_ADDR  0x52
+#define DIST_SENSOR_3_I2C_ADDR  0x54
+#define DIST_SENSOR_4_I2C_ADDR  0x56
+#define DIST_SENSOR_5_I2C_ADDR  0x58
+#define DIST_SENSOR_6_I2C_ADDR  0x5a
+#define DIST_SENSOR_7_I2C_ADDR  0x5c
+#define DIST_SENSOR_8_I2C_ADDR  0x5e
 //  I2C Message Length
 #define I2C_MSG_LENGTH          32
+
+//PikaPika MIN Duration Between Interrupts
+#define MIN_DURATION_BETWEEN_PIKAPIKA_INTERRUPT  75
+
+//SubCore ID
+#define SUBCORE_1_GENERAL_ID    1
 
 #endif
