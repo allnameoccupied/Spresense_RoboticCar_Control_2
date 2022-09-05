@@ -21,6 +21,7 @@
         "iterator": "cpp",
         "ostream": "cpp",
         "chrono": "cpp",
-        "__threading_support": "cpp"
+        "__threading_support": "cpp",
+        "ranges": "cpp"
     }
 }

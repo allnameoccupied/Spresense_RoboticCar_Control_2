@@ -37,24 +37,90 @@ void wave_test_loop();
 
 //--------------------------------------------------------//
 
-// void test_init(){
-//   int ret = MP.begin(SUBCORE_1_GENERAL_ID);
-//   if (ret != 0){Serial.println(ret);}
+///* Multi Robots test
+// Robot 1 (Receiver + Serial Communication)
+void test_init(){
+  // Serial.println("test");
+
+  for (int i = 0; i < 4; i++)
+  {
+    digitalWrite(LED_PIKA, HIGH);
+    delay(25);
+    digitalWrite(LED_PIKA, LOW);
+    delay(750);
+  }
+
+  digitalWrite(INSIDE_LED, HIGH);
+  digitalWrite(OUTSIDE_LED, HIGH);
+  delay(500);
+  digitalWrite(INSIDE_LED, LOW);
+  digitalWrite(OUTSIDE_LED, LOW);
   
-//   digitalWrite(LED_PIKA, LOW);
-//   delay(2000);
-//   MP.Send(C1_T1_PIKAPIKA_LED,2000,SUBCORE_1_GENERAL_ID);
-//   delay(500);
-//   MP.Send(C1_T2_INSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
-//   delay(500);
-//   MP.Send(C1_T3_OUTSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
-//   delay(10000);
+  Serial.println("now start detect flash");
+}
+void test_loop(){
+  for (int i = 0; i < 8; i++)
+  {
+    if (PikaPika_light_sensor[i])
+    {
+    Serial.print(i);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][0]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][1]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][2]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][3]);
+    Serial.print("\t");
+    Serial.print(*PikaPika_detected_timestamp[i][4]);
+    Serial.println();
+
+    digitalWrite(INSIDE_LED, HIGH);
+    delay(25);
+    digitalWrite(INSIDE_LED, LOW);
+    // delay(500);
+
+    PikaPika_light_sensor[i] = false;
+
+    Serial.println();
+    }
+  }
+}
+// Robot 2 (Blinker)
+// void test_init(){
+
 // }
 // void test_loop(){
-
+//   while(1){
+//     digitalWrite(LED_PIKA, HIGH);
+//     delay(25);
+//     digitalWrite(LED_PIKA, LOW);
+//     delay(750);
+//   }
 // }
+//*/
 
-///* PikaPika test
+/* Multicore test
+void test_init(){
+  int ret = MP.begin(SUBCORE_1_GENERAL_ID);
+  if (ret != 0){Serial.println(ret);}
+  
+  digitalWrite(LED_PIKA, LOW);
+  delay(2000);
+  MP.Send(C1_T1_PIKAPIKA_LED,2000,SUBCORE_1_GENERAL_ID);
+  delay(500);
+  MP.Send(C1_T2_INSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
+  delay(500);
+  MP.Send(C1_T3_OUTSIDE_LED,2000,SUBCORE_1_GENERAL_ID);
+  delay(10000);
+}
+void test_loop(){
+
+}
+*/
+
+/* PikaPika test
 void test_init(){
   // Serial.println("test");
 
@@ -115,7 +181,7 @@ void wave_test_init(){
 void wave_test_loop(){
 
 }
-//*/
+*/
 
 /* distance sensor test
 
