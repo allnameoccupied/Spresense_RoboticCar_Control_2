@@ -7,6 +7,40 @@
 #include "Spresense_PikaPika_Interrupt.h"
 #include "Spresense_Include_List.h"
 
+void PikaPika_Int_Handler_0(){
+    dphi[0] = mod_varphi - PI;
+    PikaPika_light_sensor_life[0] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+void PikaPika_Int_Handler_1(){
+    dphi[1] = mod_varphi - PI;
+    PikaPika_light_sensor_life[1] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+void PikaPika_Int_Handler_2(){
+    dphi[2] = mod_varphi - PI;
+    PikaPika_light_sensor_life[2] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+void PikaPika_Int_Handler_3(){
+    dphi[3] = mod_varphi - PI;
+    PikaPika_light_sensor_life[3] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+void PikaPika_Int_Handler_4(){
+    dphi[4] = mod_varphi - PI;
+    PikaPika_light_sensor_life[4] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+void PikaPika_Int_Handler_5(){
+    dphi[5] = mod_varphi - PI;
+    PikaPika_light_sensor_life[5] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+void PikaPika_Int_Handler_6(){
+    dphi[6] = mod_varphi - PI;
+    PikaPika_light_sensor_life[6] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+void PikaPika_Int_Handler_7(){
+    dphi[7] = mod_varphi - PI;
+    PikaPika_light_sensor_life[7] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+}
+
+/* Interrupt Functions for TESTING
 extern bool PikaPika_light_sensor [8];
 extern uint64_t*** PikaPika_detected_timestamp;
 
@@ -14,7 +48,7 @@ void PikaPika_Int_Handler_0(){
 
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[0][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[0][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[0] = true;
         delete PikaPika_detected_timestamp[0][0];
@@ -29,7 +63,7 @@ void PikaPika_Int_Handler_1(){
 
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[1][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[1][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[1] = true;
         delete PikaPika_detected_timestamp[1][0];
@@ -44,7 +78,7 @@ void PikaPika_Int_Handler_2(){
 
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[2][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[2][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[2] = true;
         delete PikaPika_detected_timestamp[2][0];
@@ -59,7 +93,7 @@ void PikaPika_Int_Handler_3(){
 
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[3][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[3][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[3] = true;
         delete PikaPika_detected_timestamp[3][0];
@@ -74,7 +108,7 @@ void PikaPika_Int_Handler_4(){
     
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[4][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[4][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[4] = true;
         delete PikaPika_detected_timestamp[4][0];
@@ -89,7 +123,7 @@ void PikaPika_Int_Handler_5(){
 
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[5][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[5][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[5] = true;
         delete PikaPika_detected_timestamp[5][0];
@@ -104,7 +138,7 @@ void PikaPika_Int_Handler_6(){
 
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[6][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[6][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[6] = true;
         delete PikaPika_detected_timestamp[6][0];
@@ -119,7 +153,7 @@ void PikaPika_Int_Handler_7(){
     
     uint64_t now_millis = millis();
 
-    if (now_millis - *PikaPika_detected_timestamp[7][4] > PIKAPIKA_MIN_MILLIS_BETWEEN_INTERRUPTS)
+    if (now_millis - *PikaPika_detected_timestamp[7][4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
     {
         PikaPika_light_sensor[7] = true;
         delete PikaPika_detected_timestamp[7][0];
@@ -130,3 +164,4 @@ void PikaPika_Int_Handler_7(){
         PikaPika_detected_timestamp[7][4] = new uint64_t (now_millis);
     }
 }
+*/

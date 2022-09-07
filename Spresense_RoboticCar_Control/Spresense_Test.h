@@ -27,8 +27,6 @@
 
 // -> Variables
 extern VL53L1X Dist_sensor [8];
-extern bool PikaPika_light_sensor [8];
-extern uint64_t*** PikaPika_detected_timestamp;
 
 // -> Functions
 
@@ -36,21 +34,98 @@ extern uint64_t*** PikaPika_detected_timestamp;
 
 // Functions Declaration
 void i2c_detect();
-void wave_test_init();
-void wave_test_loop();
+void FFT_PikaPika_Routine();
 
 //--------------------------------------------------------//
 
-///* Multi Robots test
+///* PikaPika FFT test
+void test_init(){
+  int ret = MP.begin(SUBCORE_2_FFT_ID);
+  if (ret<0) {
+    MPLog("MP.begin(%d) error = %d\n", SUBCORE_2_FFT_ID, ret);
+  }
+
+  attachTimerInterrupt(FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
+}
+void test_loop(){
+  uint8_t msgid;
+  uint32_t recv;
+  int ret = MP.Recv(&msgid, &recv, SUBCORE_2_FFT_ID);
+  if ((msgid == C2_T1_NO_PEAK)&&(recv == 1)){  // ピーク検知失敗
+    is_Self_Excitation = true;  // 自励処理
+  }
+
+  delay(20);
+}
+int PikaPika_LED_countdown = 0;
+int FFT_countdown = FFT_PROCESS_PERIOD_US;
+double last_phi = 0.0;
+double last_mod_varphi = 0.0;
+void FFT_PikaPika_Routine(){
+  //******** 位相更新 ***********//     楕円型（振動相互作用）
+  phi_bar += Omega_0 * dt;    // 進行位相は等角速度
+  phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
+  is_Self_Excitation = false;   // 一度行ったら自励はオフ
+
+  sum_dphi = 0.0;
+  adaptive_gamma = GAMMA_CONST_1;
+  for (int i = 0; i < PIKAPIKA_SENSOR_COUNT; i++)
+  {
+    sum_dphi += dphi[i];
+    adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * GAMMA_CONST_2;
+  }
+  c_fft = adaptive_gamma * 0.5 * dt + 1;
+  double temp_phi = ( 2 * phi
+                      + (adaptive_gamma * dt * 0.5 - 1) * last_phi
+                      + dt * dt * (-kappa * sum_dphi))  /c_fft;
+  last_phi = phi;
+  phi = temp_phi;
+  varphi = phi_bar + phi;
+  //******** 位相更新ここまで********//
+
+  //******** 2pi周期性と発光の処理********//
+  mod_varphi = fmod(varphi, 2*PI);
+  if ((mod_varphi >= PI) && (last_mod_varphi < PI))
+  {
+    PikaPika_LED_countdown = PIKAPIKA_BLINK_TIME;
+    for (int i = 0; i < PIKAPIKA_SENSOR_COUNT; i++)
+    {
+      PikaPika_light_sensor_life[i] -= 1;
+      if (PikaPika_light_sensor_life[i] == 0)
+      {
+        dphi[i] = 0.0;
+      }
+    }
+  }
+  last_mod_varphi = mod_varphi;
+
+  if (PikaPika_LED_countdown > 0)
+  {
+    digitalWrite(PIKAPIKA_LED, HIGH);
+    PikaPika_LED_countdown--;
+  } else {
+    digitalWrite(PIKAPIKA_LED, LOW);
+  }
+  
+  //****** サブコアへの位相通知処理 *********//
+  FFT_countdown--;
+  if (FFT_countdown == 0)
+  {
+    MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT, SUBCORE_2_FFT_ID));
+  }
+}
+//*/
+
+/* Multi Robots test
 // Robot 1 (Receiver + Serial Communication)
 void test_init(){
   // Serial.println("test");
 
   for (int i = 0; i < 4; i++)
   {
-    digitalWrite(LED_PIKA, HIGH);
+    digitalWrite(PIKAPIKA_LED, HIGH);
     delay(25);
-    digitalWrite(LED_PIKA, LOW);
+    digitalWrite(PIKAPIKA_LED, LOW);
     delay(750);
   }
 
@@ -97,20 +172,20 @@ void test_loop(){
 // }
 // void test_loop(){
 //   while(1){
-//     digitalWrite(LED_PIKA, HIGH);
+//     digitalWrite(PIKAPIKA_LED, HIGH);
 //     delay(25);
-//     digitalWrite(LED_PIKA, LOW);
+//     digitalWrite(PIKAPIKA_LED, LOW);
 //     delay(750);
 //   }
 // }
-//*/
+*/
 
 /* Multicore test
 void test_init(){
   int ret = MP.begin(SUBCORE_1_GENERAL_ID);
   if (ret != 0){Serial.println(ret);}
   
-  digitalWrite(LED_PIKA, LOW);
+  digitalWrite(PIKAPIKA_LED, LOW);
   delay(2000);
   MP.Send(C1_T1_PIKAPIKA_LED,2000,SUBCORE_1_GENERAL_ID);
   delay(500);
@@ -125,14 +200,16 @@ void test_loop(){
 */
 
 /* PikaPika test
+bool PikaPika_light_sensor [8] = {false, false, false, false, false, false, false, false};
+uint64_t*** PikaPika_detected_timestamp = new uint64_t** [8];
 void test_init(){
   // Serial.println("test");
 
   for (int i = 0; i < 4; i++)
   {
-    digitalWrite(LED_PIKA, HIGH);
+    digitalWrite(PIKAPIKA_LED, HIGH);
     delay(25);
-    digitalWrite(LED_PIKA, LOW);
+    digitalWrite(PIKAPIKA_LED, LOW);
     delay(750);
   }
 
@@ -162,9 +239,9 @@ void test_loop(){
     Serial.print(*PikaPika_detected_timestamp[i][4]);
     Serial.println();
 
-    digitalWrite(LED_PIKA, HIGH);
+    digitalWrite(PIKAPIKA_LED, HIGH);
     delay(25);
-    digitalWrite(LED_PIKA, LOW);
+    digitalWrite(PIKAPIKA_LED, LOW);
     // delay(500);
 
     PikaPika_light_sensor[i] = false;
@@ -175,15 +252,6 @@ void test_loop(){
 
   // Serial.println(analogRead(PIN_A0));
   // delay(100);
-}
-
-float phase;
-const float con_intensity = 0.1;
-void wave_test_init(){
-
-}
-void wave_test_loop(){
-
 }
 */
 

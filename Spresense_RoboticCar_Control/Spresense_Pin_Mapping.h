@@ -19,34 +19,34 @@
 // #define LED3
 
 // I2C pins
-#define I2C_M_SDA_PIN   PIN_D14
-#define I2C_M_SCL_PIN   PIN_D15
+#define I2C_M_SDA_PIN       PIN_D14
+#define I2C_M_SCL_PIN       PIN_D15
 
 // Distance Sensor XSHUT
-#define DIST_XSHUT_0    PIN_D08
-#define DIST_XSHUT_1    PIN_D09
-#define DIST_XSHUT_2    PIN_D10
-#define DIST_XSHUT_3    PIN_D11
-#define DIST_XSHUT_4    PIN_D12
-#define DIST_XSHUT_5    PIN_D13
-#define DIST_XSHUT_6    PIN_D16
-#define DIST_XSHUT_7    PIN_D17
+#define DIST_XSHUT_0        PIN_D08
+#define DIST_XSHUT_1        PIN_D09
+#define DIST_XSHUT_2        PIN_D10
+#define DIST_XSHUT_3        PIN_D11
+#define DIST_XSHUT_4        PIN_D12
+#define DIST_XSHUT_5        PIN_D13
+#define DIST_XSHUT_6        PIN_D16
+#define DIST_XSHUT_7        PIN_D17
 
 // PikaPika pins
 // -> PikaPika LED
-#define LED_PIKA        PIN_D08
+#define PIKAPIKA_LED        PIN_D08
 // -> PikaPika Light Sensors
-#define LIGHT_PIKA_0    PIN_D00
-#define LIGHT_PIKA_1    PIN_D01
-#define LIGHT_PIKA_2    PIN_D02
-#define LIGHT_PIKA_3    PIN_D03
-#define LIGHT_PIKA_4    PIN_D04
-#define LIGHT_PIKA_5    PIN_D05
-#define LIGHT_PIKA_6    PIN_D06
-#define LIGHT_PIKA_7    PIN_D07
+#define PIKAPIKA_LIGHT_0    PIN_D00
+#define PIKAPIKA_LIGHT_1    PIN_D01
+#define PIKAPIKA_LIGHT_2    PIN_D02
+#define PIKAPIKA_LIGHT_3    PIN_D03
+#define PIKAPIKA_LIGHT_4    PIN_D04
+#define PIKAPIKA_LIGHT_5    PIN_D05
+#define PIKAPIKA_LIGHT_6    PIN_D06
+#define PIKAPIKA_LIGHT_7    PIN_D07
 
 // Inside/Outside LED pins
-#define INSIDE_LED      PIN_D18     //GREEN
-#define OUTSIDE_LED     PIN_D19     //RED
+#define INSIDE_LED          PIN_D18     //GREEN
+#define OUTSIDE_LED         PIN_D19     //RED
 
 #endif

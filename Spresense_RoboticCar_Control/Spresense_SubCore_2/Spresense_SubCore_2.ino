@@ -1,15 +1,15 @@
-// Written by MAX (Created 31-08-2022)
+// Written by MAX (Created 07-09-2022)
 
-/* Features :   Code for Spresense SubCore 1
-                SubCore 1 -> General Tasks
+/* Features :   Code for Spresense SubCore 2
+                SubCore 2 -> FFT
 */
 //--------------------------------------------------------//
 
-#if (SUBCORE == 1)
+#if (SUBCORE == 2)
 
 //--------------------------------------------------------//
 
-#include "Spresense_SubCore_1_TaskList.h"
+#include "Spresense_SubCore_2_TaskList.h"
 // #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Pin_Mapping.h"
 // #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Tool.h"
 // #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Global_Var_Def.h"
@@ -35,28 +35,11 @@ void loop(void){
 
     switch (msgid)
     {
-    case C1_T0_COMMU_TEST:
-        MP.Send(msgid, msgdata+100);
-        break;
-    case C1_T1_PIKAPIKA_LED:{
-        uint64_t endtime = millis()+(uint64_t)msgdata;
-        digitalWrite(PIKAPIKA_LED, HIGH);
-        while (millis() < endtime){};
-        digitalWrite(PIKAPIKA_LED, LOW);
+    case C2_T0_FFT:{
         break;
     }
-    case C1_T2_INSIDE_LED:{
-        digitalWrite(INSIDE_LED, HIGH);
-        uint64_t endtime = millis()+(uint64_t)msgdata;
-        while (millis() < endtime){};
-        digitalWrite(INSIDE_LED, LOW);
-        break;
-    }
-    case C1_T3_OUTSIDE_LED:{
-        digitalWrite(OUTSIDE_LED, HIGH);
-        uint64_t endtime = millis()+(uint64_t)msgdata;
-        while (millis() < endtime){};
-        digitalWrite(OUTSIDE_LED, LOW);
+    case C2_T1_NO_PEAK:{
+        // Just placeholder, C2_T1_NO_PEAK is for sending back to Main core
         break;
     }
     default:

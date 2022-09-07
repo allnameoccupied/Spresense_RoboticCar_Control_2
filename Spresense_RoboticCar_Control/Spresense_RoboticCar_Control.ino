@@ -26,10 +26,6 @@
 // -> DIST Sensors Variables
 VL53L1X Dist_sensor [8];
 
-// -> PikaPika Variables
-bool PikaPika_light_sensor [8] = {false, false, false, false, false, false, false, false};
-uint64_t*** PikaPika_detected_timestamp = new uint64_t** [8];
-
 //--------------------------------------------------------//
 
 // Functions Declaration

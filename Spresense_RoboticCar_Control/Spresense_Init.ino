@@ -31,37 +31,37 @@ void Dist_Sensor_Init(){
 }
 
 // Init PikaPika pins & variables
-extern uint64_t*** PikaPika_detected_timestamp;
+// extern uint64_t*** PikaPika_detected_timestamp;
 void PIKAPIKA_Init(){
-    pinMode(LED_PIKA, OUTPUT);
+    pinMode(PIKAPIKA_LED, OUTPUT);
     
-    pinMode(LIGHT_PIKA_0, INPUT);
-    pinMode(LIGHT_PIKA_1, INPUT);
-    pinMode(LIGHT_PIKA_2, INPUT);
-    pinMode(LIGHT_PIKA_3, INPUT);
-    pinMode(LIGHT_PIKA_4, INPUT);
-    pinMode(LIGHT_PIKA_5, INPUT);
-    pinMode(LIGHT_PIKA_6, INPUT);
-    pinMode(LIGHT_PIKA_7, INPUT);
+    pinMode(PIKAPIKA_LIGHT_0, INPUT);
+    pinMode(PIKAPIKA_LIGHT_1, INPUT);
+    pinMode(PIKAPIKA_LIGHT_2, INPUT);
+    pinMode(PIKAPIKA_LIGHT_3, INPUT);
+    pinMode(PIKAPIKA_LIGHT_4, INPUT);
+    pinMode(PIKAPIKA_LIGHT_5, INPUT);
+    pinMode(PIKAPIKA_LIGHT_6, INPUT);
+    pinMode(PIKAPIKA_LIGHT_7, INPUT);
 
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_0), PikaPika_Int_Handler_0, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_1), PikaPika_Int_Handler_1, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_2), PikaPika_Int_Handler_2, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_3), PikaPika_Int_Handler_3, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_4), PikaPika_Int_Handler_4, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_5), PikaPika_Int_Handler_5, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_6), PikaPika_Int_Handler_6, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_7), PikaPika_Int_Handler_7, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_0), PikaPika_Int_Handler_0, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_1), PikaPika_Int_Handler_1, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_2), PikaPika_Int_Handler_2, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_3), PikaPika_Int_Handler_3, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_4), PikaPika_Int_Handler_4, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_5), PikaPika_Int_Handler_5, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_6), PikaPika_Int_Handler_6, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_7), PikaPika_Int_Handler_7, FALLING);
 
-    for (int i = 0; i < 8; i++)
-    {
-        PikaPika_detected_timestamp[i] = new uint64_t* [5];
-        for (int j = 0; j < 5; j++)
-        {
-            PikaPika_detected_timestamp[i][j] = new uint64_t (0);
-        }
+    // for (int i = 0; i < 8; i++)
+    // {
+    //     PikaPika_detected_timestamp[i] = new uint64_t* [5];
+    //     for (int j = 0; j < 5; j++)
+    //     {
+    //         PikaPika_detected_timestamp[i][j] = new uint64_t (0);
+    //     }
         
-    }
+    // }
     
 }
 
