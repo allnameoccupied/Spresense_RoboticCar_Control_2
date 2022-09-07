@@ -1,36 +1,40 @@
-//Written by MAX (Created 20-06-2022)
+// Written by MAX (Created 20-06-2022)
 
-//Funtions : Write test functions here, 
-//              so main program will not be messy
-//                  (For Spresense)
+/* Features : Write test functions here, 
+              so main program will not be messy
+*/
 
 // *** ONLY CASE WHICH FUNCTIONS ARE DEFINED IN HEADER *** 
+
+//--------------------------------------------------------//
 
 #ifndef SPRESENSE_TEST_H
 #define SPRESENSE_TEST_H
 
-#include "Spresense_Tool.h"
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Pin_Mapping.h"
 #include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
 
-#include <string>
+#include <Arduino.h>
 #include <MP.h>
+
 #include <VL53L1X.h>
 // #include <Wire.h>
 
 //--------------------------------------------------------//
 
-//EXTERN of Variables
+//EXTERN of stuff from Main file
+
+// -> Variables
 extern VL53L1X Dist_sensor [8];
 extern bool PikaPika_light_sensor [8];
 extern uint64_t*** PikaPika_detected_timestamp;
 
-//EXTERN of FUNCTION Declaration
+// -> Functions
 
 //--------------------------------------------------------//
 
-//Function Declaration
+// Functions Declaration
 void i2c_detect();
 void wave_test_init();
 void wave_test_loop();

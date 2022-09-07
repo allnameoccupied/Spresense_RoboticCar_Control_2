@@ -1,7 +1,8 @@
-//Written by MAX (Created 31-08-2022)
+// Written by MAX (Created 31-08-2022)
 
-//Features : Code for Spresense SubCore 1 -> General
-
+/* Features :   Code for Spresense SubCore 1
+                SubCore 1 -> General Tasks
+*/
 //--------------------------------------------------------//
 
 #if (SUBCORE == 1)
@@ -9,16 +10,16 @@
 //--------------------------------------------------------//
 
 #include "Spresense_SubCore_1_TaskList.h"
-#include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Pin_Mapping.h"
-#include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Tool.h"
-#include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Global_Var_Def.h"
+// #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Pin_Mapping.h"
+// #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Tool.h"
+// #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Global_Var_Def.h"
 
 #include <Arduino.h>
 #include <MP.h>
 
 //--------------------------------------------------------//
 
-//FUNCTION Declaration
+// Functions Declaration
 
 //--------------------------------------------------------//
 

@@ -1,16 +1,16 @@
-//Written by MAX (Created 20-06-2022)
+// Written by MAX (Created 20-06-2022)
 
-//Funtions : Spresense Initialization
+// Features : Spresense Initialization
+
+//--------------------------------------------------------//
 
 #include "Spresense_Init.h"
+#include "Spresense_Include_List.h"
 
-#include "Spresense_Pin_Mapping.h"
-#include "Spresense_Global_Var_Def.h"
-#include "Spresense_Tool.h"
-#include "Spresense_PikaPika_Interrupt.h"
+#include <VL53L1X.h>
 #include <Wire.h>
 
-//init the 4 onboard LED
+// Init the 4 onboard LED
 void Onboard_LED_Init(){
     pinMode(LED0, OUTPUT);
     pinMode(LED1, OUTPUT);
@@ -18,19 +18,19 @@ void Onboard_LED_Init(){
     pinMode(LED3, OUTPUT);
 }
 
-//init I2C pins & I2C
+// Init I2C
 void I2C_Init(){
     Wire.begin();
     Wire.setClock(TWI_FREQ_400KHZ);
 }
 
-//init Dist sensors pins
+// Init Distance Sensors pins
 extern VL53L1X Dist_sensor [8];
 void Dist_Sensor_Init(){
 
 }
 
-//init PikaPika pins
+// Init PikaPika pins & variables
 extern uint64_t*** PikaPika_detected_timestamp;
 void PIKAPIKA_Init(){
     pinMode(LED_PIKA, OUTPUT);
@@ -65,12 +65,12 @@ void PIKAPIKA_Init(){
     
 }
 
-//init Serial Communication
+// Init Serial Communication
 void Serial_Init(){
     Serial.begin(DEFAULT_BAUD_RATE);
 }
 
-//init Inside/Outside LED pins
+// Init Inside/Outside LED pins
 void InOut_LED_Init(){
     pinMode(INSIDE_LED, OUTPUT);
     pinMode(OUTSIDE_LED, OUTPUT);
@@ -80,20 +80,20 @@ void InOut_LED_Init(){
 
 void Finish_Init_LED_Flash(){
     digitalWrite(LED0, HIGH);
-    delay(100);
+    delay(50);
     digitalWrite(LED1, HIGH);
-    delay(100);
+    delay(50);
     digitalWrite(LED2, HIGH);
-    delay(100);
+    delay(50);
     digitalWrite(LED3, HIGH);
-    delay(1000);
+    delay(500);
 
     digitalWrite(LED0, LOW);
-    delay(100);
+    delay(50);
     digitalWrite(LED1, LOW);
-    delay(100);
+    delay(50);
     digitalWrite(LED2, LOW);
-    delay(100);
+    delay(50);
     digitalWrite(LED3, LOW);
-    delay(1000);
+    // delay(500);
 }

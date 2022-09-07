@@ -1,17 +1,17 @@
-//Written by MAX (Created 20-06-2022)
+// Written by MAX (Created 20-06-2022)
 
-//Features : Main program for Spresense
+// Features : Main program for Spresense
 
 //--------------------------------------------------------//
 
-//files created by me(max12345)
-#include "Spresense_Pin_Mapping.h"
-#include "Spresense_Init.h"
-#include "Spresense_Tool.h"
+#define from_MAX 12345
+
+//--------------------------------------------------------//
+
+// Files created by me(max12345)
+#include "Spresense_Include_List.h"
 #include "Spresense_Test.h"
-#include "Spresense_Global_Var_Def.h"
-#include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
-//files from libraries
+// Files from libraries
 #include <Arduino.h>
 #include <MP.h>
 
@@ -19,33 +19,31 @@
 #include <VL53L1X.h>
 #include <Wire.h>
 
-#define from_MAX 12345
-
 //--------------------------------------------------------//
 
-//DIST Sensors Variables
+// Global Variables
+
+// -> DIST Sensors Variables
 VL53L1X Dist_sensor [8];
 
-//--------------------------------------------------------//
-
-//PikaPika Variables
+// -> PikaPika Variables
 bool PikaPika_light_sensor [8] = {false, false, false, false, false, false, false, false};
 uint64_t*** PikaPika_detected_timestamp = new uint64_t** [8];
 
 //--------------------------------------------------------//
 
-//FUNCTION Declaration
+// Functions Declaration
 
 //--------------------------------------------------------//
 
-//For TESTING
+// For TESTING
 
 //--------------------------------------------------------//
 
-//MAIN PROGRAM
+// MAIN PROGRAM
 void setup() {
 
-    //Spresense Init
+    // Spresense Init
     Onboard_LED_Init();
     I2C_Init();
     Dist_Sensor_Init();
@@ -55,11 +53,11 @@ void setup() {
     Finish_Init_LED_Flash();
     Serial.println("Init finished successfully");
     
-    //TEST FUNCTION
+    // TEST FUNCTION
     test_init();
 }
 void loop() {
     
-    //TEST FUNCTION
+    // TEST FUNCTION
     test_loop();
 }

@@ -1,6 +1,6 @@
-//Written by MAX (Created 31-08-2022)
+// Written by MAX (Created 31-08-2022)
 
-//Features : Available Tasklist for Spresense SubCore 1
+// Features : Available Tasklist for Spresense SubCore 1
 
 //--------------------------------------------------------//
 
