@@ -7,37 +7,85 @@
 #include "Spresense_PikaPika_Interrupt.h"
 #include "Spresense_Include_List.h"
 
+uint64_t PikaPika_detected_timestamp[PIKAPIKA_SENSOR_COUNT] = {0,0,0,0,0,0,0,0};
+
+bool ison=false;
+void blink_demo(){
+    ison = 1-ison;
+    digitalWrite(INSIDE_LED, ison);
+}
+
 void PikaPika_Int_Handler_0(){
-    dphi[0] = mod_varphi - PI;
-    PikaPika_light_sensor_life[0] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[0] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[0] = mod_varphi - PI;
+        PikaPika_light_sensor_life[0] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 void PikaPika_Int_Handler_1(){
-    dphi[1] = mod_varphi - PI;
-    PikaPika_light_sensor_life[1] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[1] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[1] = mod_varphi - PI;
+        PikaPika_light_sensor_life[1] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 void PikaPika_Int_Handler_2(){
-    dphi[2] = mod_varphi - PI;
-    PikaPika_light_sensor_life[2] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[2] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[2] = mod_varphi - PI;
+        PikaPika_light_sensor_life[2] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 void PikaPika_Int_Handler_3(){
-    dphi[3] = mod_varphi - PI;
-    PikaPika_light_sensor_life[3] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[3] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[3] = mod_varphi - PI;
+        PikaPika_light_sensor_life[3] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 void PikaPika_Int_Handler_4(){
-    dphi[4] = mod_varphi - PI;
-    PikaPika_light_sensor_life[4] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[4] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[4] = mod_varphi - PI;
+        PikaPika_light_sensor_life[4] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 void PikaPika_Int_Handler_5(){
-    dphi[5] = mod_varphi - PI;
-    PikaPika_light_sensor_life[5] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[5] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[5] = mod_varphi - PI;
+        PikaPika_light_sensor_life[5] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 void PikaPika_Int_Handler_6(){
-    dphi[6] = mod_varphi - PI;
-    PikaPika_light_sensor_life[6] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[6] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[6] = mod_varphi - PI;
+        PikaPika_light_sensor_life[6] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 void PikaPika_Int_Handler_7(){
-    dphi[7] = mod_varphi - PI;
-    PikaPika_light_sensor_life[7] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+    uint64_t now_millis = millis();
+    if (now_millis - PikaPika_detected_timestamp[7] > PIKAPIKA_MIN_INTERRUPT_INTERVAL)
+    {
+        dphi[7] = mod_varphi - PI;
+        PikaPika_light_sensor_life[7] = PIKAPIKA_LIGHT_SENSOR_LIFETIME;
+        blink_demo();
+    }
 }
 
 /* Interrupt Functions for TESTING

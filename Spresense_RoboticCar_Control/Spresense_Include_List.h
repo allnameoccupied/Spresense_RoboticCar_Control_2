@@ -7,6 +7,10 @@
 #ifndef SPRESENSE_INCLUDE_LIST_H
 #define SPRESENSE_INCLUDE_LIST_H
 
+#include <Arduino.h>
+#include <MP.h>
+#include <Wire.h>
+
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Pin_Mapping.h"
 #include "Spresense_FFT_Param.h"
@@ -16,9 +20,5 @@
 
 #include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
 #include "Spresense_SubCore_2/Spresense_SubCore_2_TaskList.h"
-
-#include <Arduino.h>
-#include <MP.h>
-#include <Wire.h>
 
 #endif

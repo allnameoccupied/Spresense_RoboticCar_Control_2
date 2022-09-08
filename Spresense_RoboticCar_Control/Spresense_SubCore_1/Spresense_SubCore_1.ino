@@ -10,9 +10,7 @@
 //--------------------------------------------------------//
 
 #include "Spresense_SubCore_1_TaskList.h"
-// #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Pin_Mapping.h"
-// #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Tool.h"
-// #include "C:\Users\Max\Documents\Workspace\Spresense_RoboticCar_Control_2\Spresense_RoboticCar_Control\Spresense_Global_Var_Def.h"
+#include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"
 
 #include <Arduino.h>
 #include <MP.h>

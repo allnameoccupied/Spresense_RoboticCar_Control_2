@@ -11,8 +11,7 @@
 #ifndef SPRESENSE_TEST_H
 #define SPRESENSE_TEST_H
 
-#include "Spresense_Global_Var_Def.h"
-#include "Spresense_Pin_Mapping.h"
+#include "Spresense_Include_List.h"
 #include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
 
 #include <Arduino.h>
@@ -34,7 +33,7 @@ extern VL53L1X Dist_sensor [8];
 
 // Functions Declaration
 void i2c_detect();
-void FFT_PikaPika_Routine();
+unsigned int FFT_PikaPika_Routine();
 
 //--------------------------------------------------------//
 
@@ -50,8 +49,10 @@ void test_init(){
 void test_loop(){
   uint8_t msgid;
   uint32_t recv;
-  int ret = MP.Recv(&msgid, &recv, SUBCORE_2_FFT_ID);
-  if ((msgid == C2_T1_NO_PEAK)&&(recv == 1)){  // ピーク検知失敗
+  // Serial.println("qwer");
+  // int ret = MP.Recv(&msgid, &recv, SUBCORE_2_FFT_ID);
+  // Serial.println("asdf");
+  if ((msgid == C2_T1_NO_PEAK) && (recv == C2_T1_NO_PEAK)){  // ピーク検知失敗
     is_Self_Excitation = true;  // 自励処理
   }
 
@@ -61,7 +62,7 @@ int PikaPika_LED_countdown = 0;
 int FFT_countdown = FFT_PROCESS_PERIOD_US;
 double last_phi = 0.0;
 double last_mod_varphi = 0.0;
-void FFT_PikaPika_Routine(){
+unsigned int FFT_PikaPika_Routine(){
   //******** 位相更新 ***********//     楕円型（振動相互作用）
   phi_bar += Omega_0 * dt;    // 進行位相は等角速度
   phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
@@ -111,8 +112,10 @@ void FFT_PikaPika_Routine(){
   FFT_countdown--;
   if (FFT_countdown == 0)
   {
-    MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT, SUBCORE_2_FFT_ID));
+    MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
   }
+
+  return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 }
 //*/
 

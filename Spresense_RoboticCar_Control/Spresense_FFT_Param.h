@@ -9,12 +9,21 @@
 
 #include "Spresense_Include_List.h"
 
+/* Use CMSIS library */
+#define ARM_MATH_CM4
+#define __FPU_PRESENT 1U
+#include <cmsis/arm_math.h>
+
+//--------------------------------------------------------//
+
 // FFT Hyperparameter
 #define FFT_MSG_SCALE       10000.0
 #define FFT_MIDSHIFT        100000000.0
+#define FFT_LEN             256
+#define FFT_MAX_CHANNEL_NUM 1
 
 // FFT Parameters
-#define dt                  FFT_TIME_RESOLUTION * FFT_UPDATE_PERIOD
+#define dt                  FFT_TIME_RESOLUTION * FFT_UPDATE_PERIOD_US
 #define Omega_0             20.0            // 固有角速度 [rad\s]（振動）
 #define kappa               0.5             // 結合強度（振動型）
 #define my_gamma            0.20            // 粘性係数
