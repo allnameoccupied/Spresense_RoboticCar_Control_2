@@ -48,13 +48,12 @@ void test_init(){
 }
 void test_loop(){
   uint8_t msgid;
-  uint32_t recv;
-  // Serial.println("qwer");
-  // int ret = MP.Recv(&msgid, &recv, SUBCORE_2_FFT_ID);
-  // Serial.println("asdf");
-  if ((msgid == C2_T1_NO_PEAK) && (recv == C2_T1_NO_PEAK)){  // ピーク検知失敗
+  uint32_t msg;
+  int ret = MP.Recv(&msgid, &msg, SUBCORE_2_FFT_ID);
+  if ((msgid == C2_T1_NO_PEAK) && (msg == C2_T1_NO_PEAK)){  // ピーク検知失敗
+    MPLog("now self excite\n");
     is_Self_Excitation = true;  // 自励処理
-  }
+  }  
 
   delay(20);
 }
@@ -112,6 +111,7 @@ unsigned int FFT_PikaPika_Routine(){
   FFT_countdown--;
   if (FFT_countdown == 0)
   {
+    FFT_countdown = FFT_PROCESS_PERIOD_US;
     MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
   }
 

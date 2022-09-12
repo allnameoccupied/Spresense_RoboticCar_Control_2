@@ -71,12 +71,25 @@ void loop(void){
             }
             length_estimate = length_estimation(f_peak);    //TODO what to do with the result
             MPLog("Length Estimate : %5.5f\n", length_estimate);
+            // static bool temp = true;
+            // if (temp)
+            // {
+            //     for (int i = 0; i < FFT_LEN; i++)
+            //     {
+            //         MPLog("%5.5f\n", FFT_result[i]);
+            //     }
+            //     temp = false;
+            // }
         } else {
             FFT_countdown--;
         }
         break;
     }
     case C2_T1_NO_PEAK:{
+        // Just placeholder, C2_T1_NO_PEAK is for sending back to Main core
+        break;
+    }
+    case C2_T2_REPORT_FFT_RESULT:{
         // Just placeholder, C2_T1_NO_PEAK is for sending back to Main core
         break;
     }
