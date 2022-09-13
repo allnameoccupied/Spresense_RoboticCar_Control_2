@@ -9,6 +9,5 @@
 
 #define C2_T0_FFT                       0
 #define C2_T1_NO_PEAK                   1
-#define C2_T2_REPORT_FFT_RESULT         2
 
 #endif

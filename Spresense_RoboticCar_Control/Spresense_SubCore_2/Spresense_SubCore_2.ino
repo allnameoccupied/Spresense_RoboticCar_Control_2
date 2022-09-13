@@ -26,9 +26,10 @@ bool fft_init();
 
 arm_rfft_fast_instance_f32 FFT_instance;
 float       phi_buffer[FFT_LEN];
+float       input_buffer[FFT_LEN];
 float       output_buffer[FFT_LEN];
 float       FFT_result[FFT_LEN];
-uint16_t    FFT_countdown = FFT_LEN;
+uint16_t    FFT_countdown_sub2 = FFT_LEN;
 float       f_peak;
 float       length_estimate;
 
@@ -58,11 +59,15 @@ void loop(void){
             phi_buffer[i] = phi_buffer[i-1];
         }
         phi_buffer[0] = temp_phi;
-
-        if (FFT_countdown == 0)
+        for (int i = 0; i < FFT_LEN-1; i++)
         {
-            FFT_countdown = 32;
-            arm_rfft_fast_f32(&FFT_instance, phi_buffer, output_buffer, 0);
+            input_buffer[i] = phi_buffer[i];
+        }
+        
+        if (FFT_countdown_sub2 == 0)
+        {
+            FFT_countdown_sub2 = 32;
+            arm_rfft_fast_f32(&FFT_instance, input_buffer, output_buffer, 0);
             arm_cmplx_mag_f32(output_buffer, FFT_result, FFT_LEN/2);
             f_peak = get_peak_frequency(FFT_result);
             if (f_peak < 0) // 検出失敗
@@ -70,26 +75,23 @@ void loop(void){
                 MP.Send(C2_T1_NO_PEAK, C2_T1_NO_PEAK);  // メインコアに失敗を通報
             }
             length_estimate = length_estimation(f_peak);    //TODO what to do with the result
-            MPLog("Length Estimate : %5.5f\n", length_estimate);
-            // static bool temp = true;
-            // if (temp)
+            MPLog("Length Estimate : %4.2f\n", length_estimate);
+
+            // static int temp = 5;
+            // if (temp>0)
             // {
             //     for (int i = 0; i < FFT_LEN; i++)
             //     {
             //         MPLog("%5.5f\n", FFT_result[i]);
             //     }
-            //     temp = false;
+            //     temp--;
             // }
         } else {
-            FFT_countdown--;
+            FFT_countdown_sub2--;
         }
         break;
     }
     case C2_T1_NO_PEAK:{
-        // Just placeholder, C2_T1_NO_PEAK is for sending back to Main core
-        break;
-    }
-    case C2_T2_REPORT_FFT_RESULT:{
         // Just placeholder, C2_T1_NO_PEAK is for sending back to Main core
         break;
     }
@@ -98,7 +100,7 @@ void loop(void){
     }
 }
 
-float get_peak_frequency(float* FFT_result){
+float get_peak_frequency(float* FFT_result_inScope){
     float Ts = 0.14f;
     float g_fs = 1.0f/Ts;
     uint32_t index = 0;
@@ -107,30 +109,33 @@ float get_peak_frequency(float* FFT_result){
     float peakFs;
 
     for (int i = 1; i < FFT_LEN/2; i++){ // ピーク候補から0Hzは除外
-        if( (FFT_result[i] > FFT_result[i-1]) && (FFT_result[i+1] < FFT_result[i]) ){ // 極大値
-            if(FFT_result[i] > PEAK_POWER_THRESHOLD){ // 閾値以上なら有効
+        if( (FFT_result_inScope[i] > FFT_result_inScope[i-1]) && (FFT_result_inScope[i+1] < FFT_result_inScope[i]) ){ // 極大値
+            if(FFT_result_inScope[i] > PEAK_POWER_THRESHOLD){ // 閾値以上なら有効
                 index = i;
                 break;  // break if found
             }
         }
     }
-    if (index == 0)
+    if (index == 0)  // ピーク検出失敗時，-1を返す
     {
         return -1;
     }
     
-    delta = 0.5 * (FFT_result[index-1] - FFT_result[index+1])
-            / (FFT_result[index-1] + FFT_result[index+1] - (2.0f * FFT_result[index]));
+    delta = 0.5 * (FFT_result_inScope[index-1] - FFT_result_inScope[index+1])
+            / (FFT_result_inScope[index-1] + FFT_result_inScope[index+1] - (2.0f * FFT_result_inScope[index]));
     peakFs = (index + delta) * g_fs / (FFT_LEN-1);
+
+    MPLog("index : %d\n", index);
+    MPLog("peakFs : %4.2f\n", peakFs);
 
     return peakFs;
 }
 
-float length_estimation(float f_peak){
-    if (f_peak<=0){
+float length_estimation(float f_peak_inScope){
+    if (f_peak_inScope<=0){
         return -1;
     }
-    return 0.5f*sqrt(kappa)/f_peak;  // l = sqrt(kappa)/(2*f_peak)
+    return 0.5f*sqrt(kappa)/f_peak_inScope;  // l = sqrt(kappa)/(2*f_peak)
 }
 
 bool fft_init(){

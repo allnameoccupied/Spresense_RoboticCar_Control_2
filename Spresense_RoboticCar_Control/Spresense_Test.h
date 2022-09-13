@@ -44,10 +44,10 @@ void test_init(){
     MPLog("MP.begin(%d) error = %d\n", SUBCORE_2_FFT_ID, ret);
   }
 
-  attachTimerInterrupt(FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
+  attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
 }
 void test_loop(){
-  uint8_t msgid;
+  int8_t msgid;
   uint32_t msg;
   int ret = MP.Recv(&msgid, &msg, SUBCORE_2_FFT_ID);
   if ((msgid == C2_T1_NO_PEAK) && (msg == C2_T1_NO_PEAK)){  // ピーク検知失敗
