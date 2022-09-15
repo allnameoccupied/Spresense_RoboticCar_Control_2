@@ -62,7 +62,7 @@ int FFT_countdown = FFT_PROCESS_PERIOD_US;
 double last_phi = 0.0;
 double last_mod_varphi = 0.0;
 unsigned int FFT_PikaPika_Routine(){
-  //******** 位相更新 ***********//     楕円型（振動相互作用）
+  //******** 位相更新 ***********     楕円型（振動相互作用）
   phi_bar += Omega_0 * dt;    // 進行位相は等角速度
   phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
   is_Self_Excitation = false;   // 一度行ったら自励はオフ
@@ -74,6 +74,14 @@ unsigned int FFT_PikaPika_Routine(){
     sum_dphi += dphi[i];
     adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * GAMMA_CONST_2;
   }
+  static int count=0;
+  if (count ==100)
+  {
+    count =0;
+    MPLog("%5.5f\n", phi);
+  } else{
+    count++;
+  }
   c_fft = adaptive_gamma * 0.5 * dt + 1;
   double temp_phi = ( 2 * phi
                       + (adaptive_gamma * dt * 0.5 - 1) * last_phi
@@ -81,9 +89,9 @@ unsigned int FFT_PikaPika_Routine(){
   last_phi = phi;
   phi = temp_phi;
   varphi = phi_bar + phi;
-  //******** 位相更新ここまで********//
+  //******** 位相更新ここまで********
 
-  //******** 2pi周期性と発光の処理********//
+  //******** 2pi周期性と発光の処理********
   mod_varphi = fmod(varphi, 2*PI);
   if ((mod_varphi >= PI) && (last_mod_varphi < PI))
   {
@@ -107,7 +115,7 @@ unsigned int FFT_PikaPika_Routine(){
     digitalWrite(PIKAPIKA_LED, LOW);
   }
   
-  //****** サブコアへの位相通知処理 *********//
+  //****** サブコアへの位相通知処理 *********
   FFT_countdown--;
   if (FFT_countdown == 0)
   {

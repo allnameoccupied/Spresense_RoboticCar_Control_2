@@ -74,16 +74,17 @@ void loop(void){
             {
                 MP.Send(C2_T1_NO_PEAK, C2_T1_NO_PEAK);  // メインコアに失敗を通報
             }
-            length_estimate = length_estimation(f_peak);    //TODO what to do with the result
-            MPLog("Length Estimate : %4.2f\n", length_estimate);
+            length_estimate = length_estimation(f_peak);
+            // MPLog("Length Estimate : %4.2f\n", length_estimate);
 
-            // static int temp = 5;
-            // if (temp>0)
+            // static int temp = 50;
+            // if (temp==0)
             // {
             //     for (int i = 0; i < FFT_LEN; i++)
             //     {
             //         MPLog("%5.5f\n", FFT_result[i]);
             //     }
+            // }else{
             //     temp--;
             // }
         } else {
@@ -125,8 +126,8 @@ float get_peak_frequency(float* FFT_result_inScope){
             / (FFT_result_inScope[index-1] + FFT_result_inScope[index+1] - (2.0f * FFT_result_inScope[index]));
     peakFs = (index + delta) * g_fs / (FFT_LEN-1);
 
-    MPLog("index : %d\n", index);
-    MPLog("peakFs : %4.2f\n", peakFs);
+    // MPLog("index : %d\n", index);
+    // MPLog("peakFs : %4.2f\n", peakFs);
 
     return peakFs;
 }
