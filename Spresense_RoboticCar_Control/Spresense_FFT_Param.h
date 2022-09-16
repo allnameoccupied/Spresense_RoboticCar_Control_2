@@ -29,8 +29,8 @@
 #define my_gamma            0.20            // 粘性係数
 #define PEAK_POWER_THRESHOLD        3.0     // 観測している位相のピークパワーがこれを下回ったら検出扱いにしない
 #define SELF_EXITATION_INTENSITY    2.0     // 自励入力の大きさ
-#define GAMMA_CONST_1       0.035          // 動的粘性の定数項
-#define GAMMA_CONST_2       0.035          // 動的粘性のエッジ数に比例する項
+#define GAMMA_CONST_1       0.02825          // 動的粘性の定数項                      //TODO tune this two var
+#define GAMMA_CONST_2       0.02825          // 動的粘性のエッジ数に比例する項
 
 // FFT Variables
 double  mod_varphi          = 0.0;

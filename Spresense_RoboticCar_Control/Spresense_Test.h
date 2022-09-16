@@ -74,14 +74,6 @@ unsigned int FFT_PikaPika_Routine(){
     sum_dphi += dphi[i];
     adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * GAMMA_CONST_2;
   }
-  static int count=0;
-  if (count ==100)
-  {
-    count =0;
-    MPLog("%5.5f\n", phi);
-  } else{
-    count++;
-  }
   c_fft = adaptive_gamma * 0.5 * dt + 1;
   double temp_phi = ( 2 * phi
                       + (adaptive_gamma * dt * 0.5 - 1) * last_phi
@@ -90,6 +82,15 @@ unsigned int FFT_PikaPika_Routine(){
   phi = temp_phi;
   varphi = phi_bar + phi;
   //******** 位相更新ここまで********
+
+  // static int count=0;
+  // if (count ==500)
+  // {
+  //   count =0;
+  //   MPLog("%5.5f\n", phi);
+  // } else{
+  //   count++;
+  // }
 
   //******** 2pi周期性と発光の処理********
   mod_varphi = fmod(varphi, 2*PI);

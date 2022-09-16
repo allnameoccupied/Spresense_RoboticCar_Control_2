@@ -77,16 +77,16 @@ void loop(void){
             length_estimate = length_estimation(f_peak);
             // MPLog("Length Estimate : %4.2f\n", length_estimate);
 
-            // static int temp = 50;
-            // if (temp==0)
-            // {
-            //     for (int i = 0; i < FFT_LEN; i++)
-            //     {
-            //         MPLog("%5.5f\n", FFT_result[i]);
-            //     }
-            // }else{
-            //     temp--;
-            // }
+            static int temp = 10;
+            if (temp==0)
+            {
+                for (int i = 0; i < FFT_LEN; i++)
+                {
+                    MPLog("%5.5f\n", FFT_result[i]);
+                }
+            }
+            temp--;
+
         } else {
             FFT_countdown_sub2--;
         }
