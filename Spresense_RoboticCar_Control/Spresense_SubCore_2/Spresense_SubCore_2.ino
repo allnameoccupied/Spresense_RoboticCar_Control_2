@@ -18,9 +18,12 @@
 //--------------------------------------------------------//
 
 // Functions Declaration
-float get_peak_frequency(float* FFT_result);
-float length_estimation(float f_peak);
+float get_peak_frequency(float* FFT_result_inScope);
+float length_estimation(float f_peak_inScope);
 bool fft_init();
+
+float* cal_power_spectrum(float* FFT_result_inScope);   // really need(?)
+uint8_t inner_outer(float* power_spectrum_inScope);
 
 //--------------------------------------------------------//
 
@@ -29,9 +32,22 @@ float       phi_buffer[FFT_LEN];
 float       input_buffer[FFT_LEN];
 float       output_buffer[FFT_LEN];
 float       FFT_result[FFT_LEN];
+float       power_spectrum[FFT_LEN/2];
 uint16_t    FFT_countdown_sub2 = FFT_LEN;
 float       f_peak;
 float       length_estimate;
+
+float       dx_phi_buffer[FFT_LEN];
+float       dx_input_buffer[FFT_LEN];
+float       dx_output_buffer[FFT_LEN];
+float       dx_FFT_result[FFT_LEN];
+float       dx_power_spectrum[FFT_LEN/2];
+
+float       dy_phi_buffer[FFT_LEN];
+float       dy_input_buffer[FFT_LEN];
+float       dy_output_buffer[FFT_LEN];
+float       dy_FFT_result[FFT_LEN];
+float       dy_power_spectrum[FFT_LEN/2];
 
 void setup(void){
     MP.begin();
@@ -53,6 +69,7 @@ void loop(void){
     switch (msgid)
     {
     case C2_T0_FFT:{
+        // get phi
         float temp_phi = ((float)msgdata-FFT_MIDSHIFT)/FFT_MSG_SCALE;
         for (int i = FFT_LEN-1; i > 0; i--)
         {
@@ -63,29 +80,81 @@ void loop(void){
         {
             input_buffer[i] = phi_buffer[i];
         }
+
+        // get dx_phi
+        float temp_dx_phi;
+        MP.Recv(&msgid, &msgdata);
+        if (msgid == C2_T2_DXPHI)
+        {
+            temp_dx_phi = ((float)msgdata-FFT_MIDSHIFT)/FFT_MSG_SCALE;
+        }
+        for (int i = FFT_LEN-1; i > 0; i--)
+        {
+            dx_phi_buffer[i] = dx_phi_buffer[i-1];
+        }
+        dx_phi_buffer[0] = temp_dx_phi;
+        for (int i = 0; i < FFT_LEN-1; i++)
+        {
+            dx_input_buffer[i] = dx_phi_buffer[i];
+        }
         
+        //get dy_phi
+        float temp_dy_phi;
+        MP.Recv(&msgid, &msgdata);
+        if (msgid == C2_T3_DYPHI)
+        {
+            temp_dy_phi = ((float)msgdata-FFT_MIDSHIFT)/FFT_MSG_SCALE;
+        }
+        for (int i = FFT_LEN-1; i > 0; i--)
+        {
+            dy_phi_buffer[i] = dy_phi_buffer[i-1];
+        }
+        dy_phi_buffer[0] = temp_dy_phi;
+        for (int i = 0; i < FFT_LEN-1; i++)
+        {
+            dy_input_buffer[i] = dy_phi_buffer[i];
+        }
+        
+        // FFT calculation
         if (FFT_countdown_sub2 == 0)
         {
             FFT_countdown_sub2 = 32;
             arm_rfft_fast_f32(&FFT_instance, input_buffer, output_buffer, 0);
             arm_cmplx_mag_f32(output_buffer, FFT_result, FFT_LEN/2);
+            arm_rfft_fast_f32(&FFT_instance, dx_input_buffer, dx_output_buffer, 0);
+            arm_cmplx_mag_f32(dx_output_buffer, dx_FFT_result, FFT_LEN/2);
+            arm_rfft_fast_f32(&FFT_instance, dy_input_buffer, dy_output_buffer, 0);
+            arm_cmplx_mag_f32(dy_output_buffer, dy_FFT_result, FFT_LEN/2);
             f_peak = get_peak_frequency(FFT_result);
             if (f_peak < 0) // 検出失敗
             {
                 MP.Send(C2_T1_NO_PEAK, C2_T1_NO_PEAK);  // メインコアに失敗を通報
             }
             length_estimate = length_estimation(f_peak);
-            // MPLog("Length Estimate : %4.2f\n", length_estimate);
+            MPLog("Length Estimate : %4.2f\n", length_estimate);
 
-            static int temp = 10;
-            if (temp==0)
-            {
-                for (int i = 0; i < FFT_LEN; i++)
-                {
-                    MPLog("%5.5f\n", FFT_result[i]);
-                }
-            }
-            temp--;
+            // static int temp = 10;
+            // if (temp==0)
+            // {
+            //     MPLog("input buffer");
+            //     for (int i = 0; i < FFT_LEN; i++)
+            //     {
+            //         MPLog("%5.5f\n", input_buffer[i]);
+            //     }
+
+            //     MPLog("output buffer");
+            //     for (int i = 0; i < FFT_LEN; i++)
+            //     {
+            //         MPLog("%5.5f\n", output_buffer[i]);
+            //     }
+
+            //     MPLog("FFT result");
+            //     for (int i = 0; i < FFT_LEN; i++)
+            //     {
+            //         MPLog("%5.5f\n", FFT_result[i]);
+            //     }
+            // }
+            // temp--;
 
         } else {
             FFT_countdown_sub2--;
@@ -96,6 +165,8 @@ void loop(void){
         // Just placeholder, C2_T1_NO_PEAK is for sending back to Main core
         break;
     }
+    // case C2_T2_DXPHI:    // not for here
+    // case C2_T3_DYPHI:    // not for here
     default:
         break;
     }
@@ -137,6 +208,38 @@ float length_estimation(float f_peak_inScope){
         return -1;
     }
     return 0.5f*sqrt(kappa)/f_peak_inScope;  // l = sqrt(kappa)/(2*f_peak)
+}
+
+float* cal_power_spectrum(float* FFT_result_inScope){
+    int half_FFT_LEN = FFT_LEN/2;
+    for (int i = 0; i < half_FFT_LEN; i++)
+    {
+        power_spectrum[i] = FFT_result_inScope[i] * FFT_result_inScope[i] / half_FFT_LEN / half_FFT_LEN;
+    }
+    return power_spectrum;
+}
+
+/* return value:
+   0 = inside
+   1 = x-axis outside
+   2 = y-axis outside
+   3 = xy-axis outside (corner)
+*/
+uint8_t inner_outer(float* power_spectrum_inScope, float* dx_power_spectrum_inScope, float* dy_power_spectrum_inScope){
+    
+    int half_FFT_LEN = FFT_LEN/2;   
+    // int 
+
+    // // assume peak exist
+    // // no threshold requirement
+    // for (int i = 1; i < FFT_LEN/2; i++){ // ピーク候補から0Hzは除外
+    //     if( (FFT_result_inScope[i] > FFT_result_inScope[i-1]) && (FFT_result_inScope[i+1] < FFT_result_inScope[i]) ){ // 極大値
+    //         index = i;
+    //         break;  // break if found
+    //     }
+    // }
+
+    return 0;
 }
 
 bool fft_init(){

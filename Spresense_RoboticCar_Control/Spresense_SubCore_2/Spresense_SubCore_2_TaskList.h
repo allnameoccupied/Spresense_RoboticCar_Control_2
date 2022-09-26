@@ -9,5 +9,7 @@
 
 #define C2_T0_FFT                       0
 #define C2_T1_NO_PEAK                   1
+#define C2_T2_DXPHI                     2
+#define C2_T3_DYPHI                     3
 
 #endif
