@@ -121,8 +121,8 @@ void loop(void){
             FFT_countdown_sub2 = 32;
             arm_rfft_fast_f32(&FFT_instance, input_buffer, output_buffer, 0);
             arm_cmplx_mag_f32(output_buffer, FFT_result, FFT_LEN/2);
-            arm_rfft_fast_f32(&FFT_instance, dx_input_buffer, dx_output_buffer, 0);
-            arm_cmplx_mag_f32(dx_output_buffer, dx_FFT_result, FFT_LEN/2);
+            // arm_rfft_fast_f32(&FFT_instance, dx_input_buffer, dx_output_buffer, 0);
+            // arm_cmplx_mag_f32(dx_output_buffer, dx_FFT_result, FFT_LEN/2);
             arm_rfft_fast_f32(&FFT_instance, dy_input_buffer, dy_output_buffer, 0);
             arm_cmplx_mag_f32(dy_output_buffer, dy_FFT_result, FFT_LEN/2);
             f_peak = get_peak_frequency(FFT_result);
@@ -133,28 +133,46 @@ void loop(void){
             length_estimate = length_estimation(f_peak);
             MPLog("Length Estimate : %4.2f\n", length_estimate);
 
-            // static int temp = 10;
-            // if (temp==0)
-            // {
-            //     MPLog("input buffer");
-            //     for (int i = 0; i < FFT_LEN; i++)
-            //     {
-            //         MPLog("%5.5f\n", input_buffer[i]);
-            //     }
+            static int temp = 0;
+            if (temp==15 || temp==50)
+            {
+                // MPLog("phi input buffer\n");
+                // for (int i = 0; i < FFT_LEN; i++)
+                // {
+                //     MPLog("%5.5f\n", input_buffer[i]);
+                // }
 
-            //     MPLog("output buffer");
-            //     for (int i = 0; i < FFT_LEN; i++)
-            //     {
-            //         MPLog("%5.5f\n", output_buffer[i]);
-            //     }
+                // MPLog("phi output buffer\n");
+                // for (int i = 0; i < FFT_LEN/2; i++)
+                // {
+                //     MPLog("%5.5f        %5.5f\n", output_buffer[2*i], output_buffer[2*i+1]);
+                // }
 
-            //     MPLog("FFT result");
-            //     for (int i = 0; i < FFT_LEN; i++)
-            //     {
-            //         MPLog("%5.5f\n", FFT_result[i]);
-            //     }
-            // }
-            // temp--;
+                MPLog("phi FFT result\n");
+                for (int i = 0; i < FFT_LEN/2; i++)
+                {
+                    MPLog("%5.5f\n", FFT_result[i]);
+                }
+
+                // MPLog("dy phi input buffer\n");
+                // for (int i = 0; i < FFT_LEN; i++)
+                // {
+                //     MPLog("%5.5f\n", dy_input_buffer[i]);
+                // }
+
+                // MPLog("dy phi output buffer\n");
+                // for (int i = 0; i < FFT_LEN/2; i++)
+                // {
+                //     MPLog("%5.5f        %5.5f\n", dy_output_buffer[2*i], dy_output_buffer[2*i+1]);
+                // }
+
+                MPLog("dy phi FFT result\n");
+                for (int i = 0; i < FFT_LEN/2; i++)
+                {
+                    MPLog("%5.5f\n", dy_FFT_result[i]);
+                }
+            }
+            temp++;
 
         } else {
             FFT_countdown_sub2--;

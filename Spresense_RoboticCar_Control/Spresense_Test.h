@@ -109,20 +109,24 @@ unsigned int FFT_PikaPika_Routine(){
     {
       dyi += abs(sin(PikaPika_radian[i]));
     }
-  }
-  for (int i = 0; i < 8; i++)
-  {
     dy_phi += -1 * dphi[i] * sin(PikaPika_radian[i]);
   }
-  dy_phi = dy_phi / dyi;
+  if (dyi == 0.0)
+  {
+    dy_phi = 0;
+  } else {
+    // dy_phi = dy_phi / dyi;
+    dy_phi = dy_phi / 1.0;
+  }
   //******** dphi/dx & dphi/dy の計算ここまで********
 
   static int count=0;
-  if (count == 50000)
+  if (count == 100000)
   {
-    count = 50001;
-    // MPLog("%5.5f\n", dy_phi);
-    // MPLog("%5.5f\n", dyi);
+    // count = 0;
+    count = 100001;
+    MPLog("%5.5f\n", dy_phi);
+    MPLog("%5.5f\n", dyi);
     // // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(sin(PikaPika_radian[i])));}
     // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life[i] > 0 %d\n", PikaPika_light_sensor_life[i] > 0);}
     // for (int i = 0; i < 8; i++){MPLog("dphi %5.5f\n", dphi[i]);}
@@ -131,6 +135,7 @@ unsigned int FFT_PikaPika_Routine(){
     // MPLog("adaptive_gamma %5.5f\n", adaptive_gamma);
     // MPLog("phi %5.5f\n", phi);
     // MPLog("varphi %5.5f\n", varphi);
+    MPLog("\n");
   } else{
     count++;
   }
