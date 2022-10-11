@@ -12,7 +12,7 @@ uint64_t PikaPika_detected_timestamp[PIKAPIKA_SENSOR_COUNT] = {0,0,0,0,0,0,0,0};
 bool ison=false;
 void blink_demo(){
     ison = 1-ison;
-    digitalWrite(INSIDE_LED, ison);
+    // digitalWrite(INSIDE_LED, ison);
 }
 
 void PikaPika_Int_Handler_0(){

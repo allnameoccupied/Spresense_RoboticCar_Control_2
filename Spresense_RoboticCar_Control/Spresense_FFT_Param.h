@@ -19,18 +19,27 @@
 // FFT Hyperparameter
 #define FFT_MSG_SCALE       10000.0
 #define FFT_MIDSHIFT        100000000.0
-#define FFT_LEN             256
+// #define FFT_LEN             256
+#define FFT_LEN             512
 #define FFT_MAX_CHANNEL_NUM 1
 
 // FFT Parameters
 #define dt                  FFT_TIME_RESOLUTION * FFT_UPDATE_PERIOD_US
+// #define Omega_0             20.0            // 固有角速度 [rad\s]（振動）
 #define Omega_0             20.0            // 固有角速度 [rad\s]（振動）
-#define kappa               0.5             // 結合強度（振動型）
+// #define kappa               0.65             // 結合強度（振動型）
+#define kappa               2.0             // 結合強度（振動型）
 #define my_gamma            0.20            // 粘性係数
-#define PEAK_POWER_THRESHOLD        3.0     // 観測している位相のピークパワーがこれを下回ったら検出扱いにしない
+// #define PEAK_POWER_THRESHOLD        3.0     // 観測している位相のピークパワーがこれを下回ったら検出扱いにしない
+#define PEAK_POWER_THRESHOLD        0.0     // 観測している位相のピークパワーがこれを下回ったら検出扱いにしない
 #define SELF_EXITATION_INTENSITY    2.0     // 自励入力の大きさ
+// #define GAMMA_CONST_1       0.09            // 動的粘性の定数項                      //TODO tune this two var
+// #define GAMMA_CONST_2       0.09            // 動的粘性のエッジ数に比例する項
 #define GAMMA_CONST_1       0.09            // 動的粘性の定数項                      //TODO tune this two var
 #define GAMMA_CONST_2       0.09            // 動的粘性のエッジ数に比例する項
+
+// #define DYPHI_MULTIPLIER    0.525
+#define DYPHI_MULTIPLIER    0.5
 
 // FFT Variables
 double  mod_varphi          = 0.0;

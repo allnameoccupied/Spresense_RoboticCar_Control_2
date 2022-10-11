@@ -51,7 +51,7 @@ void test_loop(){
   uint32_t msg;
   int ret = MP.Recv(&msgid, &msg, SUBCORE_2_FFT_ID);
   if ((msgid == C2_T1_NO_PEAK) && (msg == C2_T1_NO_PEAK)){  // ピーク検知失敗
-    MPLog("now self excite\n");
+    // MPLog("now self excite\n");
     is_Self_Excitation = true;  // 自励処理
   }  
 
@@ -109,24 +109,26 @@ unsigned int FFT_PikaPika_Routine(){
     {
       dyi += abs(sin(PikaPika_radian[i]));
     }
-    dy_phi += -1 * dphi[i] * sin(PikaPika_radian[i]);
+    // dy_phi += -1 * dphi[i] * sin(PikaPika_radian[i]);
+    dy_phi += DYPHI_MULTIPLIER * -1.0 * dphi[i] * sin(PikaPika_radian[i]);
   }
   if (dyi == 0.0)
   {
     dy_phi = 0;
   } else {
-    // dy_phi = dy_phi / dyi;
-    dy_phi = dy_phi / 1.0;
+    dy_phi = dy_phi / dyi;
+    // dy_phi = dy_phi / 1.0;
   }
   //******** dphi/dx & dphi/dy の計算ここまで********
 
   static int count=0;
+  // if (count == 10000)
   if (count == 100000)
   {
     // count = 0;
     count = 100001;
-    MPLog("%5.5f\n", dy_phi);
-    MPLog("%5.5f\n", dyi);
+    // MPLog("%5.5f\n", dy_phi);
+    // MPLog("%5.5f\n", dyi);
     // // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(sin(PikaPika_radian[i])));}
     // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life[i] > 0 %d\n", PikaPika_light_sensor_life[i] > 0);}
     // for (int i = 0; i < 8; i++){MPLog("dphi %5.5f\n", dphi[i]);}
@@ -135,7 +137,7 @@ unsigned int FFT_PikaPika_Routine(){
     // MPLog("adaptive_gamma %5.5f\n", adaptive_gamma);
     // MPLog("phi %5.5f\n", phi);
     // MPLog("varphi %5.5f\n", varphi);
-    MPLog("\n");
+    // MPLog("\n");
   } else{
     count++;
   }
@@ -173,7 +175,7 @@ unsigned int FFT_PikaPika_Routine(){
   {
     FFT_countdown = FFT_PROCESS_PERIOD_US;
     MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-    MP.Send(C2_T2_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
+    // MP.Send(C2_T2_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
     MP.Send(C2_T3_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
   }
 

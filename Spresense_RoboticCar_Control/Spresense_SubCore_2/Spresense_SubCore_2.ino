@@ -22,8 +22,8 @@ float get_peak_frequency(float* FFT_result_inScope);
 float length_estimation(float f_peak_inScope);
 bool fft_init();
 
-float* cal_power_spectrum(float* FFT_result_inScope);   // really need(?)
-uint8_t inner_outer(float* power_spectrum_inScope);
+// float* cal_power_spectrum(float* FFT_result_inScope);   // really need(?)
+uint8_t inner_outer();
 
 //--------------------------------------------------------//
 
@@ -76,27 +76,27 @@ void loop(void){
             phi_buffer[i] = phi_buffer[i-1];
         }
         phi_buffer[0] = temp_phi;
-        for (int i = 0; i < FFT_LEN-1; i++)
+        for (int i = 0; i < FFT_LEN; i++)
         {
             input_buffer[i] = phi_buffer[i];
         }
 
         // get dx_phi
-        float temp_dx_phi;
-        MP.Recv(&msgid, &msgdata);
-        if (msgid == C2_T2_DXPHI)
-        {
-            temp_dx_phi = ((float)msgdata-FFT_MIDSHIFT)/FFT_MSG_SCALE;
-        }
-        for (int i = FFT_LEN-1; i > 0; i--)
-        {
-            dx_phi_buffer[i] = dx_phi_buffer[i-1];
-        }
-        dx_phi_buffer[0] = temp_dx_phi;
-        for (int i = 0; i < FFT_LEN-1; i++)
-        {
-            dx_input_buffer[i] = dx_phi_buffer[i];
-        }
+        // float temp_dx_phi;
+        // MP.Recv(&msgid, &msgdata);
+        // if (msgid == C2_T2_DXPHI)
+        // {
+        //     temp_dx_phi = ((float)msgdata-FFT_MIDSHIFT)/FFT_MSG_SCALE;
+        // }
+        // for (int i = FFT_LEN-1; i > 0; i--)
+        // {
+        //     dx_phi_buffer[i] = dx_phi_buffer[i-1];
+        // }
+        // dx_phi_buffer[0] = temp_dx_phi;
+        // for (int i = 0; i < FFT_LEN; i++)
+        // {
+        //     dx_input_buffer[i] = dx_phi_buffer[i];
+        // }
         
         //get dy_phi
         float temp_dy_phi;
@@ -110,7 +110,7 @@ void loop(void){
             dy_phi_buffer[i] = dy_phi_buffer[i-1];
         }
         dy_phi_buffer[0] = temp_dy_phi;
-        for (int i = 0; i < FFT_LEN-1; i++)
+        for (int i = 0; i < FFT_LEN; i++)
         {
             dy_input_buffer[i] = dy_phi_buffer[i];
         }
@@ -118,7 +118,7 @@ void loop(void){
         // FFT calculation
         if (FFT_countdown_sub2 == 0)
         {
-            FFT_countdown_sub2 = 32;
+            FFT_countdown_sub2 = 8;
             arm_rfft_fast_f32(&FFT_instance, input_buffer, output_buffer, 0);
             arm_cmplx_mag_f32(output_buffer, FFT_result, FFT_LEN/2);
             // arm_rfft_fast_f32(&FFT_instance, dx_input_buffer, dx_output_buffer, 0);
@@ -131,10 +131,12 @@ void loop(void){
                 MP.Send(C2_T1_NO_PEAK, C2_T1_NO_PEAK);  // メインコアに失敗を通報
             }
             length_estimate = length_estimation(f_peak);
-            MPLog("Length Estimate : %4.2f\n", length_estimate);
+            // MPLog("Length Estimate : %4.2f\n", length_estimate);
+
+            inner_outer();
 
             static int temp = 0;
-            if (temp==15 || temp==50)
+            if (temp==10)
             {
                 // MPLog("phi input buffer\n");
                 // for (int i = 0; i < FFT_LEN; i++)
@@ -148,11 +150,11 @@ void loop(void){
                 //     MPLog("%5.5f        %5.5f\n", output_buffer[2*i], output_buffer[2*i+1]);
                 // }
 
-                MPLog("phi FFT result\n");
-                for (int i = 0; i < FFT_LEN/2; i++)
-                {
-                    MPLog("%5.5f\n", FFT_result[i]);
-                }
+                // MPLog("phi FFT result\n");
+                // for (int i = 0; i < FFT_LEN/2; i++)
+                // {
+                //     MPLog("%5.5f\n", FFT_result[i]);
+                // }
 
                 // MPLog("dy phi input buffer\n");
                 // for (int i = 0; i < FFT_LEN; i++)
@@ -166,11 +168,11 @@ void loop(void){
                 //     MPLog("%5.5f        %5.5f\n", dy_output_buffer[2*i], dy_output_buffer[2*i+1]);
                 // }
 
-                MPLog("dy phi FFT result\n");
-                for (int i = 0; i < FFT_LEN/2; i++)
-                {
-                    MPLog("%5.5f\n", dy_FFT_result[i]);
-                }
+                // MPLog("dy phi FFT result\n");
+                // for (int i = 0; i < FFT_LEN/2; i++)
+                // {
+                //     MPLog("%5.5f\n", dy_FFT_result[i]);
+                // }
             }
             temp++;
 
@@ -228,25 +230,53 @@ float length_estimation(float f_peak_inScope){
     return 0.5f*sqrt(kappa)/f_peak_inScope;  // l = sqrt(kappa)/(2*f_peak)
 }
 
-float* cal_power_spectrum(float* FFT_result_inScope){
-    int half_FFT_LEN = FFT_LEN/2;
-    for (int i = 0; i < half_FFT_LEN; i++)
-    {
-        power_spectrum[i] = FFT_result_inScope[i] * FFT_result_inScope[i] / half_FFT_LEN / half_FFT_LEN;
-    }
-    return power_spectrum;
-}
+//probably no need
+// float* cal_power_spectrum(float* FFT_result_inScope){
+//     int half_FFT_LEN = FFT_LEN/2;
+//     for (int i = 0; i < half_FFT_LEN; i++)
+//     {
+//         power_spectrum[i] = FFT_result_inScope[i] * FFT_result_inScope[i] / half_FFT_LEN / half_FFT_LEN;
+//     }
+//     return power_spectrum;
+// }
 
 /* return value:
    0 = inside
    1 = x-axis outside
    2 = y-axis outside
    3 = xy-axis outside (corner)
-*/
-uint8_t inner_outer(float* power_spectrum_inScope, float* dx_power_spectrum_inScope, float* dy_power_spectrum_inScope){
+*/ //TODO dx direction
+uint8_t inner_outer(){
     
-    int half_FFT_LEN = FFT_LEN/2;   
-    // int 
+    int dx_peak_index = 0;
+    int dy_peak_index = 0;
+    int half_FFT_LEN = FFT_LEN/2;
+    
+    for (int i = 1; i < half_FFT_LEN; i++) // ピーク候補から0Hzは除外
+    {
+        if( (dy_FFT_result[i] > dy_FFT_result[i-1]) && (dy_FFT_result[i] > dy_FFT_result[i+1]) )
+        {
+            if (dy_FFT_result[i] > PEAK_POWER_THRESHOLD)
+            {
+                dy_peak_index = i;
+                MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
+                // MPLog("\n");
+                break;
+            }
+            
+        }
+    }
+
+    if (FFT_result[dy_peak_index] < dy_FFT_result[dy_peak_index])
+    {
+        digitalWrite(OUTSIDE_LED, LOW);
+        digitalWrite(INSIDE_LED, HIGH);
+    } else {
+        digitalWrite(OUTSIDE_LED, HIGH);
+        digitalWrite(INSIDE_LED, LOW);
+    }
+    
+    
 
     // // assume peak exist
     // // no threshold requirement
