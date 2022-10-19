@@ -1,16 +1,13 @@
-//Written by MAX (Created 20-06-2022)
+// Written by MAX (Created 20-06-2022)
 
-//Funtions : Spresense Initialization
+// Features : Spresense Initialization
+
+//--------------------------------------------------------//
 
 #include "Spresense_Init.h"
+#include "Spresense_Include_List.h"
 
-#include "Spresense_Pin_Mapping.h"
-#include "Spresense_Global_Var_Def.h"
-#include "Spresense_Tool.h"
-#include "Spresense_PikaPika_Interrupt.h"
-#include <Wire.h>
-
-//init the 4 onboard LED
+// Init the 4 onboard LED
 void Onboard_LED_Init(){
     pinMode(LED0, OUTPUT);
     pinMode(LED1, OUTPUT);
@@ -18,82 +15,87 @@ void Onboard_LED_Init(){
     pinMode(LED3, OUTPUT);
 }
 
-//init I2C pins & I2C
+// Init I2C
 void I2C_Init(){
     Wire.begin();
     Wire.setClock(TWI_FREQ_400KHZ);
 }
 
-//init Dist sensors pins
+// Init Distance Sensors pins
 extern VL53L1X Dist_sensor [8];
 void Dist_Sensor_Init(){
 
 }
 
-//init PikaPika pins
-extern uint64_t*** PikaPika_detected_timestamp;
+// Init PikaPika pins & variables
 void PIKAPIKA_Init(){
-    pinMode(LED_PIKA, OUTPUT);
+    pinMode(PIKAPIKA_LED, OUTPUT);
     
-    pinMode(LIGHT_PIKA_0, INPUT);
-    pinMode(LIGHT_PIKA_1, INPUT);
-    pinMode(LIGHT_PIKA_2, INPUT);
-    pinMode(LIGHT_PIKA_3, INPUT);
-    pinMode(LIGHT_PIKA_4, INPUT);
-    pinMode(LIGHT_PIKA_5, INPUT);
-    pinMode(LIGHT_PIKA_6, INPUT);
-    pinMode(LIGHT_PIKA_7, INPUT);
+    pinMode(PIKAPIKA_LIGHT_0, INPUT);
+    pinMode(PIKAPIKA_LIGHT_1, INPUT);
+    pinMode(PIKAPIKA_LIGHT_2, INPUT);
+    pinMode(PIKAPIKA_LIGHT_3, INPUT);
+    pinMode(PIKAPIKA_LIGHT_4, INPUT);
+    pinMode(PIKAPIKA_LIGHT_5, INPUT);
+    pinMode(PIKAPIKA_LIGHT_6, INPUT);
+    pinMode(PIKAPIKA_LIGHT_7, INPUT);
 
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_0), PikaPika_Int_Handler_0, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_1), PikaPika_Int_Handler_1, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_2), PikaPika_Int_Handler_2, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_3), PikaPika_Int_Handler_3, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_4), PikaPika_Int_Handler_4, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_5), PikaPika_Int_Handler_5, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_6), PikaPika_Int_Handler_6, FALLING);
-    attachInterrupt(digitalPinToInterrupt(LIGHT_PIKA_7), PikaPika_Int_Handler_7, FALLING);
-
-    for (int i = 0; i < 8; i++)
-    {
-        PikaPika_detected_timestamp[i] = new uint64_t* [5];
-        for (int j = 0; j < 5; j++)
-        {
-            PikaPika_detected_timestamp[i][j] = new uint64_t (0);
-        }
-        
-    }
-    
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_0), PikaPika_Int_Handler_0, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_1), PikaPika_Int_Handler_1, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_2), PikaPika_Int_Handler_2, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_3), PikaPika_Int_Handler_3, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_4), PikaPika_Int_Handler_4, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_5), PikaPika_Int_Handler_5, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_6), PikaPika_Int_Handler_6, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_7), PikaPika_Int_Handler_7, FALLING);    
 }
 
-//init Serial Communication
+// Init Serial Communication
 void Serial_Init(){
     Serial.begin(DEFAULT_BAUD_RATE);
 }
 
-//init Inside/Outside LED pins
+// Init Inside/Outside LED pins
 void InOut_LED_Init(){
     pinMode(INSIDE_LED, OUTPUT);
     pinMode(OUTSIDE_LED, OUTPUT);
+}
+
+// Init SubCores
+void MP_Init(){
+    int ret = MP.begin(SUBCORE_1_GENERAL_ID);
+    if (ret<0) {
+        MPLog("MP.begin(%d) error = %d\n", SUBCORE_1_GENERAL_ID, ret);
+    }
+    ret = MP.begin(SUBCORE_2_FFT_ID);
+    if (ret<0) {
+        MPLog("MP.begin(%d) error = %d\n", SUBCORE_2_FFT_ID, ret);
+    }
+}
+
+// Init FFT related stuff
+void FFT_Init(){
+    attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
 }
 
 //--------------------------------------------------------//
 
 void Finish_Init_LED_Flash(){
     digitalWrite(LED0, HIGH);
-    delay(100);
+    delay(50);
     digitalWrite(LED1, HIGH);
-    delay(100);
+    delay(50);
     digitalWrite(LED2, HIGH);
-    delay(100);
+    delay(50);
     digitalWrite(LED3, HIGH);
-    delay(1000);
+    delay(500);
 
     digitalWrite(LED0, LOW);
-    delay(100);
+    delay(50);
     digitalWrite(LED1, LOW);
-    delay(100);
+    delay(50);
     digitalWrite(LED2, LOW);
-    delay(100);
+    delay(50);
     digitalWrite(LED3, LOW);
-    delay(1000);
+    // delay(500);
 }

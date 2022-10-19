@@ -1,11 +1,11 @@
-//Written by MAX (Created 21-06-2022)
+// Written by MAX (Created 21-06-2022)
 
-//Funtions : PikaPika Interrupt Handler for Spresense
+// Features : PikaPika Interrupt Handler for Spresense
+
+//--------------------------------------------------------//
 
 #ifndef SPRESENSE_PIKAPIKA_INT_HANDLER_H
 #define SPRESENSE_PIKAPIKA_INT_HANDLER_H
-
-#include <Arduino.h>
 
 void PikaPika_Int_Handler_0();
 void PikaPika_Int_Handler_1();

@@ -1,31 +1,35 @@
-//Written by MAX (Created 20-06-2022)
+// Written by MAX (Created 20-06-2022)
 
-//Funtions : Spresense Initialization
+// Features : Spresense Initialization
+
+//--------------------------------------------------------//
 
 #ifndef SPRESENSE_INIT_H
 #define SPRESENSE_INIT_H
 
-#include <Arduino.h>
-#include <VL53L1X.h>
-// #include <Wire.h>
-
-//init the 4 onboard LED
+// Init the 4 onboard LED
 void Onboard_LED_Init();
 
-//init I2C pins & I2C
+// Init I2C
 void I2C_Init();
 
-//init Dist sensors pins
+// Init Distance Sensors pins
 void Dist_Sensor_Init();
 
-//init PikaPika pins
+// Init PikaPika pins & variables
 void PIKAPIKA_Init();
 
-//init Serial Communication
+// Init Serial Communication
 void Serial_Init();
 
-//init Inside/Outside LED pins
+// Init Inside/Outside LED pins
 void InOut_LED_Init();
+
+// Init SubCores
+void MP_Init();
+
+// Init FFT related stuff
+void FFT_Init();
 
 //--------------------------------------------------------//
 
