@@ -8,8 +8,8 @@
 #define SPRESENSE_SUBCORE_2_TASKLIST_H
 
 #define C2_T0_FFT                       0
-#define C2_T1_NO_PEAK                   1
-#define C2_T2_DXPHI                     2
-#define C2_T3_DYPHI                     3
+#define C2_T1_DXPHI                     1
+#define C2_T2_DYPHI                     2
+#define C2_T3_NO_PEAK                   3
 
 #endif

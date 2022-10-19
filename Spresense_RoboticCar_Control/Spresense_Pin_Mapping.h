@@ -46,7 +46,7 @@
 #define PIKAPIKA_LIGHT_7    PIN_D07
 
 // Inside/Outside LED pins
-#define INSIDE_LED          PIN_D18     //GREEN
-#define OUTSIDE_LED         PIN_D19     //RED
+#define INSIDE_LED          PIN_D18     //WHITE         BLUE
+#define OUTSIDE_LED         PIN_D19     //RED           RED
 
 #endif

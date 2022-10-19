@@ -13,6 +13,7 @@
 
 #include "Spresense_Include_List.h"
 #include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
+#include "Spresense_SubCore_2/Spresense_SubCore_2_TaskList.h"
 
 #include <Arduino.h>
 #include <MP.h>
@@ -33,155 +34,16 @@ extern VL53L1X Dist_sensor [8];
 
 // Functions Declaration
 void i2c_detect();
-unsigned int FFT_PikaPika_Routine();
 
 //--------------------------------------------------------//
 
-///* PikaPika FFT test
+/* PikaPika FFT test
 void test_init(){
-  int ret = MP.begin(SUBCORE_2_FFT_ID);
-  if (ret<0) {
-    MPLog("MP.begin(%d) error = %d\n", SUBCORE_2_FFT_ID, ret);
-  }
-
-  attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
 }
 void test_loop(){
-  int8_t msgid;
-  uint32_t msg;
-  int ret = MP.Recv(&msgid, &msg, SUBCORE_2_FFT_ID);
-  if ((msgid == C2_T1_NO_PEAK) && (msg == C2_T1_NO_PEAK)){  // ピーク検知失敗
-    // MPLog("now self excite\n");
-    is_Self_Excitation = true;  // 自励処理
-  }  
-
-  delay(20);
-}
-int PikaPika_LED_countdown = 0;
-int FFT_countdown = FFT_PROCESS_PERIOD_US;
-double last_phi = 0.0;
-double last_mod_varphi = 0.0;
-unsigned int FFT_PikaPika_Routine(){
-  //******** 位相更新 ***********     楕円型（振動相互作用）
-  phi_bar += Omega_0 * dt;    // 進行位相は等角速度
-  phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
-  is_Self_Excitation = false;   // 一度行ったら自励はオフ
-
-  sum_dphi = 0.0;
-  adaptive_gamma = GAMMA_CONST_1;
-  for (int i = 0; i < PIKAPIKA_SENSOR_COUNT; i++)
-  {
-    sum_dphi += dphi[i];
-    adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * GAMMA_CONST_2;
-  }
-  c_fft = adaptive_gamma * 0.5 * dt + 1;
-  double temp_phi = ( 2 * phi
-                      + (adaptive_gamma * dt * 0.5 - 1) * last_phi
-                      + dt * dt * (-kappa * sum_dphi))  /c_fft;
-  last_phi = phi;
-  phi = temp_phi;
-  varphi = phi_bar + phi;
-  //******** 位相更新ここまで********
-
-  //******** dphi/dx & dphi/dy の計算********
-  const float PikaPika_radian[8] = {0.0, 1.0/4.0*PI, 2.0/4.0*PI, 3.0/4.0*PI, 4.0/4.0*PI, 5.0/4.0*PI, 6.0/4.0*PI, 7.0/4.0*PI};
-
-  float dx_phi = 0;
-  float dxi = 0;
-  // for (int i = 0; i < 8; i++)
-  // {
-  //   if (PikaPika_light_sensor_life[i] > 0)
-  //   {
-  //     dxi += abs(cos(PikaPika_radian[i]));
-  //   }
-  // }
-  // for (int i = 0; i < 8; i++)
-  // {
-  //   dx_phi += -1 * dphi[i] * cos(PikaPika_radian[i]);
-  // }
-  // dx_phi = dx_phi / dxi;
   
-  float dy_phi = 0;
-  float dyi = 0;
-  for (int i = 0; i < 8; i++)
-  {
-    if (PikaPika_light_sensor_life[i] > 0)
-    {
-      dyi += abs(sin(PikaPika_radian[i]));
-    }
-    // dy_phi += -1 * dphi[i] * sin(PikaPika_radian[i]);
-    dy_phi += DYPHI_MULTIPLIER * -1.0 * dphi[i] * sin(PikaPika_radian[i]);
-  }
-  if (dyi == 0.0)
-  {
-    dy_phi = 0;
-  } else {
-    dy_phi = dy_phi / dyi;
-    // dy_phi = dy_phi / 1.0;
-  }
-  //******** dphi/dx & dphi/dy の計算ここまで********
-
-  static int count=0;
-  // if (count == 10000)
-  if (count == 100000)
-  {
-    // count = 0;
-    count = 100001;
-    // MPLog("%5.5f\n", dy_phi);
-    // MPLog("%5.5f\n", dyi);
-    // // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(sin(PikaPika_radian[i])));}
-    // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life[i] > 0 %d\n", PikaPika_light_sensor_life[i] > 0);}
-    // for (int i = 0; i < 8; i++){MPLog("dphi %5.5f\n", dphi[i]);}
-    // MPLog("sum_dphi %5.5f\n", sum_dphi);
-    // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life %d\n", PikaPika_light_sensor_life[i]);}
-    // MPLog("adaptive_gamma %5.5f\n", adaptive_gamma);
-    // MPLog("phi %5.5f\n", phi);
-    // MPLog("varphi %5.5f\n", varphi);
-    // MPLog("\n");
-  } else{
-    count++;
-  }
-
-  //******** 2pi周期性と発光の処理********
-  mod_varphi = fmod(varphi, 2*PI);
-  if ((mod_varphi >= PI) && (last_mod_varphi < PI))
-  {
-    PikaPika_LED_countdown = PIKAPIKA_BLINK_TIME;
-    for (int i = 0; i < PIKAPIKA_SENSOR_COUNT; i++)
-    {
-      if (PikaPika_light_sensor_life[i] > 0)
-      {
-        PikaPika_light_sensor_life[i] -= 1;
-      }
-      if (PikaPika_light_sensor_life[i] == 0)
-      {
-        dphi[i] = 0.0;
-      }
-    }
-  }
-  last_mod_varphi = mod_varphi;
-
-  if (PikaPika_LED_countdown > 0)
-  {
-    digitalWrite(PIKAPIKA_LED, HIGH);
-    PikaPika_LED_countdown--;
-  } else {
-    digitalWrite(PIKAPIKA_LED, LOW);
-  }
-  
-  //****** サブコアへの位相通知処理 *********
-  FFT_countdown--;
-  if (FFT_countdown == 0)
-  {
-    FFT_countdown = FFT_PROCESS_PERIOD_US;
-    MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-    // MP.Send(C2_T2_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-    MP.Send(C2_T3_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-  }
-
-  return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 }
-//*/
+*/
 
 /* Multi Robots test
 // Robot 1 (Receiver + Serial Communication)

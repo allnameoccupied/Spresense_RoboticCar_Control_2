@@ -7,9 +7,6 @@
 #include "Spresense_Init.h"
 #include "Spresense_Include_List.h"
 
-#include <VL53L1X.h>
-#include <Wire.h>
-
 // Init the 4 onboard LED
 void Onboard_LED_Init(){
     pinMode(LED0, OUTPUT);
@@ -31,7 +28,6 @@ void Dist_Sensor_Init(){
 }
 
 // Init PikaPika pins & variables
-// extern uint64_t*** PikaPika_detected_timestamp;
 void PIKAPIKA_Init(){
     pinMode(PIKAPIKA_LED, OUTPUT);
     
@@ -51,18 +47,7 @@ void PIKAPIKA_Init(){
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_4), PikaPika_Int_Handler_4, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_5), PikaPika_Int_Handler_5, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_6), PikaPika_Int_Handler_6, FALLING);
-    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_7), PikaPika_Int_Handler_7, FALLING);
-
-    // for (int i = 0; i < 8; i++)
-    // {
-    //     PikaPika_detected_timestamp[i] = new uint64_t* [5];
-    //     for (int j = 0; j < 5; j++)
-    //     {
-    //         PikaPika_detected_timestamp[i][j] = new uint64_t (0);
-    //     }
-        
-    // }
-    
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_7), PikaPika_Int_Handler_7, FALLING);    
 }
 
 // Init Serial Communication
@@ -74,6 +59,23 @@ void Serial_Init(){
 void InOut_LED_Init(){
     pinMode(INSIDE_LED, OUTPUT);
     pinMode(OUTSIDE_LED, OUTPUT);
+}
+
+// Init SubCores
+void MP_Init(){
+    int ret = MP.begin(SUBCORE_1_GENERAL_ID);
+    if (ret<0) {
+        MPLog("MP.begin(%d) error = %d\n", SUBCORE_1_GENERAL_ID, ret);
+    }
+    ret = MP.begin(SUBCORE_2_FFT_ID);
+    if (ret<0) {
+        MPLog("MP.begin(%d) error = %d\n", SUBCORE_2_FFT_ID, ret);
+    }
+}
+
+// Init FFT related stuff
+void FFT_Init(){
+    attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
 }
 
 //--------------------------------------------------------//

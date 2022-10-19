@@ -10,6 +10,7 @@
 #include <Arduino.h>
 #include <MP.h>
 #include <Wire.h>
+#include <VL53L1X.h>
 
 #include "Spresense_Global_Var_Def.h"
 #include "Spresense_Pin_Mapping.h"
@@ -17,6 +18,7 @@
 
 #include "Spresense_Init.h"
 #include "Spresense_PikaPika_Interrupt.h"
+#include "Spresense_SubCore_2/Spresense_Sub2_FFT_Functions.h"
 
 #include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
 #include "Spresense_SubCore_2/Spresense_SubCore_2_TaskList.h"

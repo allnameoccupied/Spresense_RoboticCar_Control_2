@@ -25,8 +25,11 @@ void Serial_Init();
 // Init Inside/Outside LED pins
 void InOut_LED_Init();
 
-//TODO need init for fft ?
-//TODO need init for multi core ?
+// Init SubCores
+void MP_Init();
+
+// Init FFT related stuff
+void FFT_Init();
 
 //--------------------------------------------------------//
 

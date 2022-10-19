@@ -39,13 +39,6 @@
 // -> Light Sensor Lifetime
 #define PIKAPIKA_LIGHT_SENSOR_LIFETIME  10     // [ticks]
 // -> MIN Interval between Interrupts
-#define PIKAPIKA_MIN_INTERRUPT_INTERVAL 0     // [ms]
-
-// FFT
-// -> Time related
-#define FFT_UPDATE_PERIOD_US            100     // 制御周期[us] 100us -> 10kHz
-#define FFT_TIME_RESOLUTION             0.000001
-// -> Execute Period
-#define FFT_PROCESS_PERIOD_US           (2.0*PI/Omega_0/2.0)/FFT_TIME_RESOLUTION/FFT_UPDATE_PERIOD_US      // 通報周期[us]
+#define PIKAPIKA_MIN_INTERRUPT_INTERVAL 75     // [ms]
 
 #endif
