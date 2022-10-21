@@ -4,6 +4,10 @@
 
 //--------------------------------------------------------//
 
+#if (SUBCORE == 2)
+
+//--------------------------------------------------------//
+
 #ifndef SPRESENSE_SUB2_FFT_FUNC
 #define SPRESENSE_SUB2_FFT_FUNC
 
@@ -40,4 +44,5 @@ float get_peak_frequency(float* FFT_result_inScope);
 // (from Origane san) calc swarm size
 float length_estimation(float f_peak_inScope);
 
+#endif
 #endif

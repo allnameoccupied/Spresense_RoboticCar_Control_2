@@ -63,6 +63,8 @@ void InOut_LED_Init(){
 
 // Init SubCores
 void MP_Init(){
+    MP.RecvTimeout(MP_RECV_BLOCKING);
+
     int ret = MP.begin(SUBCORE_1_GENERAL_ID);
     if (ret<0) {
         MPLog("MP.begin(%d) error = %d\n", SUBCORE_1_GENERAL_ID, ret);

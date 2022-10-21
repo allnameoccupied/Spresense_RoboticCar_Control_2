@@ -4,6 +4,15 @@
 
 //--------------------------------------------------------//
 
+#if (SUBCORE == 2)
+
+//--------------------------------------------------------//
+
+#include "Spresense_Sub2_FFT_Functions.h"
+#include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"
+
+//--------------------------------------------------------//
+
 /*  Estimate inner/outer layer
     
     return value:
@@ -93,11 +102,11 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", output_buffer[2*i], output_buffer[2*i+1]);
         // }
 
-        // MPLog("phi FFT result\n");
-        // for (int i = 0; i < FFT_LEN/2; i++)
-        // {
-        //     MPLog("%5.5f\n", FFT_result[i]);
-        // }
+        MPLog("phi FFT result\n");
+        for (int i = 0; i < FFT_LEN/2; i++)
+        {
+            MPLog("%5.5f\n", FFT_result[i]);
+        }
 
         // MPLog("dy phi input buffer\n");
         // for (int i = 0; i < FFT_LEN; i++)
@@ -262,3 +271,5 @@ float length_estimation(float f_peak_inScope){
     }
     return 0.5f*sqrt(kappa)/f_peak_inScope;  // l = sqrt(kappa)/(2*f_peak)
 }
+
+#endif

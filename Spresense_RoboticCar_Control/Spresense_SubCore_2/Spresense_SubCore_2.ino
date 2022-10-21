@@ -24,34 +24,46 @@
 void setup(void){
     MP.begin();
     arm_fft_init();
-    phi_init();    
+    phi_init();
 }
 void loop(void){
     int8_t msgid;
     uint32_t msgdata;
 
+    // MPLog("now wait receive");
     MP.Recv(&msgid, &msgdata);
+    // MPLog("now received");
 
     switch (msgid)
     {
     case C2_T0_FFT:{
+        // MPLog("now enter fft");
+
         // get phi
         phi_update(msgdata);
+        // MPLog("%ld\r", msgdata);
 
         // get dx_phi
         MP.Recv(&msgid, &msgdata);
-        if (msgid != C2_T1_DXPHI){break;}
-        dx_phi_update(msgdata);
+        if (msgid == C2_T1_DXPHI)
+        {
+            dx_phi_update(msgdata);
+        }
         
         //get dy_phi
         MP.Recv(&msgid, &msgdata);
-        if (msgid != C2_T2_DYPHI){break;}
-        dy_phi_update(msgdata);
+        if (msgid == C2_T2_DYPHI)
+        {
+            dy_phi_update(msgdata);
+        }
+        
         
         // FFT calculation
-        static uint16_t FFT_countdown_sub2 = FFT_LEN;
+        static uint16_t FFT_countdown_sub2 = FFT_CALC_RATE;
         if (FFT_countdown_sub2 == 0)
         {
+            digitalWrite(LED0, HIGH);
+
             // reset count
             FFT_countdown_sub2 = FFT_CALC_RATE;
             
@@ -95,5 +107,18 @@ void loop(void){
         break;
     }
 }
+
+// void loop(void){
+//     digitalWrite(INSIDE_LED, HIGH);
+//     delay(5000);
+//     while(1){
+//         digitalWrite(OUTSIDE_LED, HIGH);
+//         digitalWrite(INSIDE_LED, LOW);
+//         delay(rand()%8000+2000);
+//         digitalWrite(OUTSIDE_LED, LOW);
+//         digitalWrite(INSIDE_LED, HIGH);
+//         delay(rand()%8000+2000);
+//     }
+// }
 
 #endif

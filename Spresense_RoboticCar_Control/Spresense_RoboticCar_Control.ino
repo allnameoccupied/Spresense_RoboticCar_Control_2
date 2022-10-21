@@ -8,6 +8,9 @@
 
 //--------------------------------------------------------//
 
+// Only for Main Core
+#ifndef SUBCORE
+
 // Files created by me(max12345)
 #include "Spresense_Include_List.h"
 #include "Spresense_Test.h"
@@ -22,6 +25,9 @@
 //--------------------------------------------------------//
 
 // Global Variables
+
+// -> FFT Variables
+
 
 // -> DIST Sensors Variables
 VL53L1X Dist_sensor [8];
@@ -53,14 +59,14 @@ void setup() {
     Serial.println("Init finished successfully");
     
     // TEST FUNCTION
-    test_init();
+    // test_init();
 }
 void loop() {
 
     // Listen for message from other cores
     int8_t msgid;
     uint32_t msgdata;
-    MP.Recv(&msgid, &msgdata);
+    MP.Recv(&msgid, &msgdata, SUBCORE_2_FFT_ID);
     switch (msgid)
     {
         case C2_T3_NO_PEAK:{
@@ -70,7 +76,7 @@ void loop() {
     }
     
     // TEST FUNCTION
-    test_loop();
+    // test_loop();
 }
 
 //--------------------------------------------------------//
@@ -142,12 +148,12 @@ unsigned int FFT_PikaPika_Routine(){
     }
     //******** dphi/dx & dphi/dy の計算ここまで********
 
-    static int count=0;
+    // static int count=0;
     // if (count == 10000)
-    if (count == 100000)
-    {
+    // if (count == 100000)
+    // {
         // count = 0;
-        count = 100001;
+        // count = 100001;
         // MPLog("%5.5f\n", dy_phi);
         // MPLog("%5.5f\n", dyi);
         // // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(sin(PikaPika_radian[i])));}
@@ -159,9 +165,9 @@ unsigned int FFT_PikaPika_Routine(){
         // MPLog("phi %5.5f\n", phi);
         // MPLog("varphi %5.5f\n", varphi);
         // MPLog("\n");
-    } else{
-        count++;
-    }
+    // } else{
+        // count++;
+    // }
 
     //******** 2pi周期性と発光の処理********
     mod_varphi = fmod(varphi, 2*PI);
@@ -195,11 +201,13 @@ unsigned int FFT_PikaPika_Routine(){
     if (FFT_countdown == 0)
     {
         FFT_countdown = FFT_PROCESS_PERIOD_US;
-        // MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-        // MP.Send(C2_T1_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-        // MP.Send(C2_T2_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
+        MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
+        MP.Send(C2_T1_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
+        MP.Send(C2_T2_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
     }
 
     return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 
 }
+
+#endif
