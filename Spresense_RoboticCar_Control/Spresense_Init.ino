@@ -59,6 +59,9 @@ void Serial_Init(){
 void InOut_LED_Init(){
     pinMode(INSIDE_LED, OUTPUT);
     pinMode(OUTSIDE_LED, OUTPUT);
+
+    digitalWrite(INSIDE_LED, LOW);
+    digitalWrite(OUTSIDE_LED, LOW);
 }
 
 // Init SubCores

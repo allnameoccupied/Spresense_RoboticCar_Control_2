@@ -59,11 +59,10 @@ void loop(void){
         
         
         // FFT calculation
-        static uint16_t FFT_countdown_sub2 = FFT_CALC_RATE;
+        static uint16_t FFT_countdown_sub2 = FFT_LEN;
+        // MPLog("%d\n", FFT_countdown_sub2);
         if (FFT_countdown_sub2 == 0)
         {
-            digitalWrite(LED0, HIGH);
-
             // reset count
             FFT_countdown_sub2 = FFT_CALC_RATE;
             
@@ -93,7 +92,7 @@ void loop(void){
             inner_outer_estimate();
 
             // print out data to Serial Monitor
-            fft_data_print_out();
+            // fft_data_print_out();
 
         } else {
             FFT_countdown_sub2--;

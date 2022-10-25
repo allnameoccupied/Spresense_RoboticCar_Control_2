@@ -33,7 +33,7 @@ uint8_t inner_outer_estimate(){
         {
             if (dx_FFT_result[i] > dy_FFT_result[i])
             {            
-                if (dx_FFT_result[dy_peak_index] < FFT_result[dy_peak_index])
+                if (dx_FFT_result[i] < FFT_result[i])
                 {
                     if (dx_FFT_result[i] > PEAK_POWER_THRESHOLD)
                     {
@@ -41,8 +41,11 @@ uint8_t inner_outer_estimate(){
                         dx_peak_index = i;
                         // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
                         // MPLog("\n");
-                    break;
+                        break;
                     }                    
+                } else {
+                    dx_peak_index = i;
+                    break;
                 }
             }
         }
@@ -54,7 +57,7 @@ uint8_t inner_outer_estimate(){
         {
             if (dy_FFT_result[i] > dx_FFT_result[i])
             {
-                if (dy_FFT_result[dy_peak_index] < FFT_result[dy_peak_index])
+                if (dy_FFT_result[i] < FFT_result[i])
                 {
                     if (dy_FFT_result[i] > PEAK_POWER_THRESHOLD)
                     {
@@ -62,12 +65,21 @@ uint8_t inner_outer_estimate(){
                         dy_peak_index = i;
                         // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
                         // MPLog("\n");
-                    break;
+                        break;
                     }                    
+                } else {
+                    dy_peak_index = i;
+                    break;
                 }
             }
         }
     }
+
+    // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
+    // MPLog("%d\n", dy_peak_index);
+    // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
+    // MPLog("%d\n", final_judgement);
+    // MPLog("\n");
 
     if (final_judgement > 0)
     {
@@ -103,7 +115,7 @@ void fft_data_print_out(){
         // }
 
         MPLog("phi FFT result\n");
-        for (int i = 0; i < FFT_LEN/2; i++)
+        for (int i = 0; i < FFT_LEN/32; i++)
         {
             MPLog("%5.5f\n", FFT_result[i]);
         }
@@ -120,11 +132,13 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", dy_output_buffer[2*i], dy_output_buffer[2*i+1]);
         // }
 
-        // MPLog("dy phi FFT result\n");
-        // for (int i = 0; i < FFT_LEN/2; i++)
-        // {
-        //     MPLog("%5.5f\n", dy_FFT_result[i]);
-        // }
+        MPLog("dy phi FFT result\n");
+        for (int i = 0; i < FFT_LEN/32; i++)
+        {
+            MPLog("%5.5f\n", dy_FFT_result[i]);
+        }
+
+        MPLog("\n");
     }
     count++;
 }
