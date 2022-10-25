@@ -50,7 +50,7 @@ arm_rfft_fast_instance_f32  FFT_instance;
 #define GAMMA_CONST_1       GAMMA            // 動的粘性の定数項
 #define GAMMA_CONST_2       GAMMA            // 動的粘性のエッジ数に比例する項
 // #define DPHI_MULTIPLIER     0.65    //original
-#define DPHI_MULTIPLIER     0.475
+#define DPHI_MULTIPLIER     1.0
 #define DXPHI_MULTIPLIER    DPHI_MULTIPLIER
 #define DYPHI_MULTIPLIER    DPHI_MULTIPLIER
 

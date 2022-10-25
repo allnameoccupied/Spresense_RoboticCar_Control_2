@@ -79,20 +79,29 @@ void loop(void){
             arm_cmplx_mag_f32(dy_output_buffer, dy_FFT_result, FFT_LEN/2);
 
             // determine if need to self-excite by finding peak
-            float f_peak = get_peak_frequency(FFT_result);
-            if (f_peak < 0) // 検出失敗
+            if (!peak_check())
             {
                 MP.Send(C2_T3_NO_PEAK, C2_T3_NO_PEAK);  // メインコアに失敗を通報
             }
-            // determine swarm size (not used now)
-            // float length_estimate = length_estimation(f_peak);
-            // MPLog("Length Estimate : %4.2f\n", length_estimate);
+            
+            // FFT result preprocessing
+            // FFT_result_processing();
 
             // estimate inner/outer layer  ********
             inner_outer_estimate();
 
             // print out data to Serial Monitor
-            // fft_data_print_out();
+            fft_data_print_out();
+
+            // get peak & check need for self-excite (not used now)
+            // float f_peak = get_peak_frequency(FFT_result);
+            // if (f_peak < 0) // 検出失敗
+            // {
+            //     MP.Send(C2_T3_NO_PEAK, C2_T3_NO_PEAK);  // メインコアに失敗を通報
+            // }
+            // determine swarm size (not used now)
+            // float length_estimate = length_estimation(f_peak);
+            // MPLog("Length Estimate : %4.2f\n", length_estimate);
 
         } else {
             FFT_countdown_sub2--;

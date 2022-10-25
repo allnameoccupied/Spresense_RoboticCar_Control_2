@@ -95,10 +95,118 @@ uint8_t inner_outer_estimate(){
     return final_judgement;
 }
 
+// preprocessor function for FFT result
+void FFT_result_processing(){
+    float temp[FFT_LEN];
+
+    temp[0] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3])/4;
+    temp[1] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3]+FFT_result[4])/5;
+    temp[2] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3]+FFT_result[4]+FFT_result[5])/6;
+    // temp[3] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3]+FFT_result[4]+FFT_result[5]+FFT_result[6])/7;
+
+    for (int i = 3; i < FFT_LEN-3; i++){
+        temp[i] = (FFT_result[i-3]+FFT_result[i-2]+FFT_result[i-1]
+                    +FFT_result[i]
+                    +FFT_result[i+1]+FFT_result[i+2]+FFT_result[i+3]) /7;
+    }
+
+    temp[FFT_LEN-3] = (FFT_result[FFT_LEN-6]+FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/6;
+    temp[FFT_LEN-2] = (FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/5;
+    temp[FFT_LEN-1] = (FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/4;
+
+    static int count2 = 0;
+    if (count2 == 20)
+    {
+        count2 = 0;
+
+        MPLog("phi FFT moving average result\n");
+        for (int i = 0; i < FFT_LEN/16; i++)
+        {
+            MPLog("%5.5f\n", FFT_result[i]);
+        }
+
+        MPLog("\n");
+    }
+    count2++;
+}
+
+// function for checking existence of peak in FFT result
+bool peak_check(){
+    bool has_peak_flag = false;
+    bool all_zero_flag = true;
+    
+    // phi FFT result
+    for (int i = 1; i < FFT_LEN/2; i++)
+    {
+        if (FFT_result[i] != 0.0)
+        {
+            all_zero_flag = false;
+        }
+        if ( (FFT_result[i] > FFT_result[i-1]) && (FFT_result[i] > FFT_result[i+1]) )
+        {
+            if (FFT_result[i] > PEAK_POWER_THRESHOLD)
+            {
+                has_peak_flag = true;
+            }
+        }
+    }
+    if (!has_peak_flag && !all_zero_flag)
+    {
+        return false;
+    }
+    
+    // dx phi FFT result
+    has_peak_flag = false;
+    all_zero_flag = true;
+    for (int i = 1; i < FFT_LEN/2; i++)
+    {
+        if (dx_FFT_result[i] != 0.0)
+        {
+            all_zero_flag = false;
+        }
+        if ( (dx_FFT_result[i] > dx_FFT_result[i-1]) && (dx_FFT_result[i] > dx_FFT_result[i+1]) )
+        {
+            if (dx_FFT_result[i] > PEAK_POWER_THRESHOLD)
+            {
+                has_peak_flag = true;
+            }
+        }
+    }
+    if (!has_peak_flag && !all_zero_flag)
+    {
+        return false;
+    }
+
+    // dy phi FFT result
+    has_peak_flag = false;
+    all_zero_flag = true;
+    for (int i = 1; i < FFT_LEN/2; i++)
+    {
+        if (dy_FFT_result[i] != 0.0)
+        {
+            all_zero_flag = false;
+        }
+        if ( (dy_FFT_result[i] > dy_FFT_result[i-1]) && (dy_FFT_result[i] > dy_FFT_result[i+1]) )
+        {
+            if (dy_FFT_result[i] > PEAK_POWER_THRESHOLD)
+            {
+                has_peak_flag = true;
+            }
+        }
+    }
+    if (!has_peak_flag && !all_zero_flag)
+    {
+        return false;
+    }
+
+    // all has peak or is zero array, return true
+    return true;
+}
+
 // helper function for displaying variable value
 void fft_data_print_out(){
     static int count = 0;
-    if (count == 10)
+    if (count == 20)
     {
         count = 0;
         
@@ -115,7 +223,7 @@ void fft_data_print_out(){
         // }
 
         MPLog("phi FFT result\n");
-        for (int i = 0; i < FFT_LEN/32; i++)
+        for (int i = 0; i < FFT_LEN/16; i++)
         {
             MPLog("%5.5f\n", FFT_result[i]);
         }
@@ -133,7 +241,7 @@ void fft_data_print_out(){
         // }
 
         MPLog("dy phi FFT result\n");
-        for (int i = 0; i < FFT_LEN/32; i++)
+        for (int i = 0; i < FFT_LEN/16; i++)
         {
             MPLog("%5.5f\n", dy_FFT_result[i]);
         }

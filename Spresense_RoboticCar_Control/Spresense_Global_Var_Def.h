@@ -39,6 +39,6 @@
 // -> Light Sensor Lifetime
 #define PIKAPIKA_LIGHT_SENSOR_LIFETIME  10     // [ticks]
 // -> MIN Interval between Interrupts
-#define PIKAPIKA_MIN_INTERRUPT_INTERVAL 75     // [ms]
+#define PIKAPIKA_MIN_INTERRUPT_INTERVAL 0     // [ms]
 
 #endif
