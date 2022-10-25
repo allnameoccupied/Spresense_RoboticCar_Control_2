@@ -8,6 +8,9 @@
 
 //--------------------------------------------------------//
 
+// Only for Main Core
+#ifndef SUBCORE
+
 // Files created by me(max12345)
 #include "Spresense_Include_List.h"
 #include "Spresense_Test.h"
@@ -22,6 +25,9 @@
 //--------------------------------------------------------//
 
 // Global Variables
+
+// -> FFT Variables
+
 
 // -> DIST Sensors Variables
 VL53L1X Dist_sensor [8];
@@ -53,14 +59,14 @@ void setup() {
     Serial.println("Init finished successfully");
     
     // TEST FUNCTION
-    test_init();
+    // test_init();
 }
 void loop() {
 
     // Listen for message from other cores
     int8_t msgid;
     uint32_t msgdata;
-    MP.Recv(&msgid, &msgdata);
+    MP.Recv(&msgid, &msgdata, SUBCORE_2_FFT_ID);
     switch (msgid)
     {
         case C2_T3_NO_PEAK:{
@@ -70,7 +76,7 @@ void loop() {
     }
     
     // TEST FUNCTION
-    test_loop();
+    // test_loop();
 }
 
 //--------------------------------------------------------//
@@ -105,17 +111,18 @@ unsigned int FFT_PikaPika_Routine(){
     //******** 位相更新ここまで********
 
     //******** dphi/dx & dphi/dy の計算********
-    const float PikaPika_radian[8] = {0.0, 1.0/4.0*PI, 2.0/4.0*PI, 3.0/4.0*PI, 4.0/4.0*PI, 5.0/4.0*PI, 6.0/4.0*PI, 7.0/4.0*PI};
+    const float PikaPika_radian_sin[8] = {0.0, 0.7071067812, 1.0, 0.7071067812, 0.0, -0.7071067812, -1.0, -0.7071067812};
+    const float PikaPika_radian_cos[8] = {1.0, 0.7071067812, 0.0, -0.7071067812, -1.0, -0.7071067812, 0.0, 0.7071067812};
 
-    float dx_phi = 0;
-    float dxi = 0;
+    float dx_phi = 0.0;
+    float dxi = 0.0;
     for (int i = 0; i < 8; i++)
     {
         if (PikaPika_light_sensor_life[i] > 0)
         {
-            dxi += abs(cos(PikaPika_radian[i]));
+            dxi += abs(PikaPika_radian_cos[i]);
         }
-        dx_phi += DXPHI_MULTIPLIER * -1.0 * dphi[i] * cos(PikaPika_radian[i]);
+        dx_phi += DXPHI_MULTIPLIER * -1.0 * dphi[i] * PikaPika_radian_cos[i];
     }
     if (dxi == 0.0)
     {
@@ -124,15 +131,15 @@ unsigned int FFT_PikaPika_Routine(){
         dx_phi = dx_phi / dxi;
     }
     
-    float dy_phi = 0;
-    float dyi = 0;
+    float dy_phi = 0.0;
+    float dyi = 0.0;
     for (int i = 0; i < 8; i++)
     {
         if (PikaPika_light_sensor_life[i] > 0)
         {
-            dyi += abs(sin(PikaPika_radian[i]));
+            dyi += abs(PikaPika_radian_sin[i]);
         }
-        dy_phi += DYPHI_MULTIPLIER * -1.0 * dphi[i] * sin(PikaPika_radian[i]);
+        dy_phi += DYPHI_MULTIPLIER * -1.0 * dphi[i] * PikaPika_radian_sin[i];
     }
     if (dyi == 0.0)
     {
@@ -142,15 +149,17 @@ unsigned int FFT_PikaPika_Routine(){
     }
     //******** dphi/dx & dphi/dy の計算ここまで********
 
-    static int count=0;
+    // static int count=0;
     // if (count == 10000)
-    if (count == 100000)
-    {
-        // count = 0;
-        count = 100001;
+    // if (count == 100000)
+    // {
+    //     count = 0;
+        // count = 100001;
+        // MPLog("%5.5f\n", dx_phi);
         // MPLog("%5.5f\n", dy_phi);
         // MPLog("%5.5f\n", dyi);
-        // // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(sin(PikaPika_radian[i])));}
+        // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(PikaPika_radian_cos[i]));}
+        // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(PikaPika_radian_sin[i]));}
         // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life[i] > 0 %d\n", PikaPika_light_sensor_life[i] > 0);}
         // for (int i = 0; i < 8; i++){MPLog("dphi %5.5f\n", dphi[i]);}
         // MPLog("sum_dphi %5.5f\n", sum_dphi);
@@ -158,10 +167,10 @@ unsigned int FFT_PikaPika_Routine(){
         // MPLog("adaptive_gamma %5.5f\n", adaptive_gamma);
         // MPLog("phi %5.5f\n", phi);
         // MPLog("varphi %5.5f\n", varphi);
-        // MPLog("\n");
-    } else{
-        count++;
-    }
+    //     MPLog("\n");
+    // } else{
+    //     count++;
+    // }
 
     //******** 2pi周期性と発光の処理********
     mod_varphi = fmod(varphi, 2*PI);
@@ -195,11 +204,13 @@ unsigned int FFT_PikaPika_Routine(){
     if (FFT_countdown == 0)
     {
         FFT_countdown = FFT_PROCESS_PERIOD_US;
-        // MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-        // MP.Send(C2_T1_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
-        // MP.Send(C2_T2_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
+        MP.Send(C2_T0_FFT, (uint32_t)(FFT_MSG_SCALE * phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
+        MP.Send(C2_T1_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
+        MP.Send(C2_T2_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
     }
 
     return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 
 }
+
+#endif

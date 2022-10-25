@@ -24,32 +24,43 @@
 void setup(void){
     MP.begin();
     arm_fft_init();
-    phi_init();    
+    phi_init();
 }
 void loop(void){
     int8_t msgid;
     uint32_t msgdata;
 
+    // MPLog("now wait receive");
     MP.Recv(&msgid, &msgdata);
+    // MPLog("now received");
 
     switch (msgid)
     {
     case C2_T0_FFT:{
+        // MPLog("now enter fft");
+
         // get phi
         phi_update(msgdata);
+        // MPLog("%ld\r", msgdata);
 
         // get dx_phi
         MP.Recv(&msgid, &msgdata);
-        if (msgid != C2_T1_DXPHI){break;}
-        dx_phi_update(msgdata);
+        if (msgid == C2_T1_DXPHI)
+        {
+            dx_phi_update(msgdata);
+        }
         
         //get dy_phi
         MP.Recv(&msgid, &msgdata);
-        if (msgid != C2_T2_DYPHI){break;}
-        dy_phi_update(msgdata);
+        if (msgid == C2_T2_DYPHI)
+        {
+            dy_phi_update(msgdata);
+        }
+        
         
         // FFT calculation
         static uint16_t FFT_countdown_sub2 = FFT_LEN;
+        // MPLog("%d\n", FFT_countdown_sub2);
         if (FFT_countdown_sub2 == 0)
         {
             // reset count
@@ -68,20 +79,29 @@ void loop(void){
             arm_cmplx_mag_f32(dy_output_buffer, dy_FFT_result, FFT_LEN/2);
 
             // determine if need to self-excite by finding peak
-            float f_peak = get_peak_frequency(FFT_result);
-            if (f_peak < 0) // 検出失敗
+            if (!peak_check())
             {
                 MP.Send(C2_T3_NO_PEAK, C2_T3_NO_PEAK);  // メインコアに失敗を通報
             }
-            // determine swarm size (not used now)
-            // float length_estimate = length_estimation(f_peak);
-            // MPLog("Length Estimate : %4.2f\n", length_estimate);
+            
+            // FFT result preprocessing
+            // FFT_result_processing();
 
             // estimate inner/outer layer  ********
             inner_outer_estimate();
 
             // print out data to Serial Monitor
             fft_data_print_out();
+
+            // get peak & check need for self-excite (not used now)
+            // float f_peak = get_peak_frequency(FFT_result);
+            // if (f_peak < 0) // 検出失敗
+            // {
+            //     MP.Send(C2_T3_NO_PEAK, C2_T3_NO_PEAK);  // メインコアに失敗を通報
+            // }
+            // determine swarm size (not used now)
+            // float length_estimate = length_estimation(f_peak);
+            // MPLog("Length Estimate : %4.2f\n", length_estimate);
 
         } else {
             FFT_countdown_sub2--;
@@ -95,5 +115,18 @@ void loop(void){
         break;
     }
 }
+
+// void loop(void){
+//     digitalWrite(INSIDE_LED, HIGH);
+//     delay(5000);
+//     while(1){
+//         digitalWrite(OUTSIDE_LED, HIGH);
+//         digitalWrite(INSIDE_LED, LOW);
+//         delay(rand()%8000+2000);
+//         digitalWrite(OUTSIDE_LED, LOW);
+//         digitalWrite(INSIDE_LED, HIGH);
+//         delay(rand()%8000+2000);
+//     }
+// }
 
 #endif

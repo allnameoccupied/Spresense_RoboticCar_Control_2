@@ -59,10 +59,15 @@ void Serial_Init(){
 void InOut_LED_Init(){
     pinMode(INSIDE_LED, OUTPUT);
     pinMode(OUTSIDE_LED, OUTPUT);
+
+    digitalWrite(INSIDE_LED, LOW);
+    digitalWrite(OUTSIDE_LED, LOW);
 }
 
 // Init SubCores
 void MP_Init(){
+    MP.RecvTimeout(MP_RECV_BLOCKING);
+
     int ret = MP.begin(SUBCORE_1_GENERAL_ID);
     if (ret<0) {
         MPLog("MP.begin(%d) error = %d\n", SUBCORE_1_GENERAL_ID, ret);

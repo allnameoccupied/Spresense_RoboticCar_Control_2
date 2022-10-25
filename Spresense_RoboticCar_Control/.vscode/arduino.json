@@ -3,6 +3,6 @@
     "configuration": "Core=Main,Memory=768,Debug=Disabled,UploadSpeed=115200",
     "board": "SPRESENSE:spresense:spresense",
     "programmer": "SPRESENSE:sfutools",
-    "port": "COM6",
+    "port": "COM13",
     "output": "../../VScode_Arduino_build"
 }

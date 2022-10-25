@@ -4,6 +4,10 @@
 
 //--------------------------------------------------------//
 
+#if (SUBCORE == 2)
+
+//--------------------------------------------------------//
+
 #ifndef SPRESENSE_SUB2_FFT_FUNC
 #define SPRESENSE_SUB2_FFT_FUNC
 
@@ -15,6 +19,12 @@
     2 = y-axis outside
     3 = xy-axis outside (corner)*/
 uint8_t inner_outer_estimate();
+
+// preprocessor function for FFT result
+void FFT_result_processing();
+
+// function for checking existence of peak in FFT result
+bool peak_check();
 
 // helper function for displaying variable value
 void fft_data_print_out();
@@ -40,4 +50,5 @@ float get_peak_frequency(float* FFT_result_inScope);
 // (from Origane san) calc swarm size
 float length_estimation(float f_peak_inScope);
 
+#endif
 #endif

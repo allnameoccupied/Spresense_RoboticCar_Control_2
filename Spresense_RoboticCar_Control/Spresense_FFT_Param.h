@@ -25,7 +25,7 @@
 // -> Period - How often does main core sends phi data to FFT core (so that data is taken at correct interval)
 #define FFT_PROCESS_PERIOD_US           (2.0*PI/Omega_0/2.0)/FFT_TIME_RESOLUTION/FFT_UPDATE_PERIOD_US      // 通報周期[us]
 // -> Period - How often does FFt core actually carry out FFT
-#define FFT_CALC_RATE                   4
+#define FFT_CALC_RATE                   8
 
 // FFT Hyperparameter
 arm_rfft_fast_instance_f32  FFT_instance;
@@ -37,21 +37,22 @@ arm_rfft_fast_instance_f32  FFT_instance;
 
 // FFT Parameter
 #define dt                  FFT_TIME_RESOLUTION * FFT_UPDATE_PERIOD_US
-// #define Omega_0             20.0            // 固有角速度 [rad\s]（振動）    //original
+// #define Omega_0             20.0            // 固有角速度 [rad\s]（振動）   // original
 #define Omega_0             20.0            // 固有角速度 [rad\s]（振動）
-// #define kappa               0.65             // 結合強度（振動型）    //original
-#define kappa               0.65             // 結合強度（振動型）
+// #define kappa               0.625             // 結合強度（振動型）    //original
+#define kappa               0.5             // 結合強度（振動型）
 #define my_gamma            0.20            // 粘性係数
-// #define PEAK_POWER_THRESHOLD        3.0     // 観測している位相のピークパワーがこれを下回ったら検出扱いにしない    //original
 #define PEAK_POWER_THRESHOLD        3.0     // 観測している位相のピークパワーがこれを下回ったら検出扱いにしない
 #define SELF_EXITATION_INTENSITY    2.0     // 自励入力の大きさ
+#define GAMMA               0.09            // 動的粘性
 // #define GAMMA_CONST_1       0.09            // 動的粘性の定数項      //original
 // #define GAMMA_CONST_2       0.09            // 動的粘性のエッジ数に比例する項    //original
-#define GAMMA_CONST_1       0.09            // 動的粘性の定数項
-#define GAMMA_CONST_2       0.09            // 動的粘性のエッジ数に比例する項
-#define DXPHI_MULTIPLIER    0.525
-// #define DYPHI_MULTIPLIER    0.525    //original
-#define DYPHI_MULTIPLIER    0.525
+#define GAMMA_CONST_1       GAMMA            // 動的粘性の定数項
+#define GAMMA_CONST_2       GAMMA            // 動的粘性のエッジ数に比例する項
+// #define DPHI_MULTIPLIER     0.65    //original
+#define DPHI_MULTIPLIER     1.0
+#define DXPHI_MULTIPLIER    DPHI_MULTIPLIER
+#define DYPHI_MULTIPLIER    DPHI_MULTIPLIER
 
 // FFT Variables
 double  mod_varphi          = 0.0;
