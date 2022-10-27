@@ -35,7 +35,8 @@ VL53L1X Dist_sensor [8];
 //--------------------------------------------------------//
 
 // Functions Declaration
-unsigned int FFT_PikaPika_Routine();
+// unsigned int FFT_PikaPika_Routine();
+extern float test_self_excite;
 
 //--------------------------------------------------------//
 
@@ -80,7 +81,7 @@ void loop() {
 }
 
 //--------------------------------------------------------//
-
+/*
 unsigned int FFT_PikaPika_Routine(){
     //******** 関数内変数定義 ***********  
     static int PikaPika_LED_countdown = 0;
@@ -212,5 +213,5 @@ unsigned int FFT_PikaPika_Routine(){
     return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 
 }
-
+*/
 #endif
