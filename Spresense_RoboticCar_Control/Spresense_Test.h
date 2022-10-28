@@ -67,6 +67,7 @@ unsigned int FFT_PikaPika_Routine(){
       // test_self_excite2 = 1.0;
       // is_Self_Excitation = false;
       ttcount = FFT_PROCESS_PERIOD_US * 800;
+      is_Self_Excitation = false;
       // delay(30);
     } else {
       // test_self_excite = GAMMA;

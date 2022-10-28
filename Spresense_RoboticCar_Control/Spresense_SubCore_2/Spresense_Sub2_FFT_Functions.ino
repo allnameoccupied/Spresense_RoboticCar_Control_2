@@ -99,20 +99,20 @@ uint8_t inner_outer_estimate(){
 void FFT_result_processing(){
     float temp[FFT_LEN];
 
-    temp[0] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3])/4;
-    temp[1] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3]+FFT_result[4])/5;
-    temp[2] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3]+FFT_result[4]+FFT_result[5])/6;
+    temp[0] = (FFT_result[0]*2+FFT_result[1]+FFT_result[2]+FFT_result[3])/5;
+    temp[1] = (FFT_result[0]+FFT_result[1]*2+FFT_result[2]+FFT_result[3]+FFT_result[4])/6;
+    temp[2] = (FFT_result[0]+FFT_result[1]+FFT_result[2]*2+FFT_result[3]+FFT_result[4]+FFT_result[5])/7;
     // temp[3] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3]+FFT_result[4]+FFT_result[5]+FFT_result[6])/7;
 
     for (int i = 3; i < FFT_LEN-3; i++){
         temp[i] = (FFT_result[i-3]+FFT_result[i-2]+FFT_result[i-1]
-                    +FFT_result[i]
-                    +FFT_result[i+1]+FFT_result[i+2]+FFT_result[i+3]) /7;
+                    +FFT_result[i]*2
+                    +FFT_result[i+1]+FFT_result[i+2]+FFT_result[i+3]) /8;
     }
 
-    temp[FFT_LEN-3] = (FFT_result[FFT_LEN-6]+FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/6;
-    temp[FFT_LEN-2] = (FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/5;
-    temp[FFT_LEN-1] = (FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/4;
+    temp[FFT_LEN-3] = (FFT_result[FFT_LEN-6]+FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]*2+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/7;
+    temp[FFT_LEN-2] = (FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]*2+FFT_result[FFT_LEN-1])/6;
+    temp[FFT_LEN-1] = (FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1]*2)/5;
 
     static int count2 = 0;
     if (count2 == 20)
@@ -122,7 +122,7 @@ void FFT_result_processing(){
         MPLog("phi FFT moving average result\n");
         for (int i = 0; i < FFT_LEN/16; i++)
         {
-            MPLog("%5.5f\n", FFT_result[i]);
+            MPLog("%5.5f\n", temp[i]);
         }
 
         MPLog("\n");
@@ -240,11 +240,11 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", dy_output_buffer[2*i], dy_output_buffer[2*i+1]);
         // }
 
-        MPLog("dy phi FFT result\n");
-        for (int i = 0; i < FFT_LEN/16; i++)
-        {
-            MPLog("%5.5f\n", dy_FFT_result[i]);
-        }
+        // MPLog("dy phi FFT result\n");
+        // for (int i = 0; i < FFT_LEN/16; i++)
+        // {
+        //     MPLog("%5.5f\n", dy_FFT_result[i]);
+        // }
 
         MPLog("\n");
     }
