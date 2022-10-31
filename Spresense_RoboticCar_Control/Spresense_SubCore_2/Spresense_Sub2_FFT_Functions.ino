@@ -14,6 +14,9 @@
 //--------------------------------------------------------//
 
 /*  Estimate inner/outer layer
+
+    For inside robot:  1st peak of dx/dy phi should correspond to a TROUGH in phi
+    For outside robot: 1st peak of dx/dy phi should correspond to a PEAK in phi
     
     return value:
     0 = inside
@@ -22,65 +25,156 @@
     3 = xy-axis outside (corner)*/
 uint8_t inner_outer_estimate(){
     
+    static const int start_index = 4;
     uint8_t final_judgement = 0;
     int dx_peak_index = 0;
     int dy_peak_index = 0;
-    int half_FFT_LEN = FFT_LEN/2;
 
-    for (int i = 1; i < half_FFT_LEN; i++) // ピーク候補から0Hzは除外
+    // dx direction
+    for (int i = start_index+2; i < FFT_LEN/8; i++) // ピーク候補から0Hzは除外
     {
-        if( (dx_FFT_result[i] > dx_FFT_result[i-1]) && (dx_FFT_result[i] > dx_FFT_result[i+1]) )
+        if( (dx_FFT_result_processed[i] > dx_FFT_result_processed[i-1]) && (dx_FFT_result_processed[i] > dx_FFT_result_processed[i+1]) )
         {
-            if (dx_FFT_result[i] > dy_FFT_result[i])
-            {            
-                if (dx_FFT_result[i] < FFT_result[i])
+            if (dx_FFT_result_processed[i] > dy_FFT_result_processed[i])
+            {
+                if ((FFT_result_processed[i]<FFT_result_processed[i-1]) && (FFT_result_processed[i]<FFT_result_processed[i+1]))
                 {
-                    if (dx_FFT_result[i] > PEAK_POWER_THRESHOLD)
+                    //inside
+                    dx_peak_index = i;
+                    break;
+                }
+                if ((FFT_result_processed[i]>FFT_result_processed[i-1]) && (FFT_result_processed[i]>FFT_result_processed[i+1]))
+                {
+                    //outside
+                    final_judgement += 1;
+                    dx_peak_index = i;
+                    // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
+                    // MPLog("\n");
+                    break;
+                }
+
+                int x_neighbor = 1;
+                while (1)
+                {
+                    if ((FFT_result_processed[i-x_neighbor]<FFT_result_processed[i-x_neighbor-1]) && (FFT_result_processed[i-x_neighbor]<FFT_result_processed[i-x_neighbor+1]))
                     {
+                        //inside
+                        dx_peak_index = i;
+                        break;
+                    }
+                    if ((FFT_result_processed[i-x_neighbor]>FFT_result_processed[i-x_neighbor-1]) && (FFT_result_processed[i-x_neighbor]>FFT_result_processed[i-x_neighbor+1]))
+                    {
+                        //outside
                         final_judgement += 1;
                         dx_peak_index = i;
                         // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
                         // MPLog("\n");
                         break;
-                    }                    
-                } else {
-                    dx_peak_index = i;
-                    break;
+                    }
+                    if ((FFT_result_processed[i+x_neighbor]<FFT_result_processed[i+x_neighbor-1]) && (FFT_result_processed[i+x_neighbor]<FFT_result_processed[i+x_neighbor+1]))
+                    {
+                        //inside
+                        dx_peak_index = i;
+                        break;
+                    }
+                    if ((FFT_result_processed[i+x_neighbor]>FFT_result_processed[i+x_neighbor-1]) && (FFT_result_processed[i+x_neighbor]>FFT_result_processed[i+x_neighbor+1]))
+                    {
+                        //outside
+                        final_judgement += 1;
+                        dx_peak_index = i;
+                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
+                        // MPLog("\n");
+                        break;
+                    }
+                    if (x_neighbor>5)
+                    {
+                        // default, assume outside
+                        final_judgement += 1;
+                        dx_peak_index = i;
+                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
+                        // MPLog("\n");
+                        break;
+                    }
+                    x_neighbor++;
                 }
+                break;  // all possible cases handled above
             }
         }
     }
     
-    for (int i = 1; i < half_FFT_LEN; i++) // ピーク候補から0Hzは除外
+    // dy direction
+    for (int i = start_index+2; i < FFT_LEN/8; i++) // ピーク候補から0Hzは除外
     {
-        if( (dy_FFT_result[i] > dy_FFT_result[i-1]) && (dy_FFT_result[i] > dy_FFT_result[i+1]) )
+        if( (dy_FFT_result_processed[i] > dy_FFT_result_processed[i-1]) && (dy_FFT_result_processed[i] > dy_FFT_result_processed[i+1]) )
         {
-            if (dy_FFT_result[i] > dx_FFT_result[i])
+            if (dy_FFT_result_processed[i] > dx_FFT_result_processed[i])
             {
-                if (dy_FFT_result[i] < FFT_result[i])
+                if ((FFT_result_processed[i]<FFT_result_processed[i-1]) && (FFT_result_processed[i]<FFT_result_processed[i+1]))
                 {
-                    if (dy_FFT_result[i] > PEAK_POWER_THRESHOLD)
+                    //inside
+                    dy_peak_index = i;
+                    break;
+                }
+                if ((FFT_result_processed[i]>FFT_result_processed[i-1]) && (FFT_result_processed[i]>FFT_result_processed[i+1]))
+                {
+                    //outside
+                    final_judgement += 2;
+                    dy_peak_index = i;
+                    // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
+                    // MPLog("\n");
+                    break;
+                }
+
+                int y_neighbor = 1;
+                while (1)
+                {
+                    if ((FFT_result_processed[i-y_neighbor]<FFT_result_processed[i-y_neighbor-1]) && (FFT_result_processed[i-y_neighbor]<FFT_result_processed[i-y_neighbor+1]))
                     {
+                        //inside
+                        dy_peak_index = i;
+                        break;
+                    }
+                    if ((FFT_result_processed[i-y_neighbor]>FFT_result_processed[i-y_neighbor-1]) && (FFT_result_processed[i-y_neighbor]>FFT_result_processed[i-y_neighbor+1]))
+                    {
+                        //outside
                         final_judgement += 2;
                         dy_peak_index = i;
                         // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
                         // MPLog("\n");
                         break;
-                    }                    
-                } else {
-                    dy_peak_index = i;
-                    break;
+                    }
+                    if ((FFT_result_processed[i+y_neighbor]<FFT_result_processed[i+y_neighbor-1]) && (FFT_result_processed[i+y_neighbor]<FFT_result_processed[i+y_neighbor+1]))
+                    {
+                        //inside
+                        dy_peak_index = i;
+                        break;
+                    }
+                    if ((FFT_result_processed[i+y_neighbor]>FFT_result_processed[i+y_neighbor-1]) && (FFT_result_processed[i+y_neighbor]>FFT_result_processed[i+y_neighbor+1]))
+                    {
+                        //outside
+                        final_judgement += 2;
+                        dy_peak_index = i;
+                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
+                        // MPLog("\n");
+                        break;
+                    }
+                    if (y_neighbor>5)
+                    {
+                        // default, assume outside
+                        final_judgement += 2;
+                        dy_peak_index = i;
+                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
+                        // MPLog("\n");
+                        break;
+                    }
+                    y_neighbor++;
                 }
+                break;  // all possible cases handled above
             }
         }
     }
 
-    // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
-    // MPLog("%d\n", dy_peak_index);
-    // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
-    // MPLog("%d\n", final_judgement);
-    // MPLog("\n");
-
+    // make judgement (by turning on LED)
     if (final_judgement > 0)
     {
         // outside
@@ -92,42 +186,88 @@ uint8_t inner_outer_estimate(){
         digitalWrite(INSIDE_LED, HIGH);
     }
 
+    // [Debug use] print out data
+    static int count = 0;
+    if (count == 5)
+    {
+        count = 0;
+
+        // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
+        // MPLog("%d\n", dx_peak_index);
+        MPLog("%d\n", dy_peak_index);
+        // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
+        MPLog("%d\n", final_judgement);
+        MPLog("\n");
+    }
+    count++;
+    
+    // return judgement
     return final_judgement;
 }
 
-// preprocessor function for FFT result
+/* preprocessor function for FFT result
+   
+   Current method : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)
+   
+//    Peak   -> FFT_peak_trough_pos[i] = 2
+//    Trough -> FFT_peak_trough_pos[i] = 1
+//    Other  -> FFT_peak_trough_pos[i] = 0*/
 void FFT_result_processing(){
-    float temp[FFT_LEN];
+    static const int start_index = 4;
 
-    temp[0] = (FFT_result[0]*2+FFT_result[1]+FFT_result[2]+FFT_result[3])/5;
-    temp[1] = (FFT_result[0]+FFT_result[1]*2+FFT_result[2]+FFT_result[3]+FFT_result[4])/6;
-    temp[2] = (FFT_result[0]+FFT_result[1]+FFT_result[2]*2+FFT_result[3]+FFT_result[4]+FFT_result[5])/7;
-    // temp[3] = (FFT_result[0]+FFT_result[1]+FFT_result[2]+FFT_result[3]+FFT_result[4]+FFT_result[5]+FFT_result[6])/7;
-
-    for (int i = 3; i < FFT_LEN-3; i++){
-        temp[i] = (FFT_result[i-3]+FFT_result[i-2]+FFT_result[i-1]
-                    +FFT_result[i]*2
-                    +FFT_result[i+1]+FFT_result[i+2]+FFT_result[i+3]) /8;
-    }
-
-    temp[FFT_LEN-3] = (FFT_result[FFT_LEN-6]+FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]*2+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1])/7;
-    temp[FFT_LEN-2] = (FFT_result[FFT_LEN-5]+FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]*2+FFT_result[FFT_LEN-1])/6;
-    temp[FFT_LEN-1] = (FFT_result[FFT_LEN-4]+FFT_result[FFT_LEN-3]+FFT_result[FFT_LEN-2]+FFT_result[FFT_LEN-1]*2)/5;
-
-    static int count2 = 0;
-    if (count2 == 20)
+    // process data
+    // process to FFT_LEN/8 only as peak/trough should appear in this range already
+    for (int i = start_index; i < FFT_LEN/8; i++)
     {
-        count2 = 0;
+        // phi
+        FFT_result_processed[i] = ( 5*FFT_result[i-4] -25*FFT_result[i-3] +50*FFT_result[i-2] +176*FFT_result[i-1]
+                                    +281*FFT_result[i]
+                                    +176*FFT_result[i+1] +50*FFT_result[i+2] -25*FFT_result[i+3] +5*FFT_result[i+4])/693;
 
-        MPLog("phi FFT moving average result\n");
-        for (int i = 0; i < FFT_LEN/16; i++)
-        {
-            MPLog("%5.5f\n", temp[i]);
-        }
+        // dx_phi
+        dx_FFT_result_processed[i] = ( 5*dx_FFT_result[i-4] -25*dx_FFT_result[i-3] +50*dx_FFT_result[i-2] +176*dx_FFT_result[i-1]
+                                    +281*dx_FFT_result[i]
+                                    +176*dx_FFT_result[i+1] +50*dx_FFT_result[i+2] -25*dx_FFT_result[i+3] +5*dx_FFT_result[i+4])/693;
 
-        MPLog("\n");
+        // dy_phi
+        dy_FFT_result_processed[i] = ( 5*dy_FFT_result[i-4] -25*dy_FFT_result[i-3] +50*dy_FFT_result[i-2] +176*dy_FFT_result[i-1]
+                                    +281*dy_FFT_result[i]
+                                    +176*dy_FFT_result[i+1] +50*dy_FFT_result[i+2] -25*dy_FFT_result[i+3] +5*dy_FFT_result[i+4])/693;
     }
-    count2++;
+
+    // //look for peak/trough
+    // for (int i = start_index+1; i < FFT_LEN/8; i++)
+    // {
+    //     // phi
+    //     if ((FFT_result_processed[i]>FFT_result_processed[i-1]) && (FFT_result_processed[i]>FFT_result_processed[i+1]))
+    //     {
+    //         FFT_peak_trough_pos[i] = 2;
+    //     }
+    //     if ((FFT_result_processed[i]<FFT_result_processed[i-1]) && (FFT_result_processed[i]<FFT_result_processed[i+1]))
+    //     {
+    //         FFT_peak_trough_pos[i] = 1;
+    //     }
+
+    //     // dx_phi
+    //     if ((dx_FFT_result_processed[i]>dx_FFT_result_processed[i-1]) && (dx_FFT_result_processed[i]>dx_FFT_result_processed[i+1]))
+    //     {
+    //         dx_FFT_peak_trough_pos[i] = 2;
+    //     }
+    //     if ((dx_FFT_result_processed[i]<dx_FFT_result_processed[i-1]) && (dx_FFT_result_processed[i]<dx_FFT_result_processed[i+1]))
+    //     {
+    //         dx_FFT_peak_trough_pos[i] = 1;
+    //     }
+
+    //     // dy_phi
+    //     if ((dy_FFT_result_processed[i]>dy_FFT_result_processed[i-1]) && (dy_FFT_result_processed[i]>dy_FFT_result_processed[i+1]))
+    //     {
+    //         dy_FFT_peak_trough_pos[i] = 2;
+    //     }
+    //     if ((dy_FFT_result_processed[i]<dy_FFT_result_processed[i-1]) && (dy_FFT_result_processed[i]<dy_FFT_result_processed[i+1]))
+    //     {
+    //         dy_FFT_peak_trough_pos[i] = 1;
+    //     }
+    // }   
 }
 
 // function for checking existence of peak in FFT result
@@ -206,7 +346,7 @@ bool peak_check(){
 // helper function for displaying variable value
 void fft_data_print_out(){
     static int count = 0;
-    if (count == 20)
+    if (count == 5)
     {
         count = 0;
         
@@ -222,10 +362,16 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", output_buffer[2*i], output_buffer[2*i+1]);
         // }
 
-        MPLog("phi FFT result\n");
-        for (int i = 0; i < FFT_LEN/16; i++)
+        MPLog("FFT_result\n");
+        for (int i = 0; i < FFT_LEN/32; i++)
         {
             MPLog("%5.5f\n", FFT_result[i]);
+        }
+
+        MPLog("FFT_result_processed\n");
+        for (int i = 0; i < FFT_LEN/32; i++)
+        {
+            MPLog("%5.5f\n", FFT_result_processed[i]);
         }
 
         // MPLog("dy phi input buffer\n");
@@ -240,11 +386,11 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", dy_output_buffer[2*i], dy_output_buffer[2*i+1]);
         // }
 
-        // MPLog("dy phi FFT result\n");
-        // for (int i = 0; i < FFT_LEN/16; i++)
-        // {
-        //     MPLog("%5.5f\n", dy_FFT_result[i]);
-        // }
+        MPLog("dy_FFT_result_processed result\n");
+        for (int i = 0; i < FFT_LEN/32; i++)
+        {
+            MPLog("%5.5f\n", dy_FFT_result_processed[i]);
+        }
 
         MPLog("\n");
     }
@@ -299,16 +445,22 @@ void phi_init(){
         input_buffer[i] = 0.0;
         output_buffer[i] = 0.0;
         FFT_result[i] = 0.0;
+        FFT_result_processed[i] = 0.0;
+        FFT_peak_trough_pos[i] = 0;
         //dx phi
         dx_phi_buffer[i] = 0.0;
         dx_input_buffer[i] = 0.0;
         dx_output_buffer[i] = 0.0;
         dx_FFT_result[i] = 0.0;
+        dx_FFT_result_processed[i] = 0.0;
+        dx_FFT_peak_trough_pos[i] = 0;
         //dy phi
         dy_phi_buffer[i] = 0.0;
         dy_input_buffer[i] = 0.0;
         dy_output_buffer[i] = 0.0;
         dy_FFT_result[i] = 0.0;
+        dy_FFT_result_processed[i] = 0.0;
+        dy_FFT_peak_trough_pos[i] = 0;
     }
 }
 

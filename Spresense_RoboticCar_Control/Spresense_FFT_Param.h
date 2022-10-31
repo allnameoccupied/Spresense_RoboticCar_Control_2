@@ -68,20 +68,29 @@ double  c_fft               = 0.0;
 // FFT Runtime Variables
 bool    is_Self_Excitation = false;
 uint8_t PikaPika_light_sensor_life[PIKAPIKA_SENSOR_COUNT] = {0,0,0,0,0,0,0,0};
-// -> phi
+#if (SUBCORE == 2)
+// -> only for FFT Core
+// ->-> phi
 float   phi_buffer[FFT_LEN];
 float   input_buffer[FFT_LEN];
 float   output_buffer[FFT_LEN];
 float   FFT_result[FFT_LEN];
-// -> dx phi
+float   FFT_result_processed[FFT_LEN/8];
+uint8_t FFT_peak_trough_pos[FFT_LEN/8];
+// ->-> dx phi
 float   dx_phi_buffer[FFT_LEN];
 float   dx_input_buffer[FFT_LEN];
 float   dx_output_buffer[FFT_LEN];
 float   dx_FFT_result[FFT_LEN];
-// -> dy phi
+float   dx_FFT_result_processed[FFT_LEN/8];
+uint8_t dx_FFT_peak_trough_pos[FFT_LEN/8];
+// ->-> dy phi
 float   dy_phi_buffer[FFT_LEN];
 float   dy_input_buffer[FFT_LEN];
 float   dy_output_buffer[FFT_LEN];
 float   dy_FFT_result[FFT_LEN];
+float   dy_FFT_result_processed[FFT_LEN/8];
+uint8_t dy_FFT_peak_trough_pos[FFT_LEN/8];
+#endif
 
 #endif

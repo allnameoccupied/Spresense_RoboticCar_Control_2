@@ -1,8 +1,8 @@
 {
-    "sketch": "Spresense_SubCore_2\\Spresense_SubCore_2.ino",
-    "configuration": "Core=Sub2,Memory=768,Debug=Disabled,UploadSpeed=115200",
+    "sketch": "Spresense_RoboticCar_Control.ino",
+    "configuration": "Core=Main,Memory=768,Debug=Disabled,UploadSpeed=115200",
     "board": "SPRESENSE:spresense:spresense",
     "programmer": "SPRESENSE:sfutools",
-    "port": "COM13",
+    "port": "COM16",
     "output": "../../VScode_Arduino_build"
 }
