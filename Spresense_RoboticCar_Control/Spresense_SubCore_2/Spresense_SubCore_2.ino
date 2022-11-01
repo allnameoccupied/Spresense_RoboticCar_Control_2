@@ -85,7 +85,7 @@ void loop(void){
             }
             
             // FFT result preprocessing
-            // FFT_result_processing();
+            FFT_result_processing();
 
             // estimate inner/outer layer  ********
             inner_outer_estimate();
