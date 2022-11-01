@@ -37,19 +37,16 @@ uint8_t inner_outer_estimate(){
         {
             if (dx_FFT_result_processed[i] > dy_FFT_result_processed[i])
             {
+                dx_peak_index = i;
                 if ((FFT_result_processed[i]<FFT_result_processed[i-1]) && (FFT_result_processed[i]<FFT_result_processed[i+1]))
                 {
                     //inside
-                    dx_peak_index = i;
                     break;
                 }
                 if ((FFT_result_processed[i]>FFT_result_processed[i-1]) && (FFT_result_processed[i]>FFT_result_processed[i+1]))
                 {
                     //outside
                     final_judgement += 1;
-                    dx_peak_index = i;
-                    // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
-                    // MPLog("\n");
                     break;
                 }
 
@@ -59,40 +56,29 @@ uint8_t inner_outer_estimate(){
                     if ((FFT_result_processed[i-x_neighbor]<FFT_result_processed[i-x_neighbor-1]) && (FFT_result_processed[i-x_neighbor]<FFT_result_processed[i-x_neighbor+1]))
                     {
                         //inside
-                        dx_peak_index = i;
                         break;
                     }
                     if ((FFT_result_processed[i-x_neighbor]>FFT_result_processed[i-x_neighbor-1]) && (FFT_result_processed[i-x_neighbor]>FFT_result_processed[i-x_neighbor+1]))
                     {
                         //outside
                         final_judgement += 1;
-                        dx_peak_index = i;
-                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
-                        // MPLog("\n");
                         break;
                     }
                     if ((FFT_result_processed[i+x_neighbor]<FFT_result_processed[i+x_neighbor-1]) && (FFT_result_processed[i+x_neighbor]<FFT_result_processed[i+x_neighbor+1]))
                     {
                         //inside
-                        dx_peak_index = i;
                         break;
                     }
                     if ((FFT_result_processed[i+x_neighbor]>FFT_result_processed[i+x_neighbor-1]) && (FFT_result_processed[i+x_neighbor]>FFT_result_processed[i+x_neighbor+1]))
                     {
                         //outside
                         final_judgement += 1;
-                        dx_peak_index = i;
-                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
-                        // MPLog("\n");
                         break;
                     }
                     if (x_neighbor>5)
                     {
                         // default, assume outside
                         final_judgement += 1;
-                        dx_peak_index = i;
-                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dx_FFT_result[i]);
-                        // MPLog("\n");
                         break;
                     }
                     x_neighbor++;
@@ -109,19 +95,16 @@ uint8_t inner_outer_estimate(){
         {
             if (dy_FFT_result_processed[i] > dx_FFT_result_processed[i])
             {
+                dy_peak_index = i;
                 if ((FFT_result_processed[i]<FFT_result_processed[i-1]) && (FFT_result_processed[i]<FFT_result_processed[i+1]))
                 {
                     //inside
-                    dy_peak_index = i;
                     break;
                 }
                 if ((FFT_result_processed[i]>FFT_result_processed[i-1]) && (FFT_result_processed[i]>FFT_result_processed[i+1]))
                 {
                     //outside
                     final_judgement += 2;
-                    dy_peak_index = i;
-                    // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
-                    // MPLog("\n");
                     break;
                 }
 
@@ -131,40 +114,29 @@ uint8_t inner_outer_estimate(){
                     if ((FFT_result_processed[i-y_neighbor]<FFT_result_processed[i-y_neighbor-1]) && (FFT_result_processed[i-y_neighbor]<FFT_result_processed[i-y_neighbor+1]))
                     {
                         //inside
-                        dy_peak_index = i;
                         break;
                     }
                     if ((FFT_result_processed[i-y_neighbor]>FFT_result_processed[i-y_neighbor-1]) && (FFT_result_processed[i-y_neighbor]>FFT_result_processed[i-y_neighbor+1]))
                     {
                         //outside
                         final_judgement += 2;
-                        dy_peak_index = i;
-                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
-                        // MPLog("\n");
                         break;
                     }
                     if ((FFT_result_processed[i+y_neighbor]<FFT_result_processed[i+y_neighbor-1]) && (FFT_result_processed[i+y_neighbor]<FFT_result_processed[i+y_neighbor+1]))
                     {
                         //inside
-                        dy_peak_index = i;
                         break;
                     }
                     if ((FFT_result_processed[i+y_neighbor]>FFT_result_processed[i+y_neighbor-1]) && (FFT_result_processed[i+y_neighbor]>FFT_result_processed[i+y_neighbor+1]))
                     {
                         //outside
                         final_judgement += 2;
-                        dy_peak_index = i;
-                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
-                        // MPLog("\n");
                         break;
                     }
                     if (y_neighbor>5)
                     {
                         // default, assume outside
                         final_judgement += 2;
-                        dy_peak_index = i;
-                        // MPLog("%5.5f        %5.5f\n", FFT_result[i], dy_FFT_result[i]);
-                        // MPLog("\n");
                         break;
                     }
                     y_neighbor++;
