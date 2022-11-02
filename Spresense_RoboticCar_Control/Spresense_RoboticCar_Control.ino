@@ -81,7 +81,6 @@ void loop() {
 }
 
 //--------------------------------------------------------//
-/*
 unsigned int FFT_PikaPika_Routine(){
     //******** 関数内変数定義 ***********  
     static int PikaPika_LED_countdown = 0;
@@ -91,24 +90,58 @@ unsigned int FFT_PikaPika_Routine(){
     //******** 関数内変数定義ここまで********
 
     //******** 位相更新 ***********     楕円型（振動相互作用）
+    static int ttcount = FFT_PROCESS_PERIOD_US * 800;
+    static float test_self_excite = 0.0;
+    static float test_self_excite2 = 0.0;
+    // if (is_Self_Excitation)
+    if (ttcount == 0)
+    {
+      // MPLog("now real self excite la\n");
+      if (!is_Self_Excitation)
+      {
+        last_phi = 0.0;
+        last_mod_varphi = 0.0;
+        // phi_bar = 0.0;
+        phi = 0.0;
+        varphi = 0.0;
+        mod_varphi = 0.0;
+      }
+      // test_self_excite = 0.025;
+      // test_self_excite2 = 1.0;
+      // is_Self_Excitation = false;
+      ttcount = FFT_PROCESS_PERIOD_US * 800;
+      is_Self_Excitation = false;
+      // delay(30);
+    } else {
+      // test_self_excite = GAMMA;
+      // test_self_excite2 = kappa;
+      ttcount--;
+    }
+
     phi_bar += Omega_0 * dt;    // 進行位相は等角速度
-    phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
-    is_Self_Excitation = false;   // 一度行ったら自励はオフ
+    // phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
+    // phi_bar += test_self_excite * SELF_EXITATION_INTENSITY;   // 自励処理
+    // is_Self_Excitation = false;   // 一度行ったら自励はオフ
 
     sum_dphi = 0.0;
+
     adaptive_gamma = GAMMA_CONST_1;
+    // adaptive_gamma = test_self_excite;
     for (int i = 0; i < PIKAPIKA_SENSOR_COUNT; i++)
     {
         sum_dphi += dphi[i];
         adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * GAMMA_CONST_2;
+        // adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * test_self_excite;
     }
     c_fft = adaptive_gamma * 0.5 * dt + 1;
     double temp_phi = ( 2 * phi
                         + (adaptive_gamma * dt * 0.5 - 1) * last_phi
                         + dt * dt * (-kappa * sum_dphi))  /c_fft;
+                        // + dt * dt * (-test_self_excite2 * sum_dphi))  /c_fft;
     last_phi = phi;
     phi = temp_phi;
     varphi = phi_bar + phi;
+    // varphi = phi_bar;
     //******** 位相更新ここまで********
 
     //******** dphi/dx & dphi/dy の計算********
@@ -151,23 +184,23 @@ unsigned int FFT_PikaPika_Routine(){
     //******** dphi/dx & dphi/dy の計算ここまで********
 
     // static int count=0;
-    // if (count == 10000)
+    // // if (count == 10000)
     // if (count == 100000)
     // {
     //     count = 0;
-        // count = 100001;
-        // MPLog("%5.5f\n", dx_phi);
-        // MPLog("%5.5f\n", dy_phi);
-        // MPLog("%5.5f\n", dyi);
-        // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(PikaPika_radian_cos[i]));}
-        // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(PikaPika_radian_sin[i]));}
-        // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life[i] > 0 %d\n", PikaPika_light_sensor_life[i] > 0);}
-        // for (int i = 0; i < 8; i++){MPLog("dphi %5.5f\n", dphi[i]);}
-        // MPLog("sum_dphi %5.5f\n", sum_dphi);
-        // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life %d\n", PikaPika_light_sensor_life[i]);}
-        // MPLog("adaptive_gamma %5.5f\n", adaptive_gamma);
-        // MPLog("phi %5.5f\n", phi);
-        // MPLog("varphi %5.5f\n", varphi);
+    //     // count = 100001;
+    //     // MPLog("%5.5f\n", dx_phi);
+    //     // MPLog("%5.5f\n", dy_phi);
+    //     // MPLog("%5.5f\n", dyi);
+    //     // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(PikaPika_radian_cos[i]));}
+    //     // for (int i = 0; i < 8; i++){MPLog("%5.5f\n", abs(PikaPika_radian_sin[i]));}
+    //     // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life[i] > 0 %d\n", PikaPika_light_sensor_life[i] > 0);}
+    //     for (int i = 0; i < 8; i++){MPLog("dphi %5.5f\n", dphi[i]);}
+    //     // MPLog("sum_dphi %5.5f\n", sum_dphi);
+    //     // for (int i = 0; i < 8; i++){MPLog("PikaPika_light_sensor_life %d\n", PikaPika_light_sensor_life[i]);}
+    //     // MPLog("adaptive_gamma %5.5f\n", adaptive_gamma);
+    //     // MPLog("phi %5.5f\n", phi);
+    //     // MPLog("varphi %5.5f\n", varphi);
     //     MPLog("\n");
     // } else{
     //     count++;
@@ -213,5 +246,5 @@ unsigned int FFT_PikaPika_Routine(){
     return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 
 }
-*/
+
 #endif
