@@ -37,7 +37,7 @@ void i2c_detect();
 
 //--------------------------------------------------------//
 
-///* PikaPika FFT test
+/* PikaPika FFT test
 unsigned int FFT_PikaPika_Routine(){
     //******** 関数内変数定義 ***********  
     static int PikaPika_LED_countdown = 0;
@@ -47,33 +47,33 @@ unsigned int FFT_PikaPika_Routine(){
     //******** 関数内変数定義ここまで********
 
     //******** 位相更新 ***********     楕円型（振動相互作用）
-    // static int ttcount = FFT_PROCESS_PERIOD_US * 800;
-    // static float test_self_excite = 0.0;
-    // static float test_self_excite2 = 0.0;
-    // // if (is_Self_Excitation)
-    // if (ttcount == 0)
-    // {
-    //   // MPLog("now real self excite la\n");
-    //   if (!is_Self_Excitation)
-    //   {
-    //     last_phi = 0.0;
-    //     last_mod_varphi = 0.0;
-    //     // phi_bar = 0.0;
-    //     phi = 0.0;
-    //     varphi = 0.0;
-    //     mod_varphi = 0.0;
-    //   }
-    //   // test_self_excite = 0.025;
-    //   // test_self_excite2 = 1.0;
-    //   // is_Self_Excitation = false;
-    //   ttcount = FFT_PROCESS_PERIOD_US * 800;
-    //   is_Self_Excitation = false;
-    //   // delay(30);
-    // } else {
-    //   // test_self_excite = GAMMA;
-    //   // test_self_excite2 = kappa;
-    //   ttcount--;
-    // }
+    static int ttcount = FFT_PROCESS_PERIOD_US * 800;
+    static float test_self_excite = 0.0;
+    static float test_self_excite2 = 0.0;
+    // if (is_Self_Excitation)
+    if (ttcount == 0)
+    {
+      // MPLog("now real self excite la\n");
+      if (!is_Self_Excitation)
+      {
+        last_phi = 0.0;
+        last_mod_varphi = 0.0;
+        // phi_bar = 0.0;
+        phi = 0.0;
+        varphi = 0.0;
+        mod_varphi = 0.0;
+      }
+      // test_self_excite = 0.025;
+      // test_self_excite2 = 1.0;
+      // is_Self_Excitation = false;
+      ttcount = FFT_PROCESS_PERIOD_US * 800;
+      is_Self_Excitation = false;
+      // delay(30);
+    } else {
+      // test_self_excite = GAMMA;
+      // test_self_excite2 = kappa;
+      ttcount--;
+    }
 
     phi_bar += Omega_0 * dt;    // 進行位相は等角速度
     // phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
@@ -203,7 +203,7 @@ unsigned int FFT_PikaPika_Routine(){
     return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 
 }
-//*/
+*/
 
 /* Multi Robots test
 // Robot 1 (Receiver + Serial Communication)
