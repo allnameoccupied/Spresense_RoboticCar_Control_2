@@ -20,16 +20,15 @@
     0 = inside
     1 = x-axis outside
     2 = y-axis outside
-    3 = xy-axis outside (corner)*/
+    3 = xy-axis outside (corner)
+    4 = undeterminable*/
 uint8_t inner_outer_estimate();
 
 /* preprocessor function for FFT result
    
-   Current method : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)
-   
-//    Peak   -> FFT_peak_trough_pos[i] = 2
-//    Trough -> FFT_peak_trough_pos[i] = 1
-//    Other  -> FFT_peak_trough_pos[i] = 0*/
+   Current method : 
+        Phi : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)
+        dx,dy_Phi : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3) -> Moving average (window size = 3)*/
 void FFT_result_processing();
 
 // function for checking existence of peak in FFT result
