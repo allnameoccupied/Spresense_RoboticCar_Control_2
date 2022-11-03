@@ -245,8 +245,8 @@ uint8_t inner_outer_estimate(){
         // MPLog("%d\n", dx_peak_index);
         // MPLog("%d\n", dy_peak_index);
         // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
-        // MPLog("%d\n", judgement_count[0]);
-        for (int i = 0; i < 5; i++){MPLog("%d\n", judgement_count[i]);}
+        MPLog("%d\n", judgement_count[0]);
+        // for (int i = 0; i < 5; i++){MPLog("%d\n", judgement_count[i]);}
         // MPLog("%d\n", final_judgement);
         // MPLog("\n");
     }
@@ -434,12 +434,12 @@ void FFT_result_processing(){
     for (int i = start_index; i < FFT_LEN/8; i++)
     {
         // phi
-        // FFT_result_processed[i] = ( 5*FFT_result[i-4] -25*FFT_result[i-3] +50*FFT_result[i-2] +176*FFT_result[i-1]
-        //                             +281*FFT_result[i]
-        //                             +176*FFT_result[i+1] +50*FFT_result[i+2] -25*FFT_result[i+3] +5*FFT_result[i+4])/693;
-        FFT_result_processed[i] = ( 5*FFT_result[i-5] -20*FFT_result[i-4] +30*FFT_result[i-3] +201*FFT_result[i-2] +507*FFT_result[i-1]
-                                    +633*FFT_result[i]
-                                    +507*FFT_result[i+1] +201*FFT_result[i+2] +30*FFT_result[i+3] -20*FFT_result[i+4] +5*FFT_result[i+5])/2079;
+        FFT_result_processed[i] = ( 5*FFT_result[i-4] -25*FFT_result[i-3] +50*FFT_result[i-2] +176*FFT_result[i-1]
+                                    +281*FFT_result[i]
+                                    +176*FFT_result[i+1] +50*FFT_result[i+2] -25*FFT_result[i+3] +5*FFT_result[i+4])/693;
+        // FFT_result_processed[i] = ( 5*FFT_result[i-5] -20*FFT_result[i-4] +30*FFT_result[i-3] +201*FFT_result[i-2] +507*FFT_result[i-1]
+        //                             +633*FFT_result[i]
+        //                             +507*FFT_result[i+1] +201*FFT_result[i+2] +30*FFT_result[i+3] -20*FFT_result[i+4] +5*FFT_result[i+5])/2079;
 
         // dx_phi
         dx_FFT_result_processed[i] = ( 5*dx_FFT_result[i-4] -25*dx_FFT_result[i-3] +50*dx_FFT_result[i-2] +176*dx_FFT_result[i-1]
