@@ -14,7 +14,17 @@
 
 //--------------------------------------------------------//
 
-// test 20221102 dfddfdf
+/*  Estimate inner/outer layer
+
+    For inside robot:  1st peak of dx/dy phi should correspond to a TROUGH in phi
+    For outside robot: 1st peak of dx/dy phi should correspond to a PEAK in phi
+    
+    return value:
+    0 = inside
+    1 = x-axis outside
+    2 = y-axis outside
+    3 = xy-axis outside (corner)
+    4 = undeterminable*/
 uint8_t inner_outer_estimate(){
     
     static const int start_index = 5;
@@ -30,7 +40,7 @@ uint8_t inner_outer_estimate(){
     static int past_judgement[mem_size];
     static int judgement_count[5]; // [inside, dx_outside, dy_outside, corner, undeterminable]    
 
-    // dx direction
+    // dx direction - search peak
     for (int i = start_index+2; i < FFT_LEN/8; i++) // ピーク候補から0Hzは除外
     {
         if( (dx_FFT_result_processed[i] > dx_FFT_result_processed[i-1]) && (dx_FFT_result_processed[i] > dx_FFT_result_processed[i+1]) )
@@ -92,7 +102,7 @@ uint8_t inner_outer_estimate(){
         }
     }
     
-    // dy direction
+    // dy direction - search peak
     for (int i = start_index+2; i < FFT_LEN/8; i++) // ピーク候補から0Hzは除外
     {
         if( (dy_FFT_result_processed[i] > dy_FFT_result_processed[i-1]) && (dy_FFT_result_processed[i] > dy_FFT_result_processed[i+1]) )
@@ -154,6 +164,7 @@ uint8_t inner_outer_estimate(){
         }
     }
 
+    // make & stock up judgement result at the beginning
     if (past_judgement_index < 0)
     {
         if (unjudgeable)
@@ -190,8 +201,10 @@ uint8_t inner_outer_estimate(){
         return 0;
     }
     
+    // delete earliest entry, prepare space for newest one
     judgement_count[past_judgement[past_judgement_index]]--;
 
+    // save newest judgement result
     if (unjudgeable)
     {
         past_judgement[past_judgement_index] = 4;
@@ -212,28 +225,47 @@ uint8_t inner_outer_estimate(){
         past_judgement[past_judgement_index] = 1;
         judgement_count[1] += 1;
         past_judgement_index = (past_judgement_index + 1) % 100;
-    } else {
+    } else // inside
+    {
         past_judgement[past_judgement_index] = 0;
         judgement_count[0] += 1;
         past_judgement_index = (past_judgement_index + 1) % 100;
     }
 
-    if (judgement_count[0] < (judgement_count[1] + judgement_count[2] + judgement_count[3]))
+    // MAKE JUDGEMENT   compare inside/outside judgement count
+    if (judgement_count[0] > (judgement_count[1] + judgement_count[2] + judgement_count[3] + judgement_count[4]))
+    {
+        final_judgement = 0;
+    } else if (judgement_count[1] > (judgement_count[0] + judgement_count[2] + judgement_count[3] + judgement_count[4])
     {
         final_judgement = 1;
+    } else if (judgement_count[2] > (judgement_count[0] + judgement_count[1] + judgement_count[3] + judgement_count[4])
+    {
+        final_judgement = 2;
+    } else if (judgement_count[3] > (judgement_count[0] + judgement_count[1] + judgement_count[2] + judgement_count[4])
+    {
+        final_judgement = 3;
+    } else //if (judgement_count[4] > (judgement_count[0] + judgement_count[1] + judgement_count[2] + judgement_count[3])
+    {
+        final_judgement = 4;
     }
     
-
-    // make judgement (by turning on LED)
-    if (final_judgement > 0)
+    // turn on LED
+    if (final_judgement == 0)
     {
-        // outside
-        digitalWrite(OUTSIDE_LED, HIGH);
-        digitalWrite(INSIDE_LED, LOW);
-    } else {
         // inside
         digitalWrite(OUTSIDE_LED, LOW);
         digitalWrite(INSIDE_LED, HIGH);
+    } else if ((final_judgement == 1) || (final_judgement == 2) || (final_judgement == 3))
+    {
+        // outside / corner
+        digitalWrite(OUTSIDE_LED, HIGH);
+        digitalWrite(INSIDE_LED, LOW);
+    } else // undeterminable
+    {
+        // undeterminable
+        digitalWrite(OUTSIDE_LED, LOW);
+        digitalWrite(INSIDE_LED, LOW);
     }
 
     // [Debug use] print out data
@@ -254,179 +286,12 @@ uint8_t inner_outer_estimate(){
     count++;
     
     // return judgement
-    return final_judgement*3;
-}
-
-/*  Estimate inner/outer layer
-
-    For inside robot:  1st peak of dx/dy phi should correspond to a TROUGH in phi
-    For outside robot: 1st peak of dx/dy phi should correspond to a PEAK in phi
-    
-    return value:
-    0 = inside
-    1 = x-axis outside
-    2 = y-axis outside
-    3 = xy-axis outside (corner)*/
-/*uint8_t inner_outer_estimate(){
-    
-    static const int start_index = 5;
-    uint8_t final_judgement = 0;
-    int dx_peak_index = 0;
-    int dy_peak_index = 0;
-
-    // dx direction
-    for (int i = start_index+2; i < FFT_LEN/8; i++) // ピーク候補から0Hzは除外
-    {
-        if( (dx_FFT_result_processed[i] > dx_FFT_result_processed[i-1]) && (dx_FFT_result_processed[i] > dx_FFT_result_processed[i+1]) )
-        {
-            if (dx_FFT_result_processed[i] > dy_FFT_result_processed[i])
-            {
-                dx_peak_index = i;
-                if ((FFT_result_processed[i]<FFT_result_processed[i-1]) && (FFT_result_processed[i]<FFT_result_processed[i+1]))
-                {
-                    //inside
-                    break;
-                }
-                if ((FFT_result_processed[i]>FFT_result_processed[i-1]) && (FFT_result_processed[i]>FFT_result_processed[i+1]))
-                {
-                    //outside
-                    final_judgement += 1;
-                    break;
-                }
-
-                int x_neighbor = 1;
-                while (1)
-                {
-                    if ((FFT_result_processed[i+x_neighbor]<FFT_result_processed[i+x_neighbor-1]) && (FFT_result_processed[i+x_neighbor]<FFT_result_processed[i+x_neighbor+1]))
-                    {
-                        //inside
-                        break;
-                    }
-                    if ((FFT_result_processed[i+x_neighbor]>FFT_result_processed[i+x_neighbor-1]) && (FFT_result_processed[i+x_neighbor]>FFT_result_processed[i+x_neighbor+1]))
-                    {
-                        //outside
-                        final_judgement += 1;
-                        break;
-                    }
-                    if ((FFT_result_processed[i-x_neighbor]<FFT_result_processed[i-x_neighbor-1]) && (FFT_result_processed[i-x_neighbor]<FFT_result_processed[i-x_neighbor+1]))
-                    {
-                        //inside
-                        break;
-                    }
-                    if ((FFT_result_processed[i-x_neighbor]>FFT_result_processed[i-x_neighbor-1]) && (FFT_result_processed[i-x_neighbor]>FFT_result_processed[i-x_neighbor+1]))
-                    {
-                        //outside
-                        final_judgement += 1;
-                        break;
-                    }
-                    if (x_neighbor>5)
-                    {
-                        // default, assume outside
-                        final_judgement += 1;
-                        break;
-                    }
-                    x_neighbor++;
-                }
-                break;  // all possible cases handled above
-            }
-        }
-    }
-    
-    // dy direction
-    for (int i = start_index+2; i < FFT_LEN/8; i++) // ピーク候補から0Hzは除外
-    {
-        if( (dy_FFT_result_processed[i] > dy_FFT_result_processed[i-1]) && (dy_FFT_result_processed[i] > dy_FFT_result_processed[i+1]) )
-        {
-            if (dy_FFT_result_processed[i] > dx_FFT_result_processed[i])
-            {
-                dy_peak_index = i;
-                if ((FFT_result_processed[i]<FFT_result_processed[i-1]) && (FFT_result_processed[i]<FFT_result_processed[i+1]))
-                {
-                    //inside
-                    break;
-                }
-                if ((FFT_result_processed[i]>FFT_result_processed[i-1]) && (FFT_result_processed[i]>FFT_result_processed[i+1]))
-                {
-                    //outside
-                    final_judgement += 2;
-                    break;
-                }
-
-                int y_neighbor = 1;
-                while (1)
-                {
-                    if ((FFT_result_processed[i+y_neighbor]<FFT_result_processed[i+y_neighbor-1]) && (FFT_result_processed[i+y_neighbor]<FFT_result_processed[i+y_neighbor+1]))
-                    {
-                        //inside
-                        break;
-                    }
-                    if ((FFT_result_processed[i+y_neighbor]>FFT_result_processed[i+y_neighbor-1]) && (FFT_result_processed[i+y_neighbor]>FFT_result_processed[i+y_neighbor+1]))
-                    {
-                        //outside
-                        final_judgement += 2;
-                        break;
-                    }
-                    if ((FFT_result_processed[i-y_neighbor]<FFT_result_processed[i-y_neighbor-1]) && (FFT_result_processed[i-y_neighbor]<FFT_result_processed[i-y_neighbor+1]))
-                    {
-                        //inside
-                        break;
-                    }
-                    if ((FFT_result_processed[i-y_neighbor]>FFT_result_processed[i-y_neighbor-1]) && (FFT_result_processed[i-y_neighbor]>FFT_result_processed[i-y_neighbor+1]))
-                    {
-                        //outside
-                        final_judgement += 2;
-                        break;
-                    }
-                    if (y_neighbor>5)
-                    {
-                        // default, assume outside
-                        final_judgement += 2;
-                        break;
-                    }
-                    y_neighbor++;
-                }
-                break;  // all possible cases handled above
-            }
-        }
-    }
-
-    // make judgement (by turning on LED)
-    if (final_judgement > 0)
-    {
-        // outside
-        digitalWrite(OUTSIDE_LED, HIGH);
-        digitalWrite(INSIDE_LED, LOW);
-    } else {
-        // inside
-        digitalWrite(OUTSIDE_LED, LOW);
-        digitalWrite(INSIDE_LED, HIGH);
-    }
-
-    // [Debug use] print out data
-    static int count = 0;
-    if (count == 5)
-    {
-        count = 0;
-
-        // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
-        // MPLog("%d\n", dx_peak_index);
-        MPLog("%d\n", dy_peak_index);
-        // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
-        MPLog("%d\n", final_judgement);
-        MPLog("\n");
-    }
-    count++;
-    
-    // return judgement
     return final_judgement;
 }
-*/
 
 /* preprocessor function for FFT result
    
-   Current method : 
-        Phi : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)
-        dx,dy_Phi : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3) -> Moving average (window size = 3)*/
+   Current method : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)*/
 void FFT_result_processing(){
     static const int start_index = 5;
 

@@ -26,9 +26,7 @@ uint8_t inner_outer_estimate();
 
 /* preprocessor function for FFT result
    
-   Current method : 
-        Phi : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)
-        dx,dy_Phi : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3) -> Moving average (window size = 3)*/
+   Current method : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)*/
 void FFT_result_processing();
 
 // function for checking existence of peak in FFT result
