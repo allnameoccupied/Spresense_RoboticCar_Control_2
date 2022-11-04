@@ -92,7 +92,7 @@ void loop(void){
             inner_outer_estimate();
 
             // print out data to Serial Monitor
-            // fft_data_print_out();
+            fft_data_print_out();
 
             // get peak & check need for self-excite (not used now)
             // float f_peak = get_peak_frequency(FFT_result);

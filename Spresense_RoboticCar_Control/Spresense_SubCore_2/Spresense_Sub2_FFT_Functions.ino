@@ -27,18 +27,23 @@
     4 = undeterminable*/
 uint8_t inner_outer_estimate(){
     
-    static const int start_index = 5;
-    uint8_t final_judgement = 0;
-    int dx_peak_index = 0;
-    int dy_peak_index = 0;
+    static const int start_index = 4;
+    static const int mem_size = 100;
 
+    int dx_peak_index = 0;
     bool dx_judgement = false;  // true = outside, false = inside
+
+    int dy_peak_index = 0;
     bool dy_judgement = false;  // true = outside, false = inside
+
     bool unjudgeable = false;
-    const int mem_size = 100;
-    static int past_judgement_index = -100;
+    
+    static int past_judgement_index = -mem_size;
     static int past_judgement[mem_size];
-    static int judgement_count[5]; // [inside, dx_outside, dy_outside, corner, undeterminable]    
+
+    static int judgement_count[5]; // [inside, dx_outside, dy_outside, corner, undeterminable] 
+
+    uint8_t final_judgement = 0;   
 
     // dx direction - search peak
     for (int i = start_index+2; i < FFT_LEN/8; i++) // ピーク候補から0Hzは除外
@@ -169,33 +174,33 @@ uint8_t inner_outer_estimate(){
     {
         if (unjudgeable)
         {
-            past_judgement[past_judgement_index + 100] = 4;
+            past_judgement[past_judgement_index + mem_size] = 4;
             judgement_count[4] += 1;
             past_judgement_index++;
             return 4;
         }
         if (dx_judgement && dy_judgement)
         {
-            past_judgement[past_judgement_index + 100] = 3;
+            past_judgement[past_judgement_index + mem_size] = 3;
             judgement_count[3] += 1;
             past_judgement_index++;
             return 3;
         }
         if (dy_judgement)
         {
-            past_judgement[past_judgement_index + 100] = 2;
+            past_judgement[past_judgement_index + mem_size] = 2;
             judgement_count[2] += 1;
             past_judgement_index++;
             return 2;
         }
         if (dx_judgement)
         {
-            past_judgement[past_judgement_index + 100] = 1;
+            past_judgement[past_judgement_index + mem_size] = 1;
             judgement_count[1] += 1;
             past_judgement_index++;
             return 1;
         }
-        past_judgement[past_judgement_index + 100] = 0;
+        past_judgement[past_judgement_index + mem_size] = 0;
         judgement_count[0] += 1;
         past_judgement_index++;
         return 0;
@@ -209,40 +214,40 @@ uint8_t inner_outer_estimate(){
     {
         past_judgement[past_judgement_index] = 4;
         judgement_count[4] += 1;
-        past_judgement_index = (past_judgement_index + 1) % 100;
+        past_judgement_index = (past_judgement_index + 1) % mem_size;
     } else if (dx_judgement && dy_judgement)
     {
         past_judgement[past_judgement_index] = 3;
         judgement_count[3] += 1;
-        past_judgement_index = (past_judgement_index + 1) % 100;
+        past_judgement_index = (past_judgement_index + 1) % mem_size;
     } else if (dy_judgement)
     {
         past_judgement[past_judgement_index] = 2;
         judgement_count[2] += 1;
-        past_judgement_index = (past_judgement_index + 1) % 100;
+        past_judgement_index = (past_judgement_index + 1) % mem_size;
     } else if (dx_judgement)
     {
         past_judgement[past_judgement_index] = 1;
         judgement_count[1] += 1;
-        past_judgement_index = (past_judgement_index + 1) % 100;
+        past_judgement_index = (past_judgement_index + 1) % mem_size;
     } else // inside
     {
         past_judgement[past_judgement_index] = 0;
         judgement_count[0] += 1;
-        past_judgement_index = (past_judgement_index + 1) % 100;
+        past_judgement_index = (past_judgement_index + 1) % mem_size;
     }
 
     // MAKE JUDGEMENT   compare inside/outside judgement count
     if (judgement_count[0] > (judgement_count[1] + judgement_count[2] + judgement_count[3] + judgement_count[4]))
     {
         final_judgement = 0;
-    } else if (judgement_count[1] > (judgement_count[0] + judgement_count[2] + judgement_count[3] + judgement_count[4])
+    } else if (judgement_count[1] > (judgement_count[0] + judgement_count[2] + judgement_count[3] + judgement_count[4]))
     {
         final_judgement = 1;
-    } else if (judgement_count[2] > (judgement_count[0] + judgement_count[1] + judgement_count[3] + judgement_count[4])
+    } else if (judgement_count[2] > (judgement_count[0] + judgement_count[1] + judgement_count[3] + judgement_count[4]))
     {
         final_judgement = 2;
-    } else if (judgement_count[3] > (judgement_count[0] + judgement_count[1] + judgement_count[2] + judgement_count[4])
+    } else if (judgement_count[3] > (judgement_count[0] + judgement_count[1] + judgement_count[2] + judgement_count[4]))
     {
         final_judgement = 3;
     } else //if (judgement_count[4] > (judgement_count[0] + judgement_count[1] + judgement_count[2] + judgement_count[3])
@@ -269,21 +274,21 @@ uint8_t inner_outer_estimate(){
     }
 
     // [Debug use] print out data
-    static int count = 0;
-    if (count == 5)
-    {
-        count = 0;
+    // static int count = 0;
+    // if (count == 5)
+    // {
+    //     count = 0;
 
-        // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
-        // MPLog("%d\n", dx_peak_index);
-        // MPLog("%d\n", dy_peak_index);
-        // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
-        MPLog("%d\n", judgement_count[0]);
-        // for (int i = 0; i < 5; i++){MPLog("%d\n", judgement_count[i]);}
-        // MPLog("%d\n", final_judgement);
-        // MPLog("\n");
-    }
-    count++;
+    //     // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
+    //     // MPLog("%d\n", dx_peak_index);
+    //     // MPLog("%d\n", dy_peak_index);
+    //     // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
+    //     MPLog("%d\n", judgement_count[0]);
+    //     // for (int i = 0; i < 5; i++){MPLog("%d\n", judgement_count[i]);}
+    //     // MPLog("%d\n", final_judgement);
+    //     // MPLog("\n");
+    // }
+    // count++;
     
     // return judgement
     return final_judgement;
@@ -293,7 +298,7 @@ uint8_t inner_outer_estimate(){
    
    Current method : Savitzky–Golay filter (window size = 7) -> Moving average (window size = 3)*/
 void FFT_result_processing(){
-    static const int start_index = 5;
+    static const int start_index = 4;
 
     // process data
     // process to FFT_LEN/8 only as peak/trough should appear in this range already
@@ -411,11 +416,11 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", output_buffer[2*i], output_buffer[2*i+1]);
         // }
 
-        MPLog("FFT_result\n");
-        for (int i = 5; i < FFT_LEN/32; i++)
-        {
-            MPLog("%5.5f\n", FFT_result[i]);
-        }
+        // MPLog("FFT_result\n");
+        // for (int i = 5; i < FFT_LEN/32; i++)
+        // {
+        //     MPLog("%5.5f\n", FFT_result[i]);
+        // }
 
         MPLog("FFT_result_processed\n");
         for (int i = 5; i < FFT_LEN/32; i++)
