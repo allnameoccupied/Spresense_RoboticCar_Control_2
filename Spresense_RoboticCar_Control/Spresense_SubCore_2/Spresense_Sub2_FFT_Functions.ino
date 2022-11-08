@@ -301,7 +301,7 @@ void FFT_result_processing(){
     static const int start_index = 4;
 
     // process data
-    // process to FFT_LEN/8 only as peak/trough should appear in this range already
+    // only go through to FFT_LEN/8 as peak/trough should appear in this range already
     for (int i = start_index; i < FFT_LEN/8; i++)
     {
         // phi
@@ -393,7 +393,7 @@ bool peak_check(){
         return false;
     }
 
-    // all has peak or is zero array, return true
+    // all FFT result have peak or are zero array (= not used), return true
     return true;
 }
 
