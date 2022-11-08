@@ -9,8 +9,8 @@
 //--------------------------------------------------------//
 
 #include "Spresense_Sub2_FFT_Functions.h"
-#include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
-// #include "C:/Max/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"    // laptop
+// #include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
+#include "C:/Max/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"    // laptop
 
 //--------------------------------------------------------//
 
@@ -274,21 +274,21 @@ uint8_t inner_outer_estimate(){
     }
 
     // [Debug use] print out data
-    // static int count = 0;
-    // if (count == 5)
-    // {
-    //     count = 0;
+    static int count = 0;
+    if (count == 5)
+    {
+        count = 0;
 
-    //     // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
-    //     // MPLog("%d\n", dx_peak_index);
-    //     // MPLog("%d\n", dy_peak_index);
-    //     // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
-    //     MPLog("%d\n", judgement_count[0]);
-    //     // for (int i = 0; i < 5; i++){MPLog("%d\n", judgement_count[i]);}
-    //     // MPLog("%d\n", final_judgement);
-    //     // MPLog("\n");
-    // }
-    // count++;
+        // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
+        // MPLog("%d\n", dx_peak_index);
+        // MPLog("%d\n", dy_peak_index);
+        // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
+        MPLog("%d\n", judgement_count[0]);
+        // for (int i = 0; i < 5; i++){MPLog("%d\n", judgement_count[i]);}
+        // MPLog("%d\n", final_judgement);
+        // MPLog("\n");
+    }
+    count++;
     
     // return judgement
     return final_judgement;
@@ -403,6 +403,9 @@ void fft_data_print_out(){
     if (count == 5)
     {
         count = 0;
+
+        MPLog("Judgement\n");
+        MPLog("%d\n", Judgement);
         
         // MPLog("phi input buffer\n");
         // for (int i = 0; i < FFT_LEN; i++)
@@ -416,14 +419,14 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", output_buffer[2*i], output_buffer[2*i+1]);
         // }
 
-        // MPLog("FFT_result\n");
-        // for (int i = 5; i < FFT_LEN/32; i++)
-        // {
-        //     MPLog("%5.5f\n", FFT_result[i]);
-        // }
+        MPLog("FFT_result\n");
+        for (int i = 5; i < FFT_LEN/16; i++)
+        {
+            MPLog("%5.5f\n", FFT_result[i]);
+        }
 
         MPLog("FFT_result_processed\n");
-        for (int i = 5; i < FFT_LEN/32; i++)
+        for (int i = 5; i < FFT_LEN/16; i++)
         {
             MPLog("%5.5f\n", FFT_result_processed[i]);
         }
@@ -440,8 +443,14 @@ void fft_data_print_out(){
         //     MPLog("%5.5f        %5.5f\n", dy_output_buffer[2*i], dy_output_buffer[2*i+1]);
         // }
 
+        MPLog("dy_FFT_result result\n");
+        for (int i = 5; i < FFT_LEN/16; i++)
+        {
+            MPLog("%5.5f\n", dy_FFT_result[i]);
+        }
+
         MPLog("dy_FFT_result_processed result\n");
-        for (int i = 5; i < FFT_LEN/32; i++)
+        for (int i = 5; i < FFT_LEN/16; i++)
         {
             MPLog("%5.5f\n", dy_FFT_result_processed[i]);
         }
