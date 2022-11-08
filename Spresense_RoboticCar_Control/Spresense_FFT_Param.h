@@ -66,22 +66,22 @@ uint8_t Judgement;
     float   input_buffer[FFT_LEN];
     float   output_buffer[FFT_LEN];
     float   FFT_result[FFT_LEN];
-    float   FFT_result_processed[FFT_LEN/8];
-    uint8_t FFT_peak_trough_pos[FFT_LEN/8];
+    float   FFT_result_processed[FFT_LEN];
+    uint8_t FFT_peak_trough_pos[FFT_LEN];
     // ->-> dx phi
     float   dx_phi_buffer[FFT_LEN];
     float   dx_input_buffer[FFT_LEN];
     float   dx_output_buffer[FFT_LEN];
     float   dx_FFT_result[FFT_LEN];
-    float   dx_FFT_result_processed[FFT_LEN/8];
-    uint8_t dx_FFT_peak_trough_pos[FFT_LEN/8];
+    float   dx_FFT_result_processed[FFT_LEN];
+    uint8_t dx_FFT_peak_trough_pos[FFT_LEN];
     // ->-> dy phi
     float   dy_phi_buffer[FFT_LEN];
     float   dy_input_buffer[FFT_LEN];
     float   dy_output_buffer[FFT_LEN];
     float   dy_FFT_result[FFT_LEN];
-    float   dy_FFT_result_processed[FFT_LEN/8];
-    uint8_t dy_FFT_peak_trough_pos[FFT_LEN/8];
+    float   dy_FFT_result_processed[FFT_LEN];
+    uint8_t dy_FFT_peak_trough_pos[FFT_LEN];
 #endif
 
 #endif
