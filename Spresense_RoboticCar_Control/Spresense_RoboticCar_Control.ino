@@ -156,7 +156,8 @@ unsigned int FFT_PikaPika_Routine(){
         {
             dxi += abs(PikaPika_radian_cos[i]);
         }
-        dx_phi += DXPHI_MULTIPLIER * -1.0 * dphi[i] * PikaPika_radian_cos[i];
+        // dx_phi += DXPHI_MULTIPLIER * -1.0 * dphi[i] * PikaPika_radian_cos[i];  // multiplier = 1.0
+        dx_phi += -1.0 * dphi[i] * PikaPika_radian_cos[i];
     }
     if (dxi == 0.0)
     {
@@ -173,7 +174,8 @@ unsigned int FFT_PikaPika_Routine(){
         {
             dyi += abs(PikaPika_radian_sin[i]);
         }
-        dy_phi += DYPHI_MULTIPLIER * -1.0 * dphi[i] * PikaPika_radian_sin[i];
+        // dy_phi += DYPHI_MULTIPLIER * -1.0 * dphi[i] * PikaPika_radian_sin[i];  // multiplier = 1.0
+        dy_phi += -1.0 * dphi[i] * PikaPika_radian_sin[i];
     }
     if (dyi == 0.0)
     {
