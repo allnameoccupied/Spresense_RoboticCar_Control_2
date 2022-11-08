@@ -117,17 +117,4 @@ void loop(void){
     }
 }
 
-// void loop(void){
-//     digitalWrite(INSIDE_LED, HIGH);
-//     delay(5000);
-//     while(1){
-//         digitalWrite(OUTSIDE_LED, HIGH);
-//         digitalWrite(INSIDE_LED, LOW);
-//         delay(rand()%8000+2000);
-//         digitalWrite(OUTSIDE_LED, LOW);
-//         digitalWrite(INSIDE_LED, HIGH);
-//         delay(rand()%8000+2000);
-//     }
-// }
-
 #endif

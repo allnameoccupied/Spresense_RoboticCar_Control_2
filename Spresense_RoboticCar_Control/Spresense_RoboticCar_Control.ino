@@ -35,8 +35,7 @@ VL53L1X Dist_sensor [8];
 //--------------------------------------------------------//
 
 // Functions Declaration
-// unsigned int FFT_PikaPika_Routine();
-extern float test_self_excite;
+unsigned int FFT_PikaPika_Routine();
 
 //--------------------------------------------------------//
 
@@ -91,13 +90,13 @@ unsigned int FFT_PikaPika_Routine(){
 
     //******** 位相更新 ***********     楕円型（振動相互作用）
     static int ttcount = FFT_PROCESS_PERIOD_US * 800;
-    static float test_self_excite = 0.0;
-    static float test_self_excite2 = 0.0;
+    // static float test_self_excite = 0.0;
+    // static float test_self_excite2 = 0.0;
     // if (is_Self_Excitation)
     if (ttcount == 0)
     {
       // MPLog("now real self excite la\n");
-      if (!is_Self_Excitation)
+      if (!is_Self_Excitation)  // 自励処理
       {
         last_phi = 0.0;
         last_mod_varphi = 0.0;
