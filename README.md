@@ -10,8 +10,6 @@ This is the code to control the robotic car using Spresense.
 
 Language used is Arduino (C++).
 
-File & class created by me will be specified so as to make the code clearer
-
 ---
 
 ## File Structure
