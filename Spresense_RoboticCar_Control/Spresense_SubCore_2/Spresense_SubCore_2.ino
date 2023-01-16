@@ -10,8 +10,8 @@
 //--------------------------------------------------------//
 
 #include "Spresense_SubCore_2_TaskList.h"
-// #include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
-#include "C:/Max/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"    // laptop
+#include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
+// #include "C:/Max/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"    // laptop
 
 #include <Arduino.h>
 #include <MP.h>
@@ -92,7 +92,7 @@ void loop(void){
             Judgement = inner_outer_estimate();
 
             // print out data to Serial Monitor
-            fft_data_print_out();
+            // fft_data_print_out();
 
             // get peak & check need for self-excite (not used now)
             // float f_peak = get_peak_frequency(FFT_result);

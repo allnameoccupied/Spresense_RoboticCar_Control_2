@@ -6,27 +6,10 @@
 #define NUCLEO_TOOL_H
 
 #include "mbed.h"
-#include <cstdint>
-#include <string>
-#include <cstring>
-
-//EXTERN of PIN Variables
-//  onboard LED & Button
-extern DigitalOut*     LED;
-extern DigitalIn*      Button;
-//  I2C
-extern I2C*            I2C_M;
-//  Motor variables
-extern PwmOut*         motor_PWM[4];
-extern DigitalOut*     motor_DIR[2*4];
-extern InterruptIn*    motor_HALL[2*4];
-extern uint16_t        motor_HALL_count[2*4];
-//  Serial communication
-extern BufferedSerial* Serial_M;
 
 //--------------------------------------------------------//
 
-//Easy Serial Write
+// Easy Serial Write
 void serial_println();
 void serial_print(const char* msg);
 void serial_println(const char* msg);
@@ -38,12 +21,22 @@ void serial_print(uint16_t msg);
 void serial_println(uint16_t msg);
 void serial_print(uint32_t msg);
 void serial_println(uint32_t msg);
+// -> print to 8 decimal points only
+void serial_print(float msg);
+// -> print to 8 decimal points only
+void serial_println(float msg);
 
-//Easy Wait
+// Easy Wait
 void wait_ms(uint16_t ms);
 void wait_s(uint16_t s);
 
-//Easy Angle <=> Radian
+// Easy float -> char[]
+//TODO
+
+// Easy [Basic Type] -> char[]
+//TODO
+
+// Easy Angle <=> Radian
 float angle_to_radian(float angle);
 float radian_to_angle(float radian);
 

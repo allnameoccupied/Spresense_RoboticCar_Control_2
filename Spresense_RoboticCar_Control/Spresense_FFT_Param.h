@@ -23,7 +23,7 @@
 #define FFT_UPDATE_PERIOD_US            100     // 制御周期[us] 100us -> 10kHz
 #define FFT_TIME_RESOLUTION             0.000001
 // -> Period - How often does main core sends phi data to FFT core (so that data is taken at correct interval)
-#define FFT_PROCESS_PERIOD_US           (2.0*PI/Omega_0/2.0)/FFT_TIME_RESOLUTION/FFT_UPDATE_PERIOD_US      // 通報周期[us]
+#define FFT_PROCESS_PERIOD_US           (2.0*PI/Omega_0/2.0)/FFT_TIME_RESOLUTION/FFT_UPDATE_PERIOD_US      // 通報周期[us] // =1570.80...
 // -> Period - How often does FFt core actually carry out FFT
 #define FFT_CALC_RATE                   8
 

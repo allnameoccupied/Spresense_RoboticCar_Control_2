@@ -46,7 +46,13 @@
 #define PIKAPIKA_LIGHT_7    PIN_D07
 
 // Inside/Outside LED pins
-#define INSIDE_LED          PIN_D18     //WHITE         BLUE
-#define OUTSIDE_LED         PIN_D19     //RED           RED
+#define INSIDE_LED          PIN_D20     //BLUE
+#define OUTSIDE_LED         PIN_D21     //RED
+
+// Motor Encoder pins
+#define M1_HALL_PIN         PIN_D25     // M1 = Top Left
+#define M2_HALL_PIN         PIN_D26     // M2 = Top Right
+#define M3_HALL_PIN         PIN_D27     // M3 = Bottom Left
+#define M4_HALL_PIN         PIN_D28     // M4 = Bottom Right
 
 #endif

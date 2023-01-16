@@ -76,11 +76,15 @@ void MP_Init(){
     if (ret<0) {
         MPLog("MP.begin(%d) error = %d\n", SUBCORE_2_FFT_ID, ret);
     }
+    // ret = MP.begin(SUBCORE_3_MOTOR_ENCODER_ID);
+    // if (ret<0) {
+    //     MPLog("MP.begin(%d) error = %d\n", SUBCORE_3_MOTOR_ENCODER_ID, ret);
+    // }
 }
 
 // Init FFT related stuff
 void FFT_Init(){
-    attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
+    // attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
 }
 
 //--------------------------------------------------------//
