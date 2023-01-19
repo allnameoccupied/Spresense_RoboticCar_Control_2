@@ -51,9 +51,6 @@ Motor_Input         Curr_Motor_Input;
 //  Serial communication
 BufferedSerial*     Serial_M;
 
-// FUNCTION DECLARATION
-void Motor_Input_Update();
-
 //--------------------------------------------------------//
 
 // main() runs in its own thread in the OS
@@ -106,12 +103,9 @@ int main()
                 default:break;
             }
 
-            Motor_Input_Update();
+            Motor_Apply_Input();
+
+            delete i2c_input;
         }
     }
-}
-
-// Motor Update Routine Function
-void Motor_Input_Update(){
-    Motor_Apply_Input();
 }

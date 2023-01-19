@@ -65,10 +65,6 @@ I2C_PWM_DIR_Input I2C_Read_PWM_DIR(char* input){
     i2c_package.pwm = (float)tempi + (float)(atoi(tempa))/100000000;
 
     i2c_package.dir = (int)(input[11]-'0');
-
-    // serial_println(i2c_package.motor);
-    // serial_println(i2c_package.pwm);
-    // serial_println(i2c_package.dir);
     
     return i2c_package;
 }
@@ -122,11 +118,6 @@ I2C_Encoder_Input I2C_Read_Encoder(char* input){
     char tempd[6];
     memcpy(&tempd, &input[23], 6);
     i2c_package.M4_Multiplier = (float)tempid + (float)(atoi(tempd))/1000000;
-
-    serial_println(i2c_package.M1_Multiplier);
-    serial_println(i2c_package.M2_Multiplier);
-    serial_println(i2c_package.M3_Multiplier);
-    serial_println(i2c_package.M4_Multiplier);
 
     return i2c_package;
 }

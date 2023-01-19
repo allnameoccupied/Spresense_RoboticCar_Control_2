@@ -7,6 +7,12 @@
 #ifndef SPRESENSE_I2C_HANDLER_H
 #define SPRESENSE_I2C_HANDLER_H
 
+// use this instead of Wire.beginTransmission
+void I2C_Start_Write();
+
+// use this instead of Wire.endTransmission
+void I2C_End_Write();
+
 // no -ve, >0 part will be omitted, only to 8 decimal, dir only 0,1,2(2=no change)
 bool I2C_Write_PWM_DIR (Motor motor, float pwm, uint8_t dir);
 

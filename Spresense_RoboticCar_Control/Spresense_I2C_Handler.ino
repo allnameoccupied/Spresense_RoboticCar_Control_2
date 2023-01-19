@@ -7,6 +7,16 @@
 #include "Spresense_I2C_Handler.h"
 #include "Spresense_Include_List.h"
 
+// use this instead of Wire.beginTransmission
+void I2C_Start_Write(){
+    Wire.beginTransmission(NUCLEO_I2C_ADDR);
+    Wire.endTransmission();
+}
+
+// use this instead of Wire.endTransmission
+void I2C_End_Write(){
+}
+
 bool I2C_Write_PWM_DIR (Motor motor, float pwm, uint8_t dir){
     if (pwm < 0.0 || pwm > 1.0){return false;}
     if (dir != 0 && dir != 1 && dir != 2){return false;}
@@ -28,13 +38,15 @@ bool I2C_Write_PWM_DIR (Motor motor, float pwm, uint8_t dir){
 
     msg[11] = dir + '0';
 
-    Serial.println(msg);
+    msg[12] = '0';
 
-    // Wire.beginTransmission(NUCLEO_I2C_ADDR);
-    // Wire.endTransmission();
+    Serial.println(msg);
+    
     Wire.beginTransmission(NUCLEO_I2C_ADDR);
     Wire.write(msg);
     Wire.endTransmission();
+
+    delay(1);
 
     return true;
 }
@@ -59,13 +71,15 @@ bool I2C_Write_Target_XY (int tar_X, int tar_Y){
     tempsy.insert(0, 9-tempsy.length(), '0');
     memcpy(&msg[10], tempsy.c_str(), 9);
 
-    Serial.println(msg);
+    msg[19] = '0';
 
-    // Wire.beginTransmission(NUCLEO_I2C_ADDR);
-    // Wire.endTransmission();
+    Serial.println(msg);
+    
     Wire.beginTransmission(NUCLEO_I2C_ADDR);
     Wire.write(msg);
     Wire.endTransmission();
+
+    delay(1);
 
     return true;
 }
@@ -87,13 +101,15 @@ bool I2C_Write_Radian (float radian){
     msg[1] = temp_whole + '0';
     memcpy(&msg[2], temps.c_str(), 8);
 
-    Serial.println(msg);
+    msg[10] = '0';
 
-    // Wire.beginTransmission(NUCLEO_I2C_ADDR);
-    // Wire.endTransmission();
+    Serial.println(msg);
+    
     Wire.beginTransmission(NUCLEO_I2C_ADDR);
     Wire.write(msg);
     Wire.endTransmission();
+
+    delay(1);
 
     return true;
 }
@@ -144,13 +160,15 @@ bool I2C_Write_Encoder (float m1_mul, float m2_mul, float m3_mul, float m4_mul){
     msg[22] = temp_whole4 + '0';
     memcpy(&msg[23], temps4.c_str(), 6);
 
-    Serial.println(msg);
+    msg[29] = '0';
 
-    // Wire.beginTransmission(NUCLEO_I2C_ADDR);
-    // Wire.endTransmission();
+    Serial.println(msg);
+    
     Wire.beginTransmission(NUCLEO_I2C_ADDR);
     Wire.write(msg);
     Wire.endTransmission();
+
+    delay(1);
 
     return true;
 }

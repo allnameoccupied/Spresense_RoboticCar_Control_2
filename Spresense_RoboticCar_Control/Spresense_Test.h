@@ -117,28 +117,32 @@ void test_init(){
   // I2C_Write_Radian(10.2566f);
   // I2C_Write_Encoder(1.0, 0.205, 0.012, 0.0205);
 
-  Wire.beginTransmission(NUCLEO_I2C_ADDR);
-  Wire.endTransmission();
+  // Wire.beginTransmission(NUCLEO_I2C_ADDR);
+  // Wire.endTransmission();
+  I2C_Start_Write();
+
   I2C_Write_Encoder(0.0, 0.0, 0.0, 0.0);
-  delay(50);
+  // delay(50);
   I2C_Write_PWM_DIR(Motor_TL, 1.0, 1);
-  delay(50);
+  // delay(50);
   I2C_Write_PWM_DIR(Motor_TR, 1.0, 1);
-  delay(50);
+  // delay(50);
   I2C_Write_PWM_DIR(Motor_BL, 1.0, 1);
-  delay(50);
+  // delay(50);
   I2C_Write_PWM_DIR(Motor_BR, 1.0, 1);
-  delay(50);
+  // delay(50);
   I2C_Write_Encoder(1.0, 1.0, 1.0, 1.0);
   delay(5000);
   I2C_Write_PWM_DIR(Motor_TL, 0.0, 1);
-  delay(50);
+  // delay(50);
   I2C_Write_PWM_DIR(Motor_TR, 0.0, 1);
-  delay(50);
+  // delay(50);
   I2C_Write_PWM_DIR(Motor_BL, 0.0, 1);
-  delay(50);
+  // delay(50);
   I2C_Write_PWM_DIR(Motor_BR, 0.0, 1);
-  delay(50);
+  // delay(50);
+
+  I2C_End_Write();
 
   Serial.println("sent la");
 }
