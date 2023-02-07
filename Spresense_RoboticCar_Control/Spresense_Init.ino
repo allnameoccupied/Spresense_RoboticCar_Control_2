@@ -84,7 +84,7 @@ void MP_Init(){
 
 // Init FFT related stuff
 void FFT_Init(){
-    // attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
+    attachTimerInterrupt(&FFT_PikaPika_Routine, FFT_UPDATE_PERIOD_US);
 }
 
 //--------------------------------------------------------//
