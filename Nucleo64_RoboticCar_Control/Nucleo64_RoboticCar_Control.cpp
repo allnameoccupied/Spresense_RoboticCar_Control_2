@@ -75,7 +75,7 @@ int main()
     LED->write(1);
     
     //TEST FUNCTION
-    // test_init();
+    test_init();
     // while (1) {test_loop();}
 
     while (true) {

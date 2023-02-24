@@ -23,7 +23,8 @@
 #if (SUBCORE == 2)
     #include "Spresense_SubCore_2/Spresense_Sub2_FFT_Functions.h"
 #endif
-#include "Spresense_I2C_Handler.h"
+// #include "Spresense_I2C_Handler.h"
+#include "Spresense_SubCore_3/Spresense_I2C_Handler.h"
 
 #include "Spresense_SubCore_1/Spresense_SubCore_1_TaskList.h"
 #include "Spresense_SubCore_2/Spresense_SubCore_2_TaskList.h"

@@ -30,7 +30,7 @@
 
 
 // -> DIST Sensors Variables
-VL53L1X Dist_sensor [8];
+// VL53L1X Dist_sensor [8];
 
 //--------------------------------------------------------//
 
@@ -48,7 +48,7 @@ void setup() {
 
     // Spresense Init
     Onboard_LED_Init();
-    I2C_Init();
+    // I2C_Init();
     Dist_Sensor_Init();
     PIKAPIKA_Init();
     Serial_Init();
@@ -59,8 +59,8 @@ void setup() {
     Serial.println("Init finished successfully");
     
     // TEST FUNCTION
-    test_init();
-    while (1){test_loop();}
+    // test_init();
+    // while (1){test_loop();}
 }
 void loop() {
 
@@ -89,6 +89,7 @@ unsigned int FFT_PikaPika_Routine(){
     
     //******** Periodic phi Reset ***********
     const int PRperiod = 800;
+    // const int PRperiod = 800;
     const int PRoffset = 5;
     if (PRcount == 0)
     {
@@ -196,7 +197,7 @@ unsigned int FFT_PikaPika_Routine(){
     //     count++;
     // }
 
-    //******** 2pi周期性と発光の処理********
+    //******** 2pi周期性と発光の処理 ********
     mod_varphi = fmod(varphi, 2*PI);
     if ((mod_varphi >= PI) && (last_mod_varphi < PI))
     {
@@ -222,6 +223,7 @@ unsigned int FFT_PikaPika_Routine(){
     } else {
         digitalWrite(PIKAPIKA_LED, LOW);
     }
+    //******** 2pi周期性と発光の処理ここまで ********
     
     //****** サブコアへの位相通知処理 *********
     FFT_countdown--;
@@ -232,6 +234,7 @@ unsigned int FFT_PikaPika_Routine(){
         MP.Send(C2_T1_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
         MP.Send(C2_T2_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
     }
+    //****** サブコアへの位相通知処理ここまで *********
 
     return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 

@@ -36,9 +36,34 @@ extern VL53L1X Dist_sensor [8];
 void i2c_detect();
 
 //--------------------------------------------------------//
-
 void test_init(){
+  // pinMode(PIKAPIKA_LIGHT_0, INPUT);
+  // pinMode(PIKAPIKA_LIGHT_1, INPUT);
+  pinMode(PIN_D10, OUTPUT);
+  pinMode(PIN_D11, OUTPUT);
+  pinMode(PIN_D12, OUTPUT);
+  pinMode(PIN_D13, OUTPUT);
+  pinMode(PIN_D16, OUTPUT);
+  pinMode(PIN_D17, OUTPUT);
+  pinMode(PIN_D18, OUTPUT);
+  pinMode(PIN_D19, OUTPUT);
+  // pinMode(PIN_D20, OUTPUT);
+  // pinMode(PIN_D21, OUTPUT);
+  pinMode(PIN_D23, OUTPUT);
+  pinMode(PIN_D24, OUTPUT);
+  // pinMode(M1_HALL_PIN, INPUT);
+  // pinMode(M2_HALL_PIN, INPUT);
+  // pinMode(M3_HALL_PIN, INPUT);
+  // pinMode(M4_HALL_PIN, INPUT);
+  pinMode(PIN_D33, OUTPUT);
+  pinMode(PIN_D34, OUTPUT);
+  pinMode(PIN_D35, OUTPUT);
+  pinMode(PIN_D36, OUTPUT);
+  pinMode(PIN_D37, OUTPUT);
+  pinMode(PIN_D38, OUTPUT);
+}
 
+void test_init2(){
   // delay(500);
 
   // i2c_detect();

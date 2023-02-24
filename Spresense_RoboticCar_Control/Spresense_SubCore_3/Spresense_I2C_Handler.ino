@@ -5,7 +5,7 @@
 //--------------------------------------------------------//
 
 #include "Spresense_I2C_Handler.h"
-#include "Spresense_Include_List.h"
+// #include "Spresense_Include_List.h"
 
 // use this instead of Wire.beginTransmission
 void I2C_Start_Write(){

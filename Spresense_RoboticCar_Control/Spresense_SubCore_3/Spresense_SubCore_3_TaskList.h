@@ -8,6 +8,6 @@
 #define SPRESENSE_SUBCORE_3_TASKLIST_H
 
 // No task for MP at this moment (20230105)
-// #define C3_T0_GET_TICK                  0
+#define C3_T0_NO_CHANGE                 0
 
 #endif

@@ -23,14 +23,14 @@
 #define I2C_M_SCL_PIN       PIN_D15
 
 // Distance Sensor XSHUT
-#define DIST_XSHUT_0        PIN_D08
-#define DIST_XSHUT_1        PIN_D09
-#define DIST_XSHUT_2        PIN_D10
-#define DIST_XSHUT_3        PIN_D11
-#define DIST_XSHUT_4        PIN_D12
-#define DIST_XSHUT_5        PIN_D13
-#define DIST_XSHUT_6        PIN_D16
-#define DIST_XSHUT_7        PIN_D17
+// #define DIST_XSHUT_0        PIN_D08
+// #define DIST_XSHUT_1        PIN_D09
+// #define DIST_XSHUT_2        PIN_D10
+// #define DIST_XSHUT_3        PIN_D11
+// #define DIST_XSHUT_4        PIN_D12
+// #define DIST_XSHUT_5        PIN_D13
+// #define DIST_XSHUT_6        PIN_D16
+// #define DIST_XSHUT_7        PIN_D17
 
 // PikaPika pins
 // -> PikaPika LED

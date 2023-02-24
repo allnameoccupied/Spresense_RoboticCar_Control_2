@@ -580,13 +580,14 @@ uint8_t inner_outer_estimate(){
         // MPLog("%5.5f        %5.5f\n", FFT_result[dx_peak_index], dx_FFT_result[dx_peak_index]);
         // MPLog("%d\n", dx_peak_index);
         // MPLog("%d\n", dy_peak_index);
+        // MPLog("%d\n", dy_judgement);
         // MPLog("%5.5f        %5.5f\n", FFT_result[dy_peak_index], dy_FFT_result[dy_peak_index]);
         MPLog("%d\n", judgement_count[0]);
-        // MPLog("%d\n", judgement_count[1]+judgement_count[2]+judgement_count[3]);
-        // MPLog("%d\n", judgement_count[4]);
+        MPLog("%d\n", judgement_count[1]+judgement_count[2]+judgement_count[3]);
+        MPLog("%d\n", judgement_count[4]);
         // for (int i = 0; i < 5; i++){MPLog("%d\n", judgement_count[i]);}
         // MPLog("%d\n", final_judgement);
-        // MPLog("\n");
+        MPLog("\n");
     }
     count++;
     
