@@ -22,7 +22,7 @@ void I2C_Init(){
 }
 
 // Init Distance Sensors pins
-extern VL53L1X Dist_sensor [8];
+// extern VL53L1X Dist_sensor [8];
 void Dist_Sensor_Init(){
 
 }
@@ -39,15 +39,15 @@ void PIKAPIKA_Init(){
     pinMode(PIKAPIKA_LIGHT_5, INPUT);
     pinMode(PIKAPIKA_LIGHT_6, INPUT);
     pinMode(PIKAPIKA_LIGHT_7, INPUT);
-
+    
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_0), PikaPika_Int_Handler_0, FALLING);
-    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_1), PikaPika_Int_Handler_1, FALLING);
+    // attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_1), PikaPika_Int_Handler_1, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_2), PikaPika_Int_Handler_2, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_3), PikaPika_Int_Handler_3, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_4), PikaPika_Int_Handler_4, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_5), PikaPika_Int_Handler_5, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_6), PikaPika_Int_Handler_6, FALLING);
-    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_7), PikaPika_Int_Handler_7, FALLING);    
+    attachInterrupt(digitalPinToInterrupt(PIKAPIKA_LIGHT_7), PikaPika_Int_Handler_7, FALLING);
 }
 
 // Init Serial Communication
@@ -57,11 +57,16 @@ void Serial_Init(){
 
 // Init Inside/Outside LED pins
 void InOut_LED_Init(){
-    pinMode(INSIDE_LED, OUTPUT);
     pinMode(OUTSIDE_LED, OUTPUT);
+    pinMode(INSIDE_LED, OUTPUT);
 
-    digitalWrite(INSIDE_LED, LOW);
+    digitalWrite(OUTSIDE_LED, HIGH);
+    digitalWrite(INSIDE_LED, HIGH);
+
+    delay(500);
+
     digitalWrite(OUTSIDE_LED, LOW);
+    digitalWrite(INSIDE_LED, LOW);
 }
 
 // Init SubCores
@@ -75,6 +80,10 @@ void MP_Init(){
     ret = MP.begin(SUBCORE_2_FFT_ID);
     if (ret<0) {
         MPLog("MP.begin(%d) error = %d\n", SUBCORE_2_FFT_ID, ret);
+    }
+    ret = MP.begin(SUBCORE_3_MOTOR_ENCODER_ID);
+    if (ret<0) {
+        MPLog("MP.begin(%d) error = %d\n", SUBCORE_3_MOTOR_ENCODER_ID, ret);
     }
 }
 

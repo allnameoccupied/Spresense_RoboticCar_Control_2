@@ -36,6 +36,144 @@ extern VL53L1X Dist_sensor [8];
 void i2c_detect();
 
 //--------------------------------------------------------//
+void test_init(){
+  // pinMode(PIKAPIKA_LIGHT_0, INPUT);
+  // pinMode(PIKAPIKA_LIGHT_1, INPUT);
+  pinMode(PIN_D10, OUTPUT);
+  pinMode(PIN_D11, OUTPUT);
+  pinMode(PIN_D12, OUTPUT);
+  pinMode(PIN_D13, OUTPUT);
+  pinMode(PIN_D16, OUTPUT);
+  pinMode(PIN_D17, OUTPUT);
+  pinMode(PIN_D18, OUTPUT);
+  pinMode(PIN_D19, OUTPUT);
+  // pinMode(PIN_D20, OUTPUT);
+  // pinMode(PIN_D21, OUTPUT);
+  pinMode(PIN_D23, OUTPUT);
+  pinMode(PIN_D24, OUTPUT);
+  // pinMode(M1_HALL_PIN, INPUT);
+  // pinMode(M2_HALL_PIN, INPUT);
+  // pinMode(M3_HALL_PIN, INPUT);
+  // pinMode(M4_HALL_PIN, INPUT);
+  pinMode(PIN_D33, OUTPUT);
+  pinMode(PIN_D34, OUTPUT);
+  pinMode(PIN_D35, OUTPUT);
+  pinMode(PIN_D36, OUTPUT);
+  pinMode(PIN_D37, OUTPUT);
+  pinMode(PIN_D38, OUTPUT);
+}
+
+void test_init2(){
+  // delay(500);
+
+  // i2c_detect();
+
+  // float input = 1.0123456789;
+  // char tempp[8];
+
+  // int asdf = (int)input;
+  // int qwer = (int)((input-(int)input)*100000000);
+  // itoa((int)((input-(int)input)*100000000),tempp,10);  // no -ve, >0 part will be omitted, only to 8 decimal
+  // Serial.println(qwer);
+  // Serial.println(tempp);
+  // std::string temps = tempp;
+  // temps.insert(0,8-temps.length(),'0');
+
+  // char tempp2[9];               // no -ve please, will send 9 digits, as 10th degit will have boundary for int (and uint32_t)
+  // itoa(135,tempp2,10);    
+  // std::string temps = tempp2;
+  // temps.insert(0,9-temps.length(),'0');
+  // itoa(123456789,tempp2,10);
+  // std::string temps2 = tempp2;
+  // temps2.insert(0,9-temps2.length(),'0');
+
+  // float mod_input = fmod(input, 2*PI);      // will limit input to [0,2pi]
+  // int asdf = (int)(mod_input);
+  // int qwer = (int)((mod_input-(int)mod_input)*100000000);
+  // itoa((int)((mod_input-(int)mod_input)*100000000),tempp,10);  // no -ve, >0 part will be omitted, only to 8 decimal
+  // Serial.println(qwer);
+  // Serial.println(tempp);
+
+  // char tempp3a[6];      // only 6 decimal points cause no enough message length
+  // char tempp3b[6];      // no -ve, >0 part will be omitted
+  // char tempp3c[6];
+  // char tempp3d[6];
+  // itoa((int)((0.1123456-(int)0.1123456)*100000000),tempp3a,10);
+  // itoa((int)((0.1223456-(int)0.1223456)*100000000),tempp3b,10);
+  // itoa((int)((0.1233456-(int)0.1233456)*100000000),tempp3c,10);
+  // itoa((int)((0.1234456-(int)0.1234456)*100000000),tempp3d,10);
+
+
+  // char msgg[I2C_MSG_LENGTH];
+  
+  // msgg[0] = '0';
+  // Serial.println(msgg);
+
+  // msgg[1] = '0';
+  // msgg[2] = asdf + '0';
+  // memcpy(&(msgg[3]), temps.c_str(), 8);
+  // msgg[11] = '1';
+
+  // memcpy(&msgg[1],temps.c_str(),9);
+  // // Serial.println(temps.c_str());
+  // // Serial.println(msgg);
+  // memcpy(&msgg[10],temps2.c_str(),9);
+  // // Serial.println(temps2.c_str());
+  // // Serial.println(msgg);
+
+  // msgg[1] = asdf + '0';
+  // memcpy(&(msgg[2]), &tempp[0], 8);
+
+  // memcpy(&(msgg[1]), &tempp3a[0], 6);
+  // memcpy(&(msgg[7]), &tempp3b[0], 6);
+  // memcpy(&(msgg[13]), &tempp3c[0], 6);
+  // memcpy(&(msgg[19]), &tempp3d[0], 6);
+
+
+  // Serial.println(msgg);
+  Serial.println("now send la");
+
+  // Wire.beginTransmission(NUCLEO_I2C_ADDR);
+  // Wire.write(msgg);
+  // Wire.endTransmission();
+
+  // I2C_Write_PWM_DIR(Motor_TR, 0.0123456789, 1);
+  // I2C_Write_Target_XY(100,123456789);
+  // I2C_Write_Radian(10.2566f);
+  // I2C_Write_Encoder(1.0, 0.205, 0.012, 0.0205);
+
+  // Wire.beginTransmission(NUCLEO_I2C_ADDR);
+  // Wire.endTransmission();
+  I2C_Start_Write();
+
+  I2C_Write_Encoder(0.0, 0.0, 0.0, 0.0);
+  // delay(50);
+  I2C_Write_PWM_DIR(Motor_TL, 1.0, 1);
+  // delay(50);
+  I2C_Write_PWM_DIR(Motor_TR, 1.0, 1);
+  // delay(50);
+  I2C_Write_PWM_DIR(Motor_BL, 1.0, 1);
+  // delay(50);
+  I2C_Write_PWM_DIR(Motor_BR, 1.0, 1);
+  // delay(50);
+  I2C_Write_Encoder(1.0, 1.0, 1.0, 1.0);
+  delay(5000);
+  I2C_Write_PWM_DIR(Motor_TL, 0.0, 1);
+  // delay(50);
+  I2C_Write_PWM_DIR(Motor_TR, 0.0, 1);
+  // delay(50);
+  I2C_Write_PWM_DIR(Motor_BL, 0.0, 1);
+  // delay(50);
+  I2C_Write_PWM_DIR(Motor_BR, 0.0, 1);
+  // delay(50);
+
+  I2C_End_Write();
+
+  Serial.println("sent la");
+}
+void test_loop(){
+  
+}
 
 /* PikaPika FFT test
 unsigned int FFT_PikaPika_Routine(){
@@ -344,7 +482,7 @@ void test_loop(){
 }
 */
 
-/* distance sensor test
+/* I2C & distance sensor test
 
 // VL53L1X test;
 bool use_dist_0 = true;

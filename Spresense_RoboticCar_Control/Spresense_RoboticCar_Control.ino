@@ -30,7 +30,7 @@
 
 
 // -> DIST Sensors Variables
-VL53L1X Dist_sensor [8];
+// VL53L1X Dist_sensor [8];
 
 //--------------------------------------------------------//
 
@@ -48,7 +48,7 @@ void setup() {
 
     // Spresense Init
     Onboard_LED_Init();
-    I2C_Init();
+    // I2C_Init();
     Dist_Sensor_Init();
     PIKAPIKA_Init();
     Serial_Init();
@@ -60,6 +60,7 @@ void setup() {
     
     // TEST FUNCTION
     // test_init();
+    // while (1){test_loop();}
 }
 void loop() {
 
@@ -73,10 +74,7 @@ void loop() {
             is_Self_Excitation = true;
             MPLog("now self excite\n");
         }
-    }
-    
-    // TEST FUNCTION
-    // test_loop();
+    }    
 }
 
 //--------------------------------------------------------//
@@ -86,61 +84,53 @@ unsigned int FFT_PikaPika_Routine(){
     static int FFT_countdown = FFT_PROCESS_PERIOD_US;
     static double last_phi = 0.0;
     static double last_mod_varphi = 0.0;
+    static int PRcount = 0;
     //******** 関数内変数定義ここまで********
-
-    //******** 位相更新 ***********     楕円型（振動相互作用）
-    static int ttcount = FFT_PROCESS_PERIOD_US * 800;
-    // static float test_self_excite = 0.0;
-    // static float test_self_excite2 = 0.0;
-    // if (is_Self_Excitation)
-    if (ttcount == 0)
+    
+    //******** Periodic phi Reset ***********
+    const int PRperiod = 800;
+    // const int PRperiod = 800;
+    const int PRoffset = 5;
+    if (PRcount == 0)
     {
       // MPLog("now real self excite la\n");
-      if (!is_Self_Excitation)  // 自励処理
-      {
-        last_phi = 0.0;
-        last_mod_varphi = 0.0;
+      if (!is_Self_Excitation)  // !自励処理
+      {     //TODO fininalize this
+        // last_phi = 0.0;
+        // last_mod_varphi = 0.0;
         // phi_bar = 0.0;
-        phi = 0.0;
-        varphi = 0.0;
-        mod_varphi = 0.0;
+        // phi = 0.0;
+        // varphi = 0.0;
+        // mod_varphi = 0.0;
+        phi += 0.25 * dt;
       }
-      // test_self_excite = 0.025;
-      // test_self_excite2 = 1.0;
-      // is_Self_Excitation = false;
-      ttcount = FFT_PROCESS_PERIOD_US * 800;
+      PRcount = FFT_PROCESS_PERIOD_US * (int)(random(PRperiod-PRoffset,PRperiod+PRoffset));     //TODO also finalize this
       is_Self_Excitation = false;
-      // delay(30);
     } else {
-      // test_self_excite = GAMMA;
-      // test_self_excite2 = kappa;
-      ttcount--;
+      PRcount--;
     }
+    //******** END of Periodic phi Reset ***********
 
+    //******** 位相更新 ***********     楕円型（振動相互作用）
     phi_bar += Omega_0 * dt;    // 進行位相は等角速度
     // phi_bar += is_Self_Excitation * SELF_EXITATION_INTENSITY;   // 自励処理
-    // phi_bar += test_self_excite * SELF_EXITATION_INTENSITY;   // 自励処理
     // is_Self_Excitation = false;   // 一度行ったら自励はオフ
 
     sum_dphi = 0.0;
 
     adaptive_gamma = GAMMA_CONST_1;
-    // adaptive_gamma = test_self_excite;
     for (int i = 0; i < PIKAPIKA_SENSOR_COUNT; i++)
     {
         sum_dphi += dphi[i];
         adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * GAMMA_CONST_2;
-        // adaptive_gamma += (PikaPika_light_sensor_life[i] > 0) * test_self_excite;
     }
     c_fft = adaptive_gamma * 0.5 * dt + 1;
     double temp_phi = ( 2 * phi
                         + (adaptive_gamma * dt * 0.5 - 1) * last_phi
                         + dt * dt * (-kappa * sum_dphi))  /c_fft;
-                        // + dt * dt * (-test_self_excite2 * sum_dphi))  /c_fft;
     last_phi = phi;
     phi = temp_phi;
     varphi = phi_bar + phi;
-    // varphi = phi_bar;
     //******** 位相更新ここまで********
 
     //******** dphi/dx & dphi/dy の計算********
@@ -207,7 +197,7 @@ unsigned int FFT_PikaPika_Routine(){
     //     count++;
     // }
 
-    //******** 2pi周期性と発光の処理********
+    //******** 2pi周期性と発光の処理 ********
     mod_varphi = fmod(varphi, 2*PI);
     if ((mod_varphi >= PI) && (last_mod_varphi < PI))
     {
@@ -233,6 +223,7 @@ unsigned int FFT_PikaPika_Routine(){
     } else {
         digitalWrite(PIKAPIKA_LED, LOW);
     }
+    //******** 2pi周期性と発光の処理ここまで ********
     
     //****** サブコアへの位相通知処理 *********
     FFT_countdown--;
@@ -243,6 +234,7 @@ unsigned int FFT_PikaPika_Routine(){
         MP.Send(C2_T1_DXPHI, (uint32_t)(FFT_MSG_SCALE * dx_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
         MP.Send(C2_T2_DYPHI, (uint32_t)(FFT_MSG_SCALE * dy_phi + FFT_MIDSHIFT), SUBCORE_2_FFT_ID);
     }
+    //****** サブコアへの位相通知処理ここまで *********
 
     return FFT_UPDATE_PERIOD_US;  // https://developer.sony.com/develop/spresense/docs/arduino_developer_guide_ja.html#_attachtimerinterrupt
 

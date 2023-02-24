@@ -4,10 +4,7 @@
 
 #include "Nucleo64_Tool.h"
 
-#include "Nucleo64_Global_Var_Def.h"
-
-#include "mbed.h"
-#include <cstring>
+#include "Nucleo64_Include_List.h"
 #include <string>
 
 //Easy Serial Write
@@ -46,6 +43,22 @@ void serial_print(uint32_t msg){
 }
 void serial_println(uint32_t msg){
     serial_println(to_string((long)msg).c_str());
+}
+void serial_print(float msg){
+    int temp = (int)((msg-(int)msg)*100000000);
+    string temps = to_string(temp);
+    temps.insert(0,8-temps.length(),'0');
+    serial_print(to_string((int)msg).c_str());
+    serial_print(".");
+    serial_print(temps.c_str());
+}
+void serial_println(float msg){
+    int temp = (int)((msg-(int)msg)*100000000);
+    string temps = to_string(temp);
+    temps.insert(0,8-temps.length(),'0');
+    serial_print(to_string((int)msg).c_str());
+    serial_print(".");
+    serial_println(temps.c_str());
 }
 
 //Easy Wait

@@ -10,8 +10,8 @@
 //--------------------------------------------------------//
 
 #include "Spresense_SubCore_2_TaskList.h"
-// #include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
-#include "C:/Max/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"    // laptop
+#include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
+// #include "C:/Max/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"    // laptop
 
 #include <Arduino.h>
 #include <MP.h>
@@ -80,19 +80,19 @@ void loop(void){
             arm_cmplx_mag_f32(dy_output_buffer, dy_FFT_result, FFT_LEN/2);
 
             // determine if need to self-excite by finding peak
-            if (!peak_check())
-            {
-                MP.Send(C2_T3_NO_PEAK, C2_T3_NO_PEAK);  // メインコアに失敗を通報
-            }
+            // if (!peak_check())
+            // {
+            //     MP.Send(C2_T3_NO_PEAK, C2_T3_NO_PEAK);  // メインコアに失敗を通報
+            // }
             
             // FFT result preprocessing
-            FFT_result_processing();
+            // FFT_result_processing();
 
             // estimate inner/outer layer  ********
-            Judgement = inner_outer_estimate();
+            // Judgement = inner_outer_estimate();
 
             // print out data to Serial Monitor
-            fft_data_print_out();
+            // fft_data_print_out();
 
             // get peak & check need for self-excite (not used now)
             // float f_peak = get_peak_frequency(FFT_result);
@@ -104,6 +104,9 @@ void loop(void){
             // float length_estimate = length_estimation(f_peak);
             // MPLog("Length Estimate : %4.2f\n", length_estimate);
 
+            // check phi [2023/02/15]
+            // test_20230215();
+
         } else {
             FFT_countdown_sub2--;
         }
@@ -114,6 +117,23 @@ void loop(void){
     // case C2_T3_NO_PEAK:  // not for receiving
     default:
         break;
+    }
+}
+
+void test_20230215(){
+    // for (int i = 0; i < FFT_LEN/2; i++)
+    // {
+    //     MPLog("%5.5f", FFT_result[i]);
+    // }
+    // MPLog("\n");
+
+    for (int i = 1; i < FFT_LEN/2; i++)
+    {
+        if ((FFT_result[i]>FFT_result[i+1]) && (FFT_result[i]>FFT_result[i-1]))
+        {
+            MPLog("%d\n", i);
+            break;
+        }
     }
 }
 
