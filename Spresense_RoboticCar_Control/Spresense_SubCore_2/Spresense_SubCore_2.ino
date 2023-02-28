@@ -10,8 +10,10 @@
 //--------------------------------------------------------//
 
 #include "Spresense_SubCore_2_TaskList.h"
-#include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
+// #include "C:/Users/Max/Documents/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h" // lab-pc
 // #include "C:/Max/Workspace/Spresense_RoboticCar_Control_2/Spresense_RoboticCar_Control/Spresense_Include_List.h"    // laptop
+
+#include "../Spresense_Include_List.h" // lab-pc
 
 #include <Arduino.h>
 #include <MP.h>
